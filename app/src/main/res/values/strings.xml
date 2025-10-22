@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Restaurant Reservation</string>
+    <string name="title_main_activity">Reservasi Restoran</string>
+    <string name="title_detail_activity">Detail Reservasi</string>
+    <string name="title_list_activity">Daftar Reservasi</string>
+
+    <!-- Main Activity -->
+    <string name="hint_nama">Masukkan nama Anda</string>
+    <string name="label_jumlah_orang">Jumlah Orang</string>
+    <string name="label_tanggal">Tanggal Reservasi</string>
+    <string name="btn_buat_reservasi">Buat Reservasi</string>
+    <string name="btn_lihat_daftar">Lihat Daftar Reservasi</string>
+
+    <!-- Detail Activity -->
+    <string name="label_detail_nama">Nama Pemesan</string>
+    <string name="label_detail_jumlah">Jumlah Orang</string>
+    <string name="label_detail_tanggal">Tanggal</string>
+    <string name="btn_buka_maps">Buka di Google Maps</string>
+    <string name="btn_kembali">Kembali</string>
+
+    <!-- List Activity -->
+    <string name="empty_list">Belum ada reservasi</string>
+    <string name="btn_tambah_reservasi">Tambah Reservasi</string>
+    <string name="btn_kembali_ke_utama">Kembali ke Menu Utama</string>
+</resources>
