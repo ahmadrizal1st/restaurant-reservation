@@ -15,12 +15,12 @@ import java.util.*
 object IntentUtils {
 
     // Constants untuk Implicit Intent
-    private const RESTAURANT_PHONE = "+62123456789"
-    private const RESTAURANT_WEBSITE = "https://www.restaurantlezatselalu.com"
-    private const RESTAURANT_EMAIL = "info@restaurantlezatselalu.com"
-    private const RESTAURANT_LATITUDE = -6.2088
-    private const RESTAURANT_LONGITUDE = 106.8456
-    private const RESTAURANT_NAME = "Restoran Lezat Selalu"
+    private const val RESTAURANT_PHONE = "+62123456789"
+    private const val RESTAURANT_WEBSITE = "https://www.restaurantlezatselalu.com"
+    private const val RESTAURANT_EMAIL = "info@restaurantlezatselalu.com"
+    private const val RESTAURANT_LATITUDE = -6.2088
+    private const val RESTAURANT_LONGITUDE = 106.8456
+    private const val RESTAURANT_NAME = "Restoran Lezat Selalu"
 
     /**
      * 1. Implicit Intent untuk membuka Google Maps

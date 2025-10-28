@@ -17,23 +17,23 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
     private lateinit var tvMeja: TextView
-    private lateinit var tvCatatan: TextView
+    // private lateinit var tvCatatan: TextView
     private lateinit var tvStatus: TextView
     private lateinit var tvCreatedAt: TextView
     private lateinit var tvReservationId: TextView
 
-    private lateinit var labelCatatan: TextView
-    private lateinit var containerCatatan: LinearLayout
+    // private lateinit var labelCatatan: TextView
+    // private lateinit var containerCatatan: LinearLayout
 
     private lateinit var btnBukaMaps: Button
     private lateinit var btnTeleponRestoran: Button
     private lateinit var btnBagikanReservasi: Button
     private lateinit var btnBukaWebsite: Button
     private lateinit var btnKirimEmail: Button
-    private lateinit var btnBukaKalender: Button
-    private lateinit var btnWhatsApp: Button
+    // private lateinit var btnBukaKalender: Button
+    // private lateinit var btnWhatsApp: Button
     private lateinit var btnEditReservasi: Button
-    private lateinit var btnKembali: Button
+    // private lateinit var btnKembali: Button
 
     private lateinit var reservation: Reservation
     private var action: String = Constants.ACTION_VIEW
@@ -56,14 +56,14 @@ class DetailActivity : AppCompatActivity() {
         tvTanggal = findViewById(R.id.tvTanggal)
         tvWaktu = findViewById(R.id.tvWaktu)
         tvMeja = findViewById(R.id.tvMeja)
-        tvCatatan = findViewById(R.id.tvCatatan)
+        // tvCatatan = findViewById(R.id.tvCatatan)
         tvStatus = findViewById(R.id.tvStatus)
         tvCreatedAt = findViewById(R.id.tvCreatedAt)
         tvReservationId = findViewById(R.id.tvReservationId)
 
         // Layout components
-        labelCatatan = findViewById(R.id.labelCatatan)
-        containerCatatan = findViewById(R.id.containerCatatan)
+        // labelCatatan = findViewById(R.id.labelCatatan)
+        // containerCatatan = findViewById(R.id.containerCatatan)
 
         // Buttons
         btnBukaMaps = findViewById(R.id.btnBukaMaps)
@@ -71,10 +71,10 @@ class DetailActivity : AppCompatActivity() {
         btnBagikanReservasi = findViewById(R.id.btnBagikanReservasi)
         btnBukaWebsite = findViewById(R.id.btnBukaWebsite)
         btnKirimEmail = findViewById(R.id.btnKirimEmail)
-        btnBukaKalender = findViewById(R.id.btnBukaKalender)
-        btnWhatsApp = findViewById(R.id.btnWhatsApp)
+        // btnBukaKalender = findViewById(R.id.btnBukaKalender)
+        // btnWhatsApp = findViewById(R.id.btnWhatsApp)
         btnEditReservasi = findViewById(R.id.btnEditReservasi)
-        btnKembali = findViewById(R.id.btnKembali)
+        // btnKembali = findViewById(R.id.btnKembali)
     }
 
     /**
@@ -95,7 +95,7 @@ class DetailActivity : AppCompatActivity() {
         println("Action: $action")
 
         // Dapatkan data reservasi dengan multiple fallback methods
-        reservation = DataReceiverHelper.getReservationFromIntent(intent, this) ?: run {
+        reservation = DataReceiverHelper.getReservationFromIntent(intent) ?: run {
             showError("Gagal memproses data reservasi")
             finish()
             return
@@ -133,12 +133,12 @@ class DetailActivity : AppCompatActivity() {
             tvCreatedAt.text = "Dibuat: ${reservation.getCreatedAtFormatted()}"
 
             // Handle catatan (bisa kosong)
-            if (reservation.catatan.isNotBlank()) {
-                tvCatatan.text = reservation.catatan
-                containerCatatan.visibility = android.view.View.VISIBLE
-            } else {
-                containerCatatan.visibility = android.view.View.GONE
-            }
+            // if (reservation.catatan.isNotBlank()) {
+            //     tvCatatan.text = reservation.catatan
+            //     containerCatatan.visibility = android.view.View.VISIBLE
+            // } else {
+            //     containerCatatan.visibility = android.view.View.GONE
+            // }
 
             // Set warna status
             setStatusColor(reservation.status)
@@ -178,8 +178,8 @@ class DetailActivity : AppCompatActivity() {
         btnBagikanReservasi.setOnClickListener { IntentUtils.shareReservation(this, reservation) }
         btnBukaWebsite.setOnClickListener { IntentUtils.openWebsite(this) }
         btnKirimEmail.setOnClickListener { IntentUtils.sendConfirmationEmail(this, reservation) }
-        btnBukaKalender.setOnClickListener { IntentUtils.addToCalendar(this, reservation) }
-        btnWhatsApp.setOnClickListener { IntentUtils.openWhatsApp(this, reservation) }
+        // btnBukaKalender.setOnClickListener { IntentUtils.addToCalendar(this, reservation) }
+        // btnWhatsApp.setOnClickListener { IntentUtils.openWhatsApp(this, reservation) }
 
         // Edit Reservasi
         btnEditReservasi.setOnClickListener {
@@ -187,9 +187,9 @@ class DetailActivity : AppCompatActivity() {
         }
 
         // Kembali dengan result
-        btnKembali.setOnClickListener {
-            kembaliDenganResult()
-        }
+        // btnKembali.setOnClickListener {
+        //     kembaliDenganResult()
+        // }
     }
 
     /**
@@ -198,7 +198,7 @@ class DetailActivity : AppCompatActivity() {
     private fun editReservasi() {
         val resultIntent = Intent().apply {
             // Kirim data reservasi yang sudah di-update (dalam kasus real, mungkin ada form edit)
-            val updatedReservation = reservation.update(
+            val updatedReservation = reservation.copy(
                 status = "Updated",
                 updatedAt = System.currentTimeMillis()
             )
@@ -209,7 +209,7 @@ class DetailActivity : AppCompatActivity() {
         showSuccess("Reservasi berhasil diupdate!")
 
         // Refresh tampilan
-        reservation = reservation.update(status = "Updated")
+        reservation = reservation.copy(status = "Updated", updatedAt = System.currentTimeMillis())
         tampilkanDataReservasi()
     }
 

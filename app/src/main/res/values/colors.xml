@@ -20,9 +20,23 @@
 
     <!-- Status Colors -->
     <color name="status_confirmed">#4CAF50</color>
+    <color name="status_confirmed_bg">#E8F5E8</color>
+    <color name="status_confirmed_text">#4CAF50</color>
     <color name="status_pending">#FF9800</color>
+    <color name="status_pending_bg">#FFF3E0</color>
+    <color name="status_pending_text">#FF9800</color>
     <color name="status_cancelled">#F44336</color>
+    <color name="status_cancelled_bg">#FFEBEE</color>
+    <color name="status_cancelled_text">#F44336</color>
     <color name="status_completed">#2196F3</color>
+    <color name="status_completed_bg">#E3F2FD</color>
+    <color name="status_completed_text">#2196F3</color>
+    <color name="status_default_bg">#F5F5F5</color>
+    <color name="status_default_text">#757575</color>
+
+    <!-- Item Background Colors -->
+    <color name="item_background_even">#FFFFFF</color>
+    <color name="item_background_odd">#FAFAFA</color>
 
     <!-- Background Colors -->
     <color name="background_light">#FAFAFA</color>

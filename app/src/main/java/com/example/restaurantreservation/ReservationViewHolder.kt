@@ -31,7 +31,6 @@ class ReservationViewHolder(
 
     private val layoutStatus: LinearLayout = itemView.findViewById(R.id.layoutStatus)
     private val cardView: androidx.cardview.widget.CardView = itemView.findViewById(R.id.cardReservation)
-    private val layoutHeader: LinearLayout = itemView.findViewById(R.id.layoutHeader)
 
     /**
      * Method untuk bind data reservasi ke view

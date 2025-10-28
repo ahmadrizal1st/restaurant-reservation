@@ -6,12 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.restaurantreservation.databinding.ActivityMainBinding
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataTransferHelper
 import com.example.restaurantreservation.utils.InputValidator
 import com.example.restaurantreservation.utils.ValidationResult
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,22 +30,18 @@ import java.util.*
  */
 class MainActivity : AppCompatActivity() {
 
-    // region - View Binding Declaration
-    private lateinit var binding: ActivityMainBinding
-
     // UI Components
-    private lateinit var etNama: com.google.android.material.textfield.TextInputEditText
-    private lateinit var etCatatan: com.google.android.material.textfield.TextInputEditText
+    private lateinit var etNama: EditText
+    private lateinit var etCatatan: EditText
     private lateinit var npJumlahOrang: NumberPicker
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
     private lateinit var spMeja: Spinner
-    private lateinit var btnPilihTanggal: com.google.android.material.button.MaterialButton
-    private lateinit var btnPilihWaktu: com.google.android.material.button.MaterialButton
-    private lateinit var btnBuatReservasi: com.google.android.material.button.MaterialButton
-    private lateinit var btnLihatDaftar: com.google.android.material.button.MaterialButton
-    private lateinit var textInputLayoutNama: com.google.android.material.textfield.TextInputLayout
-    // endregion
+    private lateinit var btnPilihTanggal: LinearLayout
+    private lateinit var btnPilihWaktu: LinearLayout
+    private lateinit var btnBuatReservasi: Button
+    private lateinit var btnLihatDaftar: Button
+    private lateinit var textInputLayoutNama: TextInputLayout
 
     // region - Data Variables
     private var selectedDate: String = ""
@@ -69,10 +65,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize view binding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
         initializeViews()
         setupComponents()
@@ -94,22 +87,20 @@ class MainActivity : AppCompatActivity() {
     // region - Initialization Methods
 
     /**
-     * Initialize semua view components dari binding
+     * Initialize semua view components
      */
     private fun initializeViews() {
-        with(binding) {
-            etNama = etNama
-            etCatatan = etCatatan
-            npJumlahOrang = npJumlahOrang
-            tvTanggal = tvTanggal
-            tvWaktu = tvWaktu
-            spMeja = spMeja
-            btnPilihTanggal = btnPilihTanggal
-            btnPilihWaktu = btnPilihWaktu
-            btnBuatReservasi = btnBuatReservasi
-            btnLihatDaftar = btnLihatDaftar
-            textInputLayoutNama = textInputLayoutNama
-        }
+        etNama = findViewById(R.id.etNama)
+        etCatatan = findViewById(R.id.etCatatan)
+        npJumlahOrang = findViewById(R.id.npJumlahOrang)
+        tvTanggal = findViewById(R.id.tvTanggal)
+        tvWaktu = findViewById(R.id.tvWaktu)
+        spMeja = findViewById(R.id.spMeja)
+        btnPilihTanggal = findViewById(R.id.btnPilihTanggal)
+        btnPilihWaktu = findViewById(R.id.btnPilihWaktu)
+        btnBuatReservasi = findViewById(R.id.btnBuatReservasi)
+        btnLihatDaftar = findViewById(R.id.btnLihatDaftar)
+        textInputLayoutNama = findViewById(R.id.textInputLayoutNama)
     }
 
     /**
@@ -390,7 +381,7 @@ class MainActivity : AppCompatActivity() {
         when (val result = InputValidator.validateNama(nama)) {
             is ValidationResult.Success -> {
                 textInputLayoutNama.error = null
-                textInputLayoutNama.isErrorEnabled = false
+        textInputLayoutNama.isErrorEnabled = false
             }
             is ValidationResult.Error -> {
                 textInputLayoutNama.error = result.message
@@ -405,7 +396,7 @@ class MainActivity : AppCompatActivity() {
      * Handle incoming intent dari activity lain
      */
     private fun handleIncomingIntent() {
-        val reservation = DataTransferHelper.getReservationFromIntent(intent, this)
+        val reservation = DataTransferHelper.getReservationFromIntent(intent)
         reservation?.let {
             when (intent.action) {
                 Constants.ACTION_EDIT -> prefillFormForEdit(it)
@@ -476,7 +467,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleCreateReservationResult(resultCode: Int, data: Intent?) {
         when (resultCode) {
             Constants.RESULT_RESERVATION_CREATED -> {
-                val reservation = DataTransferHelper.getReservationFromIntent(data!!, this)
+        val reservation = DataTransferHelper.getReservationFromIntent(data!!)
                 reservation?.let {
                     showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
                 }

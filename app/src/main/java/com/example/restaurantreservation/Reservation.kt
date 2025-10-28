@@ -95,18 +95,18 @@ data class Reservation(
     /**
      * Convert to bundle-friendly map
      */
-    fun toMap(): Map<String, Any> {
+    fun toMap(): Map<String, String> {
         return mapOf(
             "id" to id,
             "nama" to nama,
-            "jumlahOrang" to jumlahOrang,
+            "jumlahOrang" to jumlahOrang.toString(),
             "tanggal" to tanggal,
             "waktu" to waktu,
             "meja" to meja,
             "catatan" to catatan,
             "status" to status,
-            "createdAt" to createdAt,
-            "updatedAt" to updatedAt
+            "createdAt" to createdAt.toString(),
+            "updatedAt" to updatedAt.toString()
         )
     }
 

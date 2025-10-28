@@ -36,12 +36,10 @@
         <item name="android:paddingVertical">12dp</item>
         <item name="android:paddingHorizontal">24dp</item>
         <item name="cornerRadius">8dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.RestaurantReservation.Button</item>
     </style>
 
     <style name="Widget.RestaurantReservation.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="cornerRadius">8dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.RestaurantReservation.Button</item>
     </style>
 
     <!-- Text Input Styles -->
@@ -62,10 +60,6 @@
     </style>
 
     <!-- Text Appearances -->
-    <style name="TextAppearance.RestaurantReservation.Button" parent="TextAppearance.Material3.Button">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 
     <style name="TextAppearance.RestaurantReservation.Hint" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">14sp</item>
@@ -78,7 +72,7 @@
 
     <style name="TextAppearance.RestaurantReservation.Subtitle" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">600</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.RestaurantReservation.Body" parent="TextAppearance.Material3.BodyMedium">
@@ -87,6 +81,6 @@
 
     <style name="TextAppearance.RestaurantReservation.Caption" parent="TextAppearance.Material3.BodySmall">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 </resources>

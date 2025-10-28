@@ -1,15 +1,17 @@
 package com.example.restaurantreservation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreservation.adapter.ReservationAdapter
+import com.example.restaurantreservation.adapter.SortField
+import com.example.restaurantreservation.adapter.SortOrder
 import com.example.restaurantreservation.interfaces.OnReservationClickListener
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
@@ -65,11 +67,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         adapter = ReservationAdapter(this)
 
         // Setup LayoutManager dengan konfigurasi optimal
-        val layoutManager = LinearLayoutManager(this).apply {
-            // Optional: Untuk performance optimization
-            recycleChildrenOnDetach = true
-            isItemPrefetchEnabled = true
-        }
+        val layoutManager = LinearLayoutManager(this)
 
         // Setup RecyclerView
         recyclerView.apply {
@@ -106,19 +104,17 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
      * METHOD 2: Setup Swipe to Refresh
      */
     private fun setupSwipeRefresh() {
-        swipeRefreshLayout.apply {
-            setColorSchemeResources(
-                android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light
-            )
+        swipeRefreshLayout.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
 
-            setOnRefreshListener {
-                // Simulate data refresh
-                loadReservationData()
-                swipeRefreshLayout.isRefreshing = false
-            }
+        swipeRefreshLayout.setOnRefreshListener {
+            // Simulate data refresh
+            loadReservationData()
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -136,7 +132,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         showLoading()
 
         // Simulate network delay
-        Handler(android.os.Looper.getMainLooper()).postDelayed({
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             generateSampleData()
             hideLoading()
             updateEmptyState()
@@ -226,7 +222,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         ))
 
         // Submit data ke adapter
-        adapter.submitList(reservationList.toList())
+        adapter.submitList(reservationList)
         filteredList.clear()
         filteredList.addAll(reservationList)
 
@@ -353,12 +349,12 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
     // === MENU AND FILTER METHODS ===
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_reservation_list, menu)
 
         // Setup search view
-        val searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem.actionView as SearchView
+        val searchItem = menu?.findItem(R.id.action_search)
+        searchView = searchItem?.actionView as SearchView
         setupSearchView()
 
         // Setup filter spinner
@@ -419,22 +415,22 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     /**
      * METHOD 12: Setup filter spinner
      */
-    private fun setupFilterSpinner(menu: Menu) {
-        val filterItem = menu.findItem(R.id.action_filter)
-        val filterSpinner = filterItem.actionView as Spinner
+    private fun setupFilterSpinner(menu: Menu?) {
+        val filterItem = menu?.findItem(R.id.action_filter)
+        val filterSpinner = filterItem?.actionView as Spinner
 
         val filterOptions = arrayOf("Semua Status", "Confirmed", "Pending", "Cancelled")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        filterSpinner.adapter = adapter
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, filterOptions)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        filterSpinner.adapter = spinnerAdapter
 
         filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> adapter.submitList(reservationList) // All
-                    1 -> adapter.submitList(reservationList.filter { it.status.equals("confirmed", true) })
-                    2 -> adapter.submitList(reservationList.filter { it.status.equals("pending", true) })
-                    3 -> adapter.submitList(reservationList.filter { it.status.equals("cancelled", true) })
+                0 -> this@ListActivity.adapter.submitList(reservationList.toMutableList()) // All
+                1 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("confirmed", true) }.toMutableList())
+                2 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("pending", true) }.toMutableList())
+                3 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("cancelled", true) }.toMutableList())
                 }
                 updateEmptyState()
             }
@@ -461,11 +457,11 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             .setTitle("Urutkan Berdasarkan")
             .setItems(sortOptions) { dialog, which ->
                 when (which) {
-                    0 -> adapter.sort(ReservationAdapter.SortField.NAME, ReservationAdapter.SortOrder.ASCENDING)
-                    1 -> adapter.sort(ReservationAdapter.SortField.NAME, ReservationAdapter.SortOrder.DESCENDING)
-                    2 -> adapter.sort(ReservationAdapter.SortField.DATE, ReservationAdapter.SortOrder.DESCENDING)
-                    3 -> adapter.sort(ReservationAdapter.SortField.DATE, ReservationAdapter.SortOrder.ASCENDING)
-                    4 -> adapter.sort(ReservationAdapter.SortField.PEOPLE, ReservationAdapter.SortOrder.DESCENDING)
+                    0 -> adapter.sort(SortField.NAME, SortOrder.ASCENDING)
+                    1 -> adapter.sort(SortField.NAME, SortOrder.DESCENDING)
+                    2 -> adapter.sort(SortField.DATE, SortOrder.DESCENDING)
+                    3 -> adapter.sort(SortField.DATE, SortOrder.ASCENDING)
+                    4 -> adapter.sort(SortField.PEOPLE, SortOrder.DESCENDING)
                 }
                 Toast.makeText(this, "Data diurutkan", Toast.LENGTH_SHORT).show()
             }
@@ -487,7 +483,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                         val position = reservationList.indexOfFirst { reservation -> reservation.id == it.id }
                         if (position != -1) {
                             reservationList[position] = it
-                            adapter.submitList(reservationList.toList())
+                            adapter.submitList(reservationList)
                             Toast.makeText(this, "Reservasi berhasil diupdate", Toast.LENGTH_SHORT).show()
                         }
                     }

@@ -13,7 +13,7 @@ object DataReceiverHelper {
     /**
      * Method 1: Extract Reservation dari Intent dengan multiple fallbacks
      */
-    fun getReservationFromIntent(intent: Intent, context: android.content.Context): Reservation? {
+    fun getReservationFromIntent(intent: Intent): Reservation? {
         return try {
             // Priority 1: Parcelable object (most efficient)
             val parcelableReservation = intent.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
@@ -37,11 +37,9 @@ object DataReceiverHelper {
             }
 
             // Data tidak valid
-            showDataError(context, "Tidak ada data reservasi yang valid")
             null
 
         } catch (e: Exception) {
-            showDataError(context, "Error menerima data: ${e.message}")
             null
         }
     }
@@ -138,11 +136,11 @@ object DataReceiverHelper {
     /**
      * Method 6: Parse additional parameters
      */
-    fun getAdditionalParams(intent: Intent): Map<String, Any> {
+    fun getAdditionalParams(intent: Intent): Map<String, String> {
         return mapOf(
-            "source" to intent.getStringExtra("source") ?: "unknown",
-            "timestamp" to intent.getLongExtra("timestamp", System.currentTimeMillis()),
-            "version" to intent.getIntExtra("data_version", 1)
+            "source" to (intent.getStringExtra("source") ?: "unknown"),
+            "timestamp" to intent.getLongExtra("timestamp", System.currentTimeMillis()).toString(),
+            "version" to intent.getIntExtra("data_version", 1).toString()
         )
     }
 
@@ -181,7 +179,7 @@ object DataReceiverHelper {
      * Method 10: Get reservation with default values
      */
     fun getReservationWithDefaults(intent: Intent): Reservation {
-        return getReservationFromIntent(intent, android.content.Context()) ?:
+        return getReservationFromIntent(intent) ?:
         Reservation.create(
             nama = "Guest",
             jumlahOrang = 2,
