@@ -22,4 +22,20 @@
     <string name="empty_list">Belum ada reservasi</string>
     <string name="btn_tambah_reservasi">Tambah Reservasi</string>
     <string name="btn_kembali_ke_utama">Kembali ke Menu Utama</string>
+
+    <!-- Existing strings -->
+    <string name="error_nama_kosong">Nama harus diisi!</string>
+    <string name="error_nama_pendek">Nama minimal 3 karakter!</string>
+    <string name="error_nama_panjang">Nama maksimal 50 karakter!</string>
+    <string name="error_nama_format">Nama hanya boleh mengandung huruf dan spasi!</string>
+    <string name="error_tanggal_tidak_valid">Tanggal tidak valid!</string>
+    <string name="error_tanggal_terlalu_maju">Tanggal tidak boleh lebih dari 1 tahun ke depan!</string>
+    <string name="success_reservasi">Reservasi berhasil dibuat!</string>
+    <string name="label_pilih_tanggal">Pilih Tanggal</string>
+    <string name="btn_pilih_tanggal">Pilih Tanggal</string>
+
+    <!-- DatePicker Dialog -->
+    <string name="datepicker_title">Pilih Tanggal Reservasi</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Batal</string>
 </resources>
