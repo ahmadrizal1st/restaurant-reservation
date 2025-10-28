@@ -1,10 +1,12 @@
 package com.example.restaurantreservation
 
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.example.restaurantreservation.databinding.ActivityMainBinding
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataTransferHelper
@@ -13,54 +15,106 @@ import com.example.restaurantreservation.utils.ValidationResult
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Main Activity - Entry point aplikasi Reservasi Restoran
+ *
+ * Activity ini menangani:
+ * - Input data reservasi dari user
+ * - Validasi form input
+ * - Navigasi ke DetailActivity dan ListActivity
+ * - Pengelolaan state form
+ *
+ * @author Restaurant Reservation Team
+ * @since 1.0
+ * @version 1.0
+ */
 class MainActivity : AppCompatActivity() {
 
-    // Deklarasi komponen UI
-    private lateinit var etNama: EditText
-    private lateinit var etCatatan: EditText
+    // region - View Binding Declaration
+    private lateinit var binding: ActivityMainBinding
+
+    // UI Components
+    private lateinit var etNama: com.google.android.material.textfield.TextInputEditText
+    private lateinit var etCatatan: com.google.android.material.textfield.TextInputEditText
     private lateinit var npJumlahOrang: NumberPicker
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
     private lateinit var spMeja: Spinner
-    private lateinit var btnPilihTanggal: Button
-    private lateinit var btnPilihWaktu: Button
-    private lateinit var btnBuatReservasi: Button
-    private lateinit var btnLihatDaftar: Button
+    private lateinit var btnPilihTanggal: com.google.android.material.button.MaterialButton
+    private lateinit var btnPilihWaktu: com.google.android.material.button.MaterialButton
+    private lateinit var btnBuatReservasi: com.google.android.material.button.MaterialButton
+    private lateinit var btnLihatDaftar: com.google.android.material.button.MaterialButton
     private lateinit var textInputLayoutNama: com.google.android.material.textfield.TextInputLayout
+    // endregion
 
-    // Variabel untuk menyimpan data
+    // region - Data Variables
     private var selectedDate: String = ""
     private var selectedTime: String = ""
     private var selectedMeja: String = ""
     private val calendar = Calendar.getInstance()
 
     // Data untuk spinner meja
-    private val listMeja = arrayOf("Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5", "Meja VIP 1", "Meja VIP 2", "Meja Keluarga 1", "Meja Keluarga 2")
+    private val listMeja = arrayOf(
+        "Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5",
+        "Meja VIP 1", "Meja VIP 2", "Meja Keluarga 1", "Meja Keluarga 2"
+    )
+    // endregion
 
+    // region - Lifecycle Methods
+
+    /**
+     * Dipanggil ketika activity pertama kali dibuat
+     *
+     * @param savedInstanceState State yang disimpan dari instance sebelumnya
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        initViews()
+        // Initialize view binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        initializeViews()
         setupComponents()
         setDefaultDateTime()
         handleIncomingIntent()
+
+        printDebugInfo("MainActivity created successfully")
     }
 
-    private fun initViews() {
-        etNama = findViewById(R.id.etNama)
-        etCatatan = findViewById(R.id.etCatatan)
-        npJumlahOrang = findViewById(R.id.npJumlahOrang)
-        tvTanggal = findViewById(R.id.tvTanggal)
-        tvWaktu = findViewById(R.id.tvWaktu)
-        spMeja = findViewById(R.id.spMeja)
-        btnPilihTanggal = findViewById(R.id.btnPilihTanggal)
-        btnPilihWaktu = findViewById(R.id.btnPilihWaktu)
-        btnBuatReservasi = findViewById(R.id.btnBuatReservasi)
-        btnLihatDaftar = findViewById(R.id.btnLihatDaftar)
-        textInputLayoutNama = findViewById(R.id.textInputLayoutNama)
+    /**
+     * Dipanggil ketika activity kembali ke foreground
+     */
+    override fun onResume() {
+        super.onResume()
+        printDebugInfo("MainActivity resumed")
+    }
+    // endregion
+
+    // region - Initialization Methods
+
+    /**
+     * Initialize semua view components dari binding
+     */
+    private fun initializeViews() {
+        with(binding) {
+            etNama = etNama
+            etCatatan = etCatatan
+            npJumlahOrang = npJumlahOrang
+            tvTanggal = tvTanggal
+            tvWaktu = tvWaktu
+            spMeja = spMeja
+            btnPilihTanggal = btnPilihTanggal
+            btnPilihWaktu = btnPilihWaktu
+            btnBuatReservasi = btnBuatReservasi
+            btnLihatDaftar = btnLihatDaftar
+            textInputLayoutNama = textInputLayoutNama
+        }
     }
 
+    /**
+     * Setup semua komponen UI dan listeners
+     */
     private fun setupComponents() {
         setupNumberPicker()
         setupSpinnerMeja()
@@ -69,14 +123,25 @@ class MainActivity : AppCompatActivity() {
         setupClickListeners()
         setupTextWatchers()
     }
+    // endregion
 
+    // region - Component Setup Methods
+
+    /**
+     * Setup NumberPicker untuk jumlah orang
+     */
     private fun setupNumberPicker() {
-        npJumlahOrang.minValue = 1
-        npJumlahOrang.maxValue = 20
-        npJumlahOrang.value = 2
-        npJumlahOrang.setFormatter { value -> "$value orang" }
+        npJumlahOrang.apply {
+            minValue = 1
+            maxValue = 20
+            value = 2 // Default value
+            setFormatter { value -> "$value orang" }
+        }
     }
 
+    /**
+     * Setup Spinner untuk pemilihan meja
+     */
     private fun setupSpinnerMeja() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listMeja)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -85,6 +150,7 @@ class MainActivity : AppCompatActivity() {
         spMeja.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
                 selectedMeja = if (position > 0) listMeja[position] else ""
+                printDebugInfo("Meja selected: $selectedMeja")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -93,6 +159,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Setup DatePicker dialog untuk pemilihan tanggal
+     */
     private fun setupDatePicker() {
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -102,7 +171,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnPilihTanggal.setOnClickListener {
-            DatePickerDialog(this, dateSetListener,
+            DatePickerDialog(
+                this,
+                dateSetListener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
@@ -110,10 +181,14 @@ class MainActivity : AppCompatActivity() {
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 val maxDate = Calendar.getInstance().apply { add(Calendar.YEAR, 1) }
                 datePicker.maxDate = maxDate.timeInMillis
+                setTitle("Pilih Tanggal Reservasi")
             }.show()
         }
     }
 
+    /**
+     * Setup TimePicker dialog untuk pemilihan waktu
+     */
     private fun setupTimePicker() {
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -122,14 +197,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnPilihWaktu.setOnClickListener {
-            TimePickerDialog(this, timeSetListener,
+            TimePickerDialog(
+                this,
+                timeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 true
-            ).show()
+            ).apply {
+                setTitle("Pilih Waktu Reservasi")
+            }.show()
         }
     }
 
+    /**
+     * Setup semua click listeners
+     */
     private fun setupClickListeners() {
         btnBuatReservasi.setOnClickListener {
             buatReservasiDenganValidasi()
@@ -140,6 +222,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Setup text watchers untuk real-time validation
+     */
     private fun setupTextWatchers() {
         etNama.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
@@ -149,17 +234,19 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
+    // endregion
 
-    // === DATA SENDING METHODS ===
+    // region - Business Logic Methods
 
     /**
-     * METHOD 1: Mengirim data dengan multiple approaches
+     * Membuat reservasi baru dengan validasi lengkap
      */
     private fun buatReservasiDenganValidasi() {
         val nama = etNama.text.toString().trim()
         val jumlahOrang = npJumlahOrang.value
         val catatan = etCatatan.text.toString().trim()
 
+        // Validasi form
         if (!isFormValid(nama)) return
 
         // Buat reservation object
@@ -174,132 +261,25 @@ class MainActivity : AppCompatActivity() {
 
         // Validasi data sebelum dikirim
         if (!DataTransferHelper.validateReservationData(reservation)) {
-            Toast.makeText(this, "Data reservasi tidak valid!", Toast.LENGTH_SHORT).show()
+            showError("Data reservasi tidak valid!")
             return
         }
 
-        // Log data transfer untuk debugging
-        DataTransferHelper.logDataTransfer("MainActivity", "DetailActivity", reservation)
+        // Kirim data ke DetailActivity
+        sendReservationData(reservation)
 
-        // Pilih salah satu method pengiriman data:
-        when ((1..3).random()) { // Random pilih method untuk demonstrasi
-            1 -> sendDataMethod1(reservation) // Individual fields
-            2 -> sendDataMethod2(reservation) // Parcelable object
-            3 -> sendDataMethod3(reservation) // Bundle
-        }
+        // Reset form setelah success
+        resetForm()
+
+        printDebugInfo("Reservation created for: ${reservation.nama}")
     }
 
     /**
-     * METHOD 1A: Mengirim data sebagai individual fields
+     * Validasi keseluruhan form
+     *
+     * @param nama Nama yang divalidasi
+     * @return Boolean indicating valid atau tidak
      */
-    private fun sendDataMethod1(reservation: Reservation) {
-        println("Menggunakan METHOD 1: Individual Fields")
-
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            // Kirim data sebagai individual fields
-            putExtra(Constants.KEY_RESERVATION_ID, reservation.id)
-            putExtra(Constants.KEY_NAMA, reservation.nama)
-            putExtra(Constants.KEY_JUMLAH_ORANG, reservation.jumlahOrang)
-            putExtra(Constants.KEY_TANGGAL, reservation.tanggal)
-            putExtra(Constants.KEY_WAKTU, reservation.waktu)
-            putExtra(Constants.KEY_MEJA, reservation.meja)
-            putExtra(Constants.KEY_CATATAN, reservation.catatan)
-            putExtra(Constants.KEY_STATUS, reservation.status)
-            putExtra(Constants.KEY_CREATED_AT, reservation.createdAt)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
-        }
-
-        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
-    }
-
-    /**
-     * METHOD 1B: Mengirim data sebagai Parcelable object
-     */
-    private fun sendDataMethod2(reservation: Reservation) {
-        println("Menggunakan METHOD 2: Parcelable Object")
-
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            // Kirim data sebagai Parcelable object (most efficient)
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
-        }
-
-        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
-    }
-
-    /**
-     * METHOD 1C: Mengirim data menggunakan Bundle
-     */
-    private fun sendDataMethod3(reservation: Reservation) {
-        println("Menggunakan METHOD 3: Bundle")
-
-        val bundle = DataTransferHelper.createReservationBundle(reservation)
-        bundle.putString(Constants.KEY_ACTION, Constants.ACTION_CREATE)
-
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtras(bundle)
-        }
-
-        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
-    }
-
-    /**
-     * METHOD 2: Mengirim data ke ListActivity
-     */
-    private fun lihatDaftarReservasi() {
-        val intent = Intent(this, ListActivity::class.java).apply {
-            // Bisa mengirim filter atau data lain ke ListActivity
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_VIEW)
-            putExtra(Constants.BUNDLE_FILTER_STATUS, "all") // all, confirmed, pending
-        }
-
-        startActivity(intent)
-    }
-
-    /**
-     * METHOD 3: Handle result dari Activity lain
-     */
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            Constants.REQUEST_CODE_CREATE_RESERVATION -> {
-                when (resultCode) {
-                    Constants.RESULT_RESERVATION_CREATED -> {
-                        val reservation = DataTransferHelper.getReservationFromIntent(data!!)
-                        reservation?.let {
-                            showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
-                            resetForm()
-                        }
-                    }
-                    RESULT_CANCELED -> {
-                        Toast.makeText(this, "Reservasi dibatalkan", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * METHOD 4: Handle incoming intent dengan data
-     */
-    private fun handleIncomingIntent() {
-        // Handle data yang dikirim ke MainActivity
-        val action = intent.action
-        val reservation = DataTransferHelper.getReservationFromIntent(intent)
-
-        reservation?.let {
-            when (action) {
-                Constants.ACTION_EDIT -> {
-                    prefillFormForEdit(it)
-                }
-            }
-        }
-    }
-
-    // === HELPER METHODS ===
-
     private fun isFormValid(nama: String): Boolean {
         return when (InputValidator.validateNama(nama)) {
             is ValidationResult.Success -> true
@@ -310,6 +290,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Kirim data reservasi ke DetailActivity
+     *
+     * @param reservation Data reservasi yang akan dikirim
+     */
+    private fun sendReservationData(reservation: Reservation) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
+        }
+
+        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
+        showSuccessMessage("Reservasi berhasil dibuat untuk ${reservation.nama}!")
+    }
+
+    /**
+     * Navigasi ke ListActivity
+     */
+    private fun lihatDaftarReservasi() {
+        val intent = Intent(this, ListActivity::class.java)
+        startActivity(intent)
+        printDebugInfo("Navigating to ListActivity")
+    }
+    // endregion
+
+    // region - Helper Methods
+
+    /**
+     * Set default date and time values
+     */
     private fun setDefaultDateTime() {
         selectedDate = getCurrentDate()
         selectedTime = getCurrentTime()
@@ -317,6 +327,9 @@ class MainActivity : AppCompatActivity() {
         updateTimeDisplay()
     }
 
+    /**
+     * Update tampilan tanggal
+     */
     private fun updateDateDisplay() {
         val displayFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID"))
         tvTanggal.text = displayFormat.format(calendar.time)
@@ -325,39 +338,86 @@ class MainActivity : AppCompatActivity() {
         selectedDate = dataFormat.format(calendar.time)
     }
 
+    /**
+     * Update tampilan waktu
+     */
     private fun updateTimeDisplay() {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         selectedTime = timeFormat.format(calendar.time)
         tvWaktu.text = selectedTime
     }
 
+    /**
+     * Dapatkan tanggal saat ini dalam format string
+     *
+     * @return String tanggal saat ini
+     */
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(Date())
     }
 
+    /**
+     * Dapatkan waktu saat ini dalam format string
+     *
+     * @return String waktu saat ini
+     */
     private fun getCurrentTime(): String {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         return timeFormat.format(Date())
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    private fun showSuccessMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
+    /**
+     * Reset form ke state awal
+     */
     private fun resetForm() {
-        etNama.text.clear()
-        etCatatan.text.clear()
+        etNama.text?.clear()
+        etCatatan.text?.clear()
         npJumlahOrang.value = 2
         spMeja.setSelection(0)
         setDefaultDateTime()
         textInputLayoutNama.error = null
+
+        printDebugInfo("Form reset successfully")
     }
 
+    /**
+     * Validasi input nama secara real-time
+     *
+     * @param nama Nama yang divalidasi
+     */
+    private fun validateNama(nama: String) {
+        when (val result = InputValidator.validateNama(nama)) {
+            is ValidationResult.Success -> {
+                textInputLayoutNama.error = null
+                textInputLayoutNama.isErrorEnabled = false
+            }
+            is ValidationResult.Error -> {
+                textInputLayoutNama.error = result.message
+            }
+        }
+    }
+    // endregion
+
+    // region - Intent Handling
+
+    /**
+     * Handle incoming intent dari activity lain
+     */
+    private fun handleIncomingIntent() {
+        val reservation = DataTransferHelper.getReservationFromIntent(intent, this)
+        reservation?.let {
+            when (intent.action) {
+                Constants.ACTION_EDIT -> prefillFormForEdit(it)
+            }
+        }
+    }
+
+    /**
+     * Prefill form dengan data dari reservasi yang akan di-edit
+     *
+     * @param reservation Data reservasi untuk prefill
+     */
     private fun prefillFormForEdit(reservation: Reservation) {
         etNama.setText(reservation.nama)
         npJumlahOrang.value = reservation.jumlahOrang
@@ -372,7 +432,7 @@ class MainActivity : AppCompatActivity() {
                 updateDateDisplay()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            printError("Error parsing date: ${e.message}")
         }
 
         // Set waktu
@@ -384,7 +444,7 @@ class MainActivity : AppCompatActivity() {
                 updateTimeDisplay()
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            printError("Error parsing time: ${e.message}")
         }
 
         // Set meja
@@ -394,12 +454,93 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnBuatReservasi.text = "Update Reservasi"
+
+        printDebugInfo("Form prefilled for editing: ${reservation.nama}")
     }
 
-    private fun validateNama(nama: String) {
-        when (val result = InputValidator.validateNama(nama)) {
-            is ValidationResult.Success -> textInputLayoutNama.error = null
-            is ValidationResult.Error -> textInputLayoutNama.error = result.message
+    /**
+     * Handle result dari activity lain
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            Constants.REQUEST_CODE_CREATE_RESERVATION -> handleCreateReservationResult(resultCode, data)
         }
     }
+
+    /**
+     * Handle result dari pembuatan reservasi
+     */
+    private fun handleCreateReservationResult(resultCode: Int, data: Intent?) {
+        when (resultCode) {
+            Constants.RESULT_RESERVATION_CREATED -> {
+                val reservation = DataTransferHelper.getReservationFromIntent(data!!, this)
+                reservation?.let {
+                    showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
+                }
+            }
+            RESULT_CANCELED -> {
+                showInfo("Reservasi dibatalkan")
+            }
+        }
+    }
+    // endregion
+
+    // region - UI Feedback Methods
+
+    /**
+     * Tampilkan error message
+     *
+     * @param message Pesan error yang akan ditampilkan
+     */
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        printError("UI Error: $message")
+    }
+
+    /**
+     * Tampilkan success message
+     *
+     * @param message Pesan success yang akan ditampilkan
+     */
+    private fun showSuccessMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        printDebugInfo("UI Success: $message")
+    }
+
+    /**
+     * Tampilkan info message
+     *
+     * @param message Pesan info yang akan ditampilkan
+     */
+    private fun showInfo(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        printDebugInfo("UI Info: $message")
+    }
+    // endregion
+
+    // region - Debugging & Logging
+
+    /**
+     * Print debug information
+     *
+     * @param message Pesan debug
+     */
+    private fun printDebugInfo(message: String) {
+        if (BuildConfig.DEBUG) {
+            println("DEBUG - MainActivity: $message")
+        }
+    }
+
+    /**
+     * Print error information
+     *
+     * @param message Pesan error
+     */
+    private fun printError(message: String) {
+        println("ERROR - MainActivity: $message")
+    }
+    // endregion
 }
