@@ -2,4 +2,27 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Status Background Colors -->
+    <color name="status_confirmed_bg">#4CAF50</color>
+    <color name="status_pending_bg">#FF9800</color>
+    <color name="status_cancelled_bg">#F44336</color>
+    <color name="status_completed_bg">#2196F3</color>
+    <color name="status_default_bg">#9E9E9E</color>
+
+    <!-- Status Text Colors -->
+    <color name="status_confirmed_text">#FFFFFF</color>
+    <color name="status_pending_text">#FFFFFF</color>
+    <color name="status_cancelled_text">#FFFFFF</color>
+    <color name="status_completed_text">#FFFFFF</color>
+    <color name="status_default_text">#FFFFFF</color>
+
+    <!-- Item Background Colors -->
+    <color name="item_background_even">#FFFFFF</color>
+    <color name="item_background_odd">#FAFAFA</color>
+
+    <!-- Text Colors -->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="error_color">#F44336</color>
 </resources>

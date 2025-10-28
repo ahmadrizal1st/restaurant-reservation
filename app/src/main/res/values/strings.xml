@@ -88,4 +88,16 @@
     <string name="status_confirmed">Dikonfirmasi</string>
     <string name="status_pending">Menunggu</string>
     <string name="status_cancelled">Dibatalkan</string>
+
+    <!-- Recycle View -->
+    <string name="date">Tanggal</string>
+    <string name="time">Waktu</string>
+    <string name="people">Jumlah Orang</string>
+    <string name="table">Meja</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Hapus</string>
+    <string name="share">Bagikan</string>
+    <string name="person_singular">orang</string>
+    <string name="person_plural">orang</string>
+    <string name="status_completed">Selesai</string>
 </resources>
