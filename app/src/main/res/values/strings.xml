@@ -76,4 +76,16 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Hapus</string>
     <string name="menu_share">Bagikan</string>
+
+    <!-- Receiving Data -->
+    <string name="error_no_data">Tidak ada data reservasi yang diterima</string>
+    <string name="error_invalid_data">Data reservasi tidak valid</string>
+    <string name="success_data_received">Data berhasil diterima dan ditampilkan</string>
+    <string name="label_reservation_id">ID Reservasi</string>
+    <string name="label_created_at">Dibuat pada</string>
+    <string name="label_notes">Catatan</string>
+    <string name="btn_edit_reservation">Edit Reservasi</string>
+    <string name="status_confirmed">Dikonfirmasi</string>
+    <string name="status_pending">Menunggu</string>
+    <string name="status_cancelled">Dibatalkan</string>
 </resources>

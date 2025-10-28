@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,178 +17,235 @@
             android:text="Detail Reservasi"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
 
         <!-- Card untuk detail reservasi -->
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@android:color/white"
-            android:padding="24dp"
-            android:elevation="4dp"
-            android:layout_marginBottom="32dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginBottom="24dp">
 
-            <!-- Nama Pemesan -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="20dp">
 
+                <!-- Reservation ID -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tvReservationId"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nama Pemesan"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:text="ID: RES_123"
+                    android:textSize="12sp"
+                    android:textColor="#666"
+                    android:layout_marginBottom="16dp" />
 
-                <TextView
-                    android:id="@+id/tvNama"
-                    android:layout_width="0dp"
+                <!-- Nama Pemesan -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Nama"
-                    android:textSize="16sp"
-                    android:textAlignment="textEnd" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nama Pemesan"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvNama"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Nama"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Jumlah Orang -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Jumlah Orang"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvJumlahOrang"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="0"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <!-- Tanggal -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tanggal"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTanggal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Tanggal"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <!-- Waktu -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Waktu"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvWaktu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Waktu"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <!-- Meja -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Meja"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMeja"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Meja"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <!-- Status -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Status"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvStatus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Status"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textAlignment="textEnd" />
+
+                </LinearLayout>
+
+                <!-- Catatan (Conditional) -->
+                <LinearLayout
+                    android:id="@+id/containerCatatan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/labelCatatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Catatan"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvCatatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Catatan tambahan"
+                        android:textSize="14sp"
+                        android:background="#f5f5f5"
+                        android:padding="8dp"
+                        android:lineSpacingExtra="4dp" />
+
+                </LinearLayout>
+
+                <!-- Created At -->
+                <TextView
+                    android:id="@+id/tvCreatedAt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dibuat: -"
+                    android:textSize="10sp"
+                    android:textColor="#999"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
 
-            <!-- Jumlah Orang -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+        </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Jumlah Orang"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvJumlahOrang"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0"
-                    android:textSize="16sp"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <!-- Tanggal -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tanggal"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvTanggal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tanggal"
-                    android:textSize="16sp"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <!-- Waktu -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Waktu"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvWaktu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Waktu"
-                    android:textSize="16sp"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <!-- Meja -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Meja"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvMeja"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Meja"
-                    android:textSize="16sp"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-            <!-- Status -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Status"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Status"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textAlignment="textEnd" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Grid untuk tombol-tombol Implicit Intent -->
+        <!-- Grid untuk tombol-tombol action -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,7 +264,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/btn_buka_maps"
+                    android:text="Buka Maps"
                     android:layout_marginEnd="4dp"
                     android:backgroundTint="#4285F4" />
 
@@ -215,7 +273,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/btn_telepon_restoran"
+                    android:text="Telepon"
                     android:layout_marginStart="4dp"
                     android:backgroundTint="#34A853" />
 
@@ -233,7 +291,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/btn_buka_website"
+                    android:text="Website"
                     android:layout_marginEnd="4dp"
                     android:backgroundTint="#EA4335" />
 
@@ -242,7 +300,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/btn_kirim_email"
+                    android:text="Email"
                     android:layout_marginStart="4dp"
                     android:backgroundTint="#FBBC05" />
 
@@ -253,14 +311,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8px">
+                android:layout_marginBottom="8dp">
 
                 <Button
                     android:id="@+id/btnBukaKalender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/btn_buka_kalender"
+                    android:text="Kalender"
                     android:layout_marginEnd="4dp"
                     android:backgroundTint="#8E44AD" />
 
@@ -275,14 +333,23 @@
 
             </LinearLayout>
 
-            <!-- Baris 4: Bagikan Reservasi (Full Width) -->
+            <!-- Baris 4: Bagikan Reservasi -->
             <Button
                 android:id="@+id/btnBagikanReservasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_bagikan_reservasi"
+                android:text="Bagikan Reservasi"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="#9C27B0" />
+
+            <!-- Baris 5: Edit Reservasi -->
+            <Button
+                android:id="@+id/btnEditReservasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit Reservasi"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#FF9800" />
 
         </LinearLayout>
 
@@ -291,7 +358,7 @@
             android:id="@+id/btnKembali"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_kembali"
+            android:text="Kembali"
             android:backgroundTint="#9E9E9E" />
 
     </LinearLayout>

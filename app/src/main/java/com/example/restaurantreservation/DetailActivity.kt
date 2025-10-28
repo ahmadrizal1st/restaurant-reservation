@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.widget.*
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
+import com.example.restaurantreservation.utils.DataReceiverHelper
 import com.example.restaurantreservation.utils.IntentUtils
+import com.example.restaurantreservation.utils.ValidationResult
 
 class DetailActivity : AppCompatActivity() {
 
@@ -15,7 +17,13 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
     private lateinit var tvMeja: TextView
+    private lateinit var tvCatatan: TextView
     private lateinit var tvStatus: TextView
+    private lateinit var tvCreatedAt: TextView
+    private lateinit var tvReservationId: TextView
+
+    private lateinit var labelCatatan: TextView
+    private lateinit var containerCatatan: LinearLayout
 
     private lateinit var btnBukaMaps: Button
     private lateinit var btnTeleponRestoran: Button
@@ -24,28 +32,40 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var btnKirimEmail: Button
     private lateinit var btnBukaKalender: Button
     private lateinit var btnWhatsApp: Button
+    private lateinit var btnEditReservasi: Button
     private lateinit var btnKembali: Button
 
     private lateinit var reservation: Reservation
+    private var action: String = Constants.ACTION_VIEW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
         initViews()
-        terimaDataDariIntent()
+        terimaDanProsesData()
         tampilkanDataReservasi()
+        setupUIberdasarkanAction()
         setupClickListeners()
     }
 
     private fun initViews() {
+        // TextViews
         tvNama = findViewById(R.id.tvNama)
         tvJumlahOrang = findViewById(R.id.tvJumlahOrang)
         tvTanggal = findViewById(R.id.tvTanggal)
         tvWaktu = findViewById(R.id.tvWaktu)
         tvMeja = findViewById(R.id.tvMeja)
+        tvCatatan = findViewById(R.id.tvCatatan)
         tvStatus = findViewById(R.id.tvStatus)
+        tvCreatedAt = findViewById(R.id.tvCreatedAt)
+        tvReservationId = findViewById(R.id.tvReservationId)
 
+        // Layout components
+        labelCatatan = findViewById(R.id.labelCatatan)
+        containerCatatan = findViewById(R.id.containerCatatan)
+
+        // Buttons
         btnBukaMaps = findViewById(R.id.btnBukaMaps)
         btnTeleponRestoran = findViewById(R.id.btnTeleponRestoran)
         btnBagikanReservasi = findViewById(R.id.btnBagikanReservasi)
@@ -53,97 +73,221 @@ class DetailActivity : AppCompatActivity() {
         btnKirimEmail = findViewById(R.id.btnKirimEmail)
         btnBukaKalender = findViewById(R.id.btnBukaKalender)
         btnWhatsApp = findViewById(R.id.btnWhatsApp)
+        btnEditReservasi = findViewById(R.id.btnEditReservasi)
         btnKembali = findViewById(R.id.btnKembali)
     }
 
-    private fun terimaDataDariIntent() {
-        // Coba ambil data sebagai Parcelable object terlebih dahulu
-        reservation = intent.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA) ?: run {
-            // Jika tidak ada Parcelable, ambil data individual
-            val nama = intent.getStringExtra(Constants.KEY_NAMA) ?: "Tidak tersedia"
-            val jumlahOrang = intent.getIntExtra(Constants.KEY_JUMLAH_ORANG, 0)
-            val tanggal = intent.getStringExtra(Constants.KEY_TANGGAL) ?: "Tidak tersedia"
-            val waktu = intent.getStringExtra(Constants.KEY_WAKTU) ?: "Tidak tersedia"
-            val meja = intent.getStringExtra(Constants.KEY_MEJA) ?: "Tidak tersedia"
+    /**
+     * METHOD 1: Menerima dan memproses data dari Intent
+     */
+    private fun terimaDanProsesData() {
+        println("=== MENERIMA DATA DARI INTENT ===")
 
-            Reservation(
-                id = Reservation.generateId(),
-                nama = nama,
-                jumlahOrang = jumlahOrang,
-                tanggal = tanggal,
-                waktu = waktu,
-                meja = meja,
-                status = "Confirmed"
-            )
+        // Cek apakah intent memiliki data
+        if (!DataReceiverHelper.hasReservationData(intent)) {
+            showError("Tidak ada data reservasi yang diterima")
+            finish()
+            return
         }
+
+        // Dapatkan action dari intent
+        action = DataReceiverHelper.getActionFromIntent(intent)
+        println("Action: $action")
+
+        // Dapatkan data reservasi dengan multiple fallback methods
+        reservation = DataReceiverHelper.getReservationFromIntent(intent, this) ?: run {
+            showError("Gagal memproses data reservasi")
+            finish()
+            return
+        }
+
+        // Validasi data yang diterima
+        when (val validationResult = DataReceiverHelper.validateReceivedData(reservation)) {
+            is ValidationResult.Success -> {
+                println("Data reservasi valid: ${reservation.nama}")
+            }
+            is ValidationResult.Error -> {
+                showError(validationResult.message)
+                // Tetap lanjutkan, tapi dengan data yang mungkin tidak lengkap
+            }
+        }
+
+        // Log additional parameters
+        val additionalParams = DataReceiverHelper.getAdditionalParams(intent)
+        println("Additional Params: $additionalParams")
     }
 
+    /**
+     * METHOD 2: Menampilkan data reservasi di UI
+     */
     private fun tampilkanDataReservasi() {
-        tvNama.text = reservation.nama
-        tvJumlahOrang.text = "${reservation.jumlahOrang} orang"
-        tvTanggal.text = reservation.tanggal
-        tvWaktu.text = reservation.waktu
-        tvMeja.text = reservation.meja
-        tvStatus.text = reservation.status
+        try {
+            // Data utama
+            tvNama.text = reservation.nama
+            tvJumlahOrang.text = "${reservation.jumlahOrang} orang"
+            tvTanggal.text = reservation.getFormattedDate()
+            tvWaktu.text = reservation.getFormattedTime()
+            tvMeja.text = reservation.meja
+            tvStatus.text = reservation.status
+            tvReservationId.text = "ID: ${reservation.id}"
+            tvCreatedAt.text = "Dibuat: ${reservation.getCreatedAtFormatted()}"
 
-        // Set warna status berdasarkan status reservasi
-        when (reservation.status.toLowerCase()) {
-            "confirmed" -> tvStatus.setTextColor(getColor(android.R.color.holo_green_dark))
-            "pending" -> tvStatus.setTextColor(getColor(android.R.color.holo_orange_dark))
-            "cancelled" -> tvStatus.setTextColor(getColor(android.R.color.holo_red_dark))
-            else -> tvStatus.setTextColor(getColor(android.R.color.black))
-        }
-    }
+            // Handle catatan (bisa kosong)
+            if (reservation.catatan.isNotBlank()) {
+                tvCatatan.text = reservation.catatan
+                containerCatatan.visibility = android.view.View.VISIBLE
+            } else {
+                containerCatatan.visibility = android.view.View.GONE
+            }
 
-    private fun setupClickListeners() {
-        // === IMPLICIT INTENT LISTENERS ===
+            // Set warna status
+            setStatusColor(reservation.status)
 
-        // 1. Buka Google Maps
-        btnBukaMaps.setOnClickListener {
-            IntentUtils.openMaps(this)
-        }
+            // Set judul activity berdasarkan action
+            setActivityTitle()
 
-        // 2. Telepon Restoran
-        btnTeleponRestoran.setOnClickListener {
-            IntentUtils.callRestaurant(this)
-        }
-
-        // 3. Bagikan Reservasi
-        btnBagikanReservasi.setOnClickListener {
-            IntentUtils.shareReservation(this, reservation)
-        }
-
-        // 4. Buka Website
-        btnBukaWebsite.setOnClickListener {
-            IntentUtils.openWebsite(this)
-        }
-
-        // 5. Kirim Email Konfirmasi
-        btnKirimEmail.setOnClickListener {
-            IntentUtils.sendConfirmationEmail(this, reservation)
-        }
-
-        // 6. Tambahkan ke Kalender
-        btnBukaKalender.setOnClickListener {
-            IntentUtils.addToCalendar(this, reservation)
-        }
-
-        // 7. Buka WhatsApp
-        btnWhatsApp.setOnClickListener {
-            IntentUtils.openWhatsApp(this, reservation)
-        }
-
-        // 8. Tombol Kembali (Explicit Intent)
-        btnKembali.setOnClickListener {
-            finish() // Kembali ke MainActivity
+        } catch (e: Exception) {
+            showError("Error menampilkan data: ${e.message}")
         }
     }
 
     /**
-     * Method untuk handle result dari implicit intent (jika diperlukan)
+     * METHOD 3: Setup UI berdasarkan action
      */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Bisa digunakan jika perlu handle result dari aplikasi lain
+    private fun setupUIberdasarkanAction() {
+        when (action) {
+            Constants.ACTION_CREATE -> {
+                setTitle("Reservasi Baru")
+                btnEditReservasi.visibility = android.view.View.GONE
+            }
+            Constants.ACTION_EDIT -> {
+                setTitle("Edit Reservasi")
+                btnEditReservasi.text = "Update Reservasi"
+            }
+            Constants.ACTION_VIEW -> {
+                setTitle("Detail Reservasi")
+                // Default view
+            }
+        }
+    }
+
+    private fun setupClickListeners() {
+        // Implicit Intents
+        btnBukaMaps.setOnClickListener { IntentUtils.openMaps(this) }
+        btnTeleponRestoran.setOnClickListener { IntentUtils.callRestaurant(this) }
+        btnBagikanReservasi.setOnClickListener { IntentUtils.shareReservation(this, reservation) }
+        btnBukaWebsite.setOnClickListener { IntentUtils.openWebsite(this) }
+        btnKirimEmail.setOnClickListener { IntentUtils.sendConfirmationEmail(this, reservation) }
+        btnBukaKalender.setOnClickListener { IntentUtils.addToCalendar(this, reservation) }
+        btnWhatsApp.setOnClickListener { IntentUtils.openWhatsApp(this, reservation) }
+
+        // Edit Reservasi
+        btnEditReservasi.setOnClickListener {
+            editReservasi()
+        }
+
+        // Kembali dengan result
+        btnKembali.setOnClickListener {
+            kembaliDenganResult()
+        }
+    }
+
+    /**
+     * METHOD 4: Edit reservasi dan kirim data kembali
+     */
+    private fun editReservasi() {
+        val resultIntent = Intent().apply {
+            // Kirim data reservasi yang sudah di-update (dalam kasus real, mungkin ada form edit)
+            val updatedReservation = reservation.update(
+                status = "Updated",
+                updatedAt = System.currentTimeMillis()
+            )
+            putExtra(Constants.KEY_RESERVATION_DATA, updatedReservation)
+        }
+
+        setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
+        showSuccess("Reservasi berhasil diupdate!")
+
+        // Refresh tampilan
+        reservation = reservation.update(status = "Updated")
+        tampilkanDataReservasi()
+    }
+
+    /**
+     * METHOD 5: Kembali dengan membawa result
+     */
+    private fun kembaliDenganResult() {
+        when (action) {
+            Constants.ACTION_CREATE -> {
+                val resultIntent = Intent().apply {
+                    putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                }
+                setResult(Constants.RESULT_RESERVATION_CREATED, resultIntent)
+            }
+            Constants.ACTION_EDIT -> {
+                // Already handled in editReservasi()
+            }
+            else -> {
+                setResult(RESULT_CANCELED)
+            }
+        }
+        finish()
+    }
+
+    /**
+     * METHOD 6: Handle konfigurasi perubahan
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Simpan data penting saat configuration change
+        outState.putParcelable(Constants.KEY_RESERVATION_DATA, reservation)
+        outState.putString(Constants.KEY_ACTION, action)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Pulihkan data saat configuration change
+        savedInstanceState.getParcelable<Reservation>(Constants.KEY_RESERVATION_DATA)?.let {
+            reservation = it
+        }
+        action = savedInstanceState.getString(Constants.KEY_ACTION) ?: Constants.ACTION_VIEW
+        tampilkanDataReservasi()
+    }
+
+    // === HELPER METHODS ===
+
+    private fun setStatusColor(status: String) {
+        val color = when (status.toLowerCase()) {
+            "confirmed", "confirmed" -> android.R.color.holo_green_dark
+            "pending" -> android.R.color.holo_orange_dark
+            "cancelled" -> android.R.color.holo_red_dark
+            "updated" -> android.R.color.holo_blue_dark
+            else -> android.R.color.black
+        }
+        tvStatus.setTextColor(getColor(color))
+    }
+
+    private fun setActivityTitle() {
+        val title = when (action) {
+            Constants.ACTION_CREATE -> "Reservasi Baru - ${reservation.nama}"
+            Constants.ACTION_EDIT -> "Edit Reservasi - ${reservation.nama}"
+            else -> "Detail Reservasi - ${reservation.nama}"
+        }
+        setTitle(title)
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showSuccess(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * METHOD 7: Handle back button press
+     */
+    override fun onBackPressed() {
+        kembaliDenganResult()
     }
 }
