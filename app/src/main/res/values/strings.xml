@@ -23,7 +23,7 @@
     <string name="btn_tambah_reservasi">Tambah Reservasi</string>
     <string name="btn_kembali_ke_utama">Kembali ke Menu Utama</string>
 
-    <!-- Existing strings -->
+    <!-- Validation -->
     <string name="error_nama_kosong">Nama harus diisi!</string>
     <string name="error_nama_pendek">Nama minimal 3 karakter!</string>
     <string name="error_nama_panjang">Nama maksimal 50 karakter!</string>
@@ -38,4 +38,22 @@
     <string name="datepicker_title">Pilih Tanggal Reservasi</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Batal</string>
+
+    <!-- Explicit Intent -->
+    <string name="title_edit_reservation">Edit Reservasi</string>
+    <string name="btn_simpan_perubahan">Simpan Perubahan</string>
+    <string name="btn_batalkan">Batalkan</string>
+    <string name="success_edit_reservasi">Reservasi berhasil diupdate!</string>
+    <string name="label_waktu_reservasi">Waktu Reservasi</string>
+    <string name="label_meja">Nomor Meja</string>
+    <string name="hint_pilih_waktu">Pilih Waktu</string>
+    <string name="hint_pilih_meja">Pilih Meja</string>
+
+    <!-- Time Picker -->
+    <string name="timepicker_title">Pilih Waktu Reservasi</string>
+
+    <!-- Menu Items -->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Hapus</string>
+    <string name="menu_share">Bagikan</string>
 </resources>
