@@ -31,7 +31,7 @@
                 android:id="@+id/etNama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_nama"
+                android:hint="Nama Pemesan"
                 android:inputType="textCapWords"
                 android:maxLines="1"
                 android:maxLength="50" />
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_jumlah_orang"
+            android:text="Jumlah Orang"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_pilih_tanggal"
+            android:text="Pilih Tanggal"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -77,7 +77,7 @@
             android:id="@+id/btnPilihTanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_pilih_tanggal"
+            android:text="Pilih Tanggal"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp" />
 
@@ -85,7 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_waktu_reservasi"
+            android:text="Waktu Reservasi"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -104,7 +104,7 @@
             android:id="@+id/btnPilihWaktu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hint_pilih_waktu"
+            android:text="Pilih Waktu"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp" />
 
@@ -112,7 +112,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_meja"
+            android:text="Meja"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -121,14 +121,31 @@
             android:id="@+id/spMeja"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
+
+        <!-- Catatan -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCatatan"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="Catatan Tambahan (opsional)"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:maxLines="5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Tombol Buat Reservasi -->
         <Button
             android:id="@+id/btnBuatReservasi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_buat_reservasi"
+            android:text="Buat Reservasi"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
@@ -137,7 +154,7 @@
             android:id="@+id/btnLihatDaftar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_lihat_daftar"
+            android:text="Lihat Daftar Reservasi"
             android:textSize="16sp"
             android:backgroundTint="#4CAF50" />
 

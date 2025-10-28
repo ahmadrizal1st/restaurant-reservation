@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.*
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
+import com.example.restaurantreservation.utils.DataTransferHelper
 import com.example.restaurantreservation.utils.InputValidator
 import com.example.restaurantreservation.utils.ValidationResult
 import java.text.SimpleDateFormat
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     // Deklarasi komponen UI
     private lateinit var etNama: EditText
+    private lateinit var etCatatan: EditText
     private lateinit var npJumlahOrang: NumberPicker
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
@@ -33,32 +35,21 @@ class MainActivity : AppCompatActivity() {
     private val calendar = Calendar.getInstance()
 
     // Data untuk spinner meja
-    private val listMeja = arrayOf("Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5", "Meja VIP 1", "Meja VIP 2")
+    private val listMeja = arrayOf("Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5", "Meja VIP 1", "Meja VIP 2", "Meja Keluarga 1", "Meja Keluarga 2")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inisialisasi komponen UI
         initViews()
-
-        // Setup komponen
-        setupNumberPicker()
-        setupSpinnerMeja()
-        setupDatePicker()
-        setupTimePicker()
-        setupClickListeners()
-        setupTextWatchers()
-
-        // Set default values
+        setupComponents()
         setDefaultDateTime()
-
-        // Handle intent dari activity lain (jika ada)
         handleIncomingIntent()
     }
 
     private fun initViews() {
         etNama = findViewById(R.id.etNama)
+        etCatatan = findViewById(R.id.etCatatan)
         npJumlahOrang = findViewById(R.id.npJumlahOrang)
         tvTanggal = findViewById(R.id.tvTanggal)
         tvWaktu = findViewById(R.id.tvWaktu)
@@ -70,15 +61,20 @@ class MainActivity : AppCompatActivity() {
         textInputLayoutNama = findViewById(R.id.textInputLayoutNama)
     }
 
+    private fun setupComponents() {
+        setupNumberPicker()
+        setupSpinnerMeja()
+        setupDatePicker()
+        setupTimePicker()
+        setupClickListeners()
+        setupTextWatchers()
+    }
+
     private fun setupNumberPicker() {
         npJumlahOrang.minValue = 1
-        npJumlahOrang.maxValue = 50
+        npJumlahOrang.maxValue = 20
         npJumlahOrang.value = 2
         npJumlahOrang.setFormatter { value -> "$value orang" }
-
-        npJumlahOrang.setOnValueChangedListener { _, _, newVal ->
-            validateJumlahOrang(newVal)
-        }
     }
 
     private fun setupSpinnerMeja() {
@@ -86,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spMeja.adapter = adapter
 
-        // Listener untuk spinner
         spMeja.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
                 selectedMeja = if (position > 0) listMeja[position] else ""
@@ -107,9 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnPilihTanggal.setOnClickListener {
-            DatePickerDialog(
-                this,
-                dateSetListener,
+            DatePickerDialog(this, dateSetListener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
@@ -117,7 +110,6 @@ class MainActivity : AppCompatActivity() {
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 val maxDate = Calendar.getInstance().apply { add(Calendar.YEAR, 1) }
                 datePicker.maxDate = maxDate.timeInMillis
-                setTitle("Pilih Tanggal Reservasi")
             }.show()
         }
     }
@@ -130,15 +122,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnPilihWaktu.setOnClickListener {
-            TimePickerDialog(
-                this,
-                timeSetListener,
+            TimePickerDialog(this, timeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 true
-            ).apply {
-                setTitle("Pilih Waktu Reservasi")
-            }.show()
+            ).show()
         }
     }
 
@@ -162,96 +150,131 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // === EXPLICIT INTENT METHODS ===
+    // === DATA SENDING METHODS ===
 
     /**
-     * Method 1: Explicit Intent dengan mengirim data individual
+     * METHOD 1: Mengirim data dengan multiple approaches
      */
     private fun buatReservasiDenganValidasi() {
         val nama = etNama.text.toString().trim()
         val jumlahOrang = npJumlahOrang.value
+        val catatan = etCatatan.text.toString().trim()
 
         if (!isFormValid(nama)) return
 
-        // METHOD A: Explicit Intent dengan putExtra individual
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            // Mengirim data sebagai individual extras
-            putExtra(Constants.KEY_NAMA, nama)
-            putExtra(Constants.KEY_JUMLAH_ORANG, jumlahOrang)
-            putExtra(Constants.KEY_TANGGAL, selectedDate)
-            putExtra(Constants.KEY_WAKTU, selectedTime)
-            putExtra(Constants.KEY_MEJA, selectedMeja)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
-        }
-
-        // Start activity dengan explicit intent
-        startActivity(intent)
-
-        showSuccessMessage("Reservasi berhasil dibuat untuk $nama!")
-        resetForm()
-    }
-
-    /**
-     * Method 2: Explicit Intent dengan mengirim Parcelable object
-     */
-    private fun buatReservasiDenganParcelable(nama: String, jumlahOrang: Int) {
-        // Buat object Reservation
-        val reservation = Reservation(
-            id = Reservation.generateId(),
+        // Buat reservation object
+        val reservation = Reservation.create(
             nama = nama,
             jumlahOrang = jumlahOrang,
             tanggal = selectedDate,
             waktu = selectedTime,
             meja = selectedMeja,
-            status = "Confirmed"
+            catatan = catatan
         )
 
-        // METHOD B: Explicit Intent dengan Parcelable object
+        // Validasi data sebelum dikirim
+        if (!DataTransferHelper.validateReservationData(reservation)) {
+            Toast.makeText(this, "Data reservasi tidak valid!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Log data transfer untuk debugging
+        DataTransferHelper.logDataTransfer("MainActivity", "DetailActivity", reservation)
+
+        // Pilih salah satu method pengiriman data:
+        when ((1..3).random()) { // Random pilih method untuk demonstrasi
+            1 -> sendDataMethod1(reservation) // Individual fields
+            2 -> sendDataMethod2(reservation) // Parcelable object
+            3 -> sendDataMethod3(reservation) // Bundle
+        }
+    }
+
+    /**
+     * METHOD 1A: Mengirim data sebagai individual fields
+     */
+    private fun sendDataMethod1(reservation: Reservation) {
+        println("Menggunakan METHOD 1: Individual Fields")
+
         val intent = Intent(this, DetailActivity::class.java).apply {
+            // Kirim data sebagai individual fields
+            putExtra(Constants.KEY_RESERVATION_ID, reservation.id)
+            putExtra(Constants.KEY_NAMA, reservation.nama)
+            putExtra(Constants.KEY_JUMLAH_ORANG, reservation.jumlahOrang)
+            putExtra(Constants.KEY_TANGGAL, reservation.tanggal)
+            putExtra(Constants.KEY_WAKTU, reservation.waktu)
+            putExtra(Constants.KEY_MEJA, reservation.meja)
+            putExtra(Constants.KEY_CATATAN, reservation.catatan)
+            putExtra(Constants.KEY_STATUS, reservation.status)
+            putExtra(Constants.KEY_CREATED_AT, reservation.createdAt)
+            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
+        }
+
+        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
+    }
+
+    /**
+     * METHOD 1B: Mengirim data sebagai Parcelable object
+     */
+    private fun sendDataMethod2(reservation: Reservation) {
+        println("Menggunakan METHOD 2: Parcelable Object")
+
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            // Kirim data sebagai Parcelable object (most efficient)
             putExtra(Constants.KEY_RESERVATION_DATA, reservation)
             putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
         }
 
-        startActivity(intent)
-        showSuccessMessage("Reservasi berhasil dibuat!")
-        resetForm()
+        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
     }
 
     /**
-     * Method 3: Explicit Intent untuk navigasi sederhana (tanpa data)
+     * METHOD 1C: Mengirim data menggunakan Bundle
      */
-    private fun lihatDaftarReservasi() {
-        // Explicit Intent tanpa mengirim data
-        val intent = Intent(this, ListActivity::class.java)
-        startActivity(intent)
-    }
+    private fun sendDataMethod3(reservation: Reservation) {
+        println("Menggunakan METHOD 3: Bundle")
 
-    /**
-     * Method 4: Explicit Intent dengan startActivityForResult (jika butuh result kembali)
-     */
-    private fun bukaDetailUntukEdit(reservation: Reservation) {
+        val bundle = DataTransferHelper.createReservationBundle(reservation)
+        bundle.putString(Constants.KEY_ACTION, Constants.ACTION_CREATE)
+
         val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
+            putExtras(bundle)
         }
 
-        // Start activity dan tunggu result
-        startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
+        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
     }
 
     /**
-     * Handle result dari activity lain
+     * METHOD 2: Mengirim data ke ListActivity
+     */
+    private fun lihatDaftarReservasi() {
+        val intent = Intent(this, ListActivity::class.java).apply {
+            // Bisa mengirim filter atau data lain ke ListActivity
+            putExtra(Constants.KEY_ACTION, Constants.ACTION_VIEW)
+            putExtra(Constants.BUNDLE_FILTER_STATUS, "all") // all, confirmed, pending
+        }
+
+        startActivity(intent)
+    }
+
+    /**
+     * METHOD 3: Handle result dari Activity lain
      */
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            Constants.REQUEST_CODE_EDIT_RESERVATION -> {
-                if (resultCode == RESULT_OK) {
-                    val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
-                    updatedReservation?.let {
-                        showSuccessMessage("Reservasi berhasil diupdate!")
+            Constants.REQUEST_CODE_CREATE_RESERVATION -> {
+                when (resultCode) {
+                    Constants.RESULT_RESERVATION_CREATED -> {
+                        val reservation = DataTransferHelper.getReservationFromIntent(data!!)
+                        reservation?.let {
+                            showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
+                            resetForm()
+                        }
+                    }
+                    RESULT_CANCELED -> {
+                        Toast.makeText(this, "Reservasi dibatalkan", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -259,15 +282,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Handle incoming intent dari activity lain
+     * METHOD 4: Handle incoming intent dengan data
      */
     private fun handleIncomingIntent() {
-        // Cek jika ada data yang dikirim ke MainActivity
-        when (intent.action) {
-            Intent.ACTION_EDIT -> {
-                // Handle edit action dari activity lain
-                val reservation = intent.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
-                reservation?.let { prefillForm(it) }
+        // Handle data yang dikirim ke MainActivity
+        val action = intent.action
+        val reservation = DataTransferHelper.getReservationFromIntent(intent)
+
+        reservation?.let {
+            when (action) {
+                Constants.ACTION_EDIT -> {
+                    prefillFormForEdit(it)
+                }
             }
         }
     }
@@ -325,20 +351,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun resetForm() {
         etNama.text.clear()
+        etCatatan.text.clear()
         npJumlahOrang.value = 2
         spMeja.setSelection(0)
         setDefaultDateTime()
         textInputLayoutNama.error = null
     }
 
-    /**
-     * Prefill form dengan data dari reservation (untuk edit)
-     */
-    private fun prefillForm(reservation: Reservation) {
+    private fun prefillFormForEdit(reservation: Reservation) {
         etNama.setText(reservation.nama)
         npJumlahOrang.value = reservation.jumlahOrang
+        etCatatan.setText(reservation.catatan)
 
-        // Parse dan set tanggal
+        // Set tanggal
         try {
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = dateFormat.parse(reservation.tanggal)
@@ -350,30 +375,31 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        // Set meja di spinner
+        // Set waktu
+        try {
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val time = timeFormat.parse(reservation.waktu)
+            time?.let {
+                calendar.time = it
+                updateTimeDisplay()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // Set meja
         val mejaPosition = listMeja.indexOf(reservation.meja)
         if (mejaPosition != -1) {
             spMeja.setSelection(mejaPosition)
         }
+
+        btnBuatReservasi.text = "Update Reservasi"
     }
 
     private fun validateNama(nama: String) {
         when (val result = InputValidator.validateNama(nama)) {
-            is ValidationResult.Success -> {
-                textInputLayoutNama.error = null
-            }
-            is ValidationResult.Error -> {
-                textInputLayoutNama.error = result.message
-            }
-        }
-    }
-
-    private fun validateJumlahOrang(jumlah: Int) {
-        when (val result = InputValidator.validateJumlahOrang(jumlah)) {
-            is ValidationResult.Success -> {}
-            is ValidationResult.Error -> {
-                Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
-            }
+            is ValidationResult.Success -> textInputLayoutNama.error = null
+            is ValidationResult.Error -> textInputLayoutNama.error = result.message
         }
     }
 }
