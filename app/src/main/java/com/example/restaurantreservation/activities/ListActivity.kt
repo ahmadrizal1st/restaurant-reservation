@@ -25,7 +25,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     // RecyclerView components
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReservationAdapter
-    private lateinit var emptyState: TextView
+    private lateinit var emptyState: LinearLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -195,7 +195,6 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         if (adapter.itemCount == 0) {
             recyclerView.visibility = View.GONE
             emptyState.visibility = View.VISIBLE
-            emptyState.text = getString(R.string.empty_reservation_list)
         } else {
             recyclerView.visibility = View.VISIBLE
             emptyState.visibility = View.GONE
@@ -268,10 +267,8 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                 // Remove from storage
                 ReservationStorage.removeReservation(reservation.id)
 
-                // Remove from adapter
-                adapter.removeItem(position)
-                updateEmptyState()
-                showDataStatistics()
+                // Reload data from storage to ensure consistency
+                loadReservationData()
 
                 // Show confirmation
                 Toast.makeText(this, "Reservasi berhasil dihapus", Toast.LENGTH_SHORT).show()

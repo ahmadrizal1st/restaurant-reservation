@@ -234,7 +234,7 @@ class MainActivity : AppCompatActivity() {
     // region - Business Logic Methods
 
     /**
-     * Membuat reservasi baru dengan validasi lengkap
+     * Membuat atau update reservasi dengan validasi lengkap
      */
     private fun buatReservasiDenganValidasi() {
         val nama = etNama.text.toString().trim()
@@ -244,32 +244,57 @@ class MainActivity : AppCompatActivity() {
         // Validasi form
         if (!isFormValid(nama)) return
 
-        // Buat reservation object
-        val reservation = Reservation.create(
-            nama = nama,
-            jumlahOrang = jumlahOrang,
-            tanggal = selectedDate,
-            waktu = selectedTime,
-            meja = selectedMeja,
-            catatan = catatan
-        )
+        // Check if we're editing or creating
+        val existingReservation = DataTransferHelper.getReservationFromIntent(intent)
 
-        // Validasi data sebelum dikirim
-        if (!DataTransferHelper.validateReservationData(reservation)) {
-            showError("Data reservasi tidak valid!")
-            return
+        if (existingReservation != null && intent.action == Constants.ACTION_EDIT) {
+            // Update existing reservation
+            val updatedReservation = existingReservation.copy(
+                nama = nama,
+                jumlahOrang = jumlahOrang,
+                tanggal = selectedDate,
+                waktu = selectedTime,
+                meja = selectedMeja,
+                catatan = catatan,
+                updatedAt = System.currentTimeMillis()
+            )
+
+            // Validasi data sebelum dikirim
+            if (!DataTransferHelper.validateReservationData(updatedReservation)) {
+                showError("Data reservasi tidak valid!")
+                return
+            }
+
+            // Send updated data back to DetailActivity
+            sendUpdatedReservationData(updatedReservation)
+        } else {
+            // Create new reservation
+            val reservation = Reservation.create(
+                nama = nama,
+                jumlahOrang = jumlahOrang,
+                tanggal = selectedDate,
+                waktu = selectedTime,
+                meja = selectedMeja,
+                catatan = catatan
+            )
+
+            // Validasi data sebelum dikirim
+            if (!DataTransferHelper.validateReservationData(reservation)) {
+                showError("Data reservasi tidak valid!")
+                return
+            }
+
+            // Save reservation to storage
+            ReservationStorage.addReservation(reservation)
+
+            // Kirim data ke DetailActivity
+            sendReservationData(reservation)
+
+            // Reset form setelah success
+            resetForm()
         }
 
-        // Save reservation to storage
-        ReservationStorage.addReservation(reservation)
-
-        // Kirim data ke DetailActivity
-        sendReservationData(reservation)
-
-        // Reset form setelah success
-        resetForm()
-
-        printDebugInfo("Reservation created for: ${reservation.nama}")
+        printDebugInfo("Reservation processed for: $nama")
     }
 
     /**
@@ -301,6 +326,20 @@ class MainActivity : AppCompatActivity() {
 
         startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
         showSuccessMessage("Reservasi berhasil dibuat untuk ${reservation.nama}!")
+    }
+
+    /**
+     * Kirim data reservasi yang sudah diupdate kembali ke DetailActivity
+     *
+     * @param reservation Data reservasi yang sudah diupdate
+     */
+    private fun sendUpdatedReservationData(reservation: Reservation) {
+        val resultIntent = Intent().apply {
+            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+        }
+        setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
+        showSuccessMessage("Reservasi berhasil diupdate untuk ${reservation.nama}!")
+        finish()
     }
 
     /**
@@ -465,6 +504,7 @@ class MainActivity : AppCompatActivity() {
 
         when (requestCode) {
             Constants.REQUEST_CODE_CREATE_RESERVATION -> handleCreateReservationResult(resultCode, data)
+            Constants.REQUEST_CODE_EDIT_RESERVATION -> handleEditReservationResult(resultCode, data)
         }
     }
 
@@ -488,6 +528,34 @@ class MainActivity : AppCompatActivity() {
             }
             RESULT_CANCELED -> {
                 showInfo("Reservasi dibatalkan")
+            }
+        }
+    }
+
+    /**
+     * Handle result dari edit reservasi
+     */
+    private fun handleEditReservationResult(resultCode: Int, data: Intent?) {
+        when (resultCode) {
+            Constants.RESULT_RESERVATION_UPDATED -> {
+                val updatedReservation = DataTransferHelper.getReservationFromIntent(data!!)
+                updatedReservation?.let {
+                    // Update reservation in storage
+                    ReservationStorage.updateReservation(it)
+
+                    showSuccessMessage("Reservasi berhasil diupdate untuk ${it.nama}!")
+
+                    // Navigate back to DetailActivity with updated data
+                    val resultIntent = Intent().apply {
+                        putExtra(Constants.KEY_RESERVATION_DATA, it)
+                    }
+                    setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
+                    finish()
+                }
+            }
+            RESULT_CANCELED -> {
+                showInfo("Edit reservasi dibatalkan")
+                finish()
             }
         }
     }

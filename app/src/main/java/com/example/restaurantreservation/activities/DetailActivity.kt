@@ -201,24 +201,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     /**
-     * METHOD 4: Edit reservasi dan kirim data kembali
+     * METHOD 4: Edit reservasi - navigate to MainActivity with edit data
      */
     private fun editReservasi() {
-        val resultIntent = Intent().apply {
-            // Kirim data reservasi yang sudah di-update (dalam kasus real, mungkin ada form edit)
-            val updatedReservation = reservation.copy(
-                status = "Updated",
-                updatedAt = System.currentTimeMillis()
-            )
-            putExtra(Constants.KEY_RESERVATION_DATA, updatedReservation)
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+            putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
         }
-
-        setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
-        showSuccess("Reservasi berhasil diupdate!")
-
-        // Refresh tampilan
-        reservation = reservation.copy(status = "Updated", updatedAt = System.currentTimeMillis())
-        tampilkanDataReservasi()
+        startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
     }
 
     /**
@@ -306,5 +296,26 @@ class DetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         kembaliDenganResult()
         return true
+    }
+
+    /**
+     * Handle edit result from MainActivity
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            Constants.REQUEST_CODE_EDIT_RESERVATION -> {
+                if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
+                    val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
+                    updatedReservation?.let {
+                        reservation = it
+                        tampilkanDataReservasi()
+                        showSuccess("Reservasi berhasil diupdate!")
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,26 +1,51 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
 
-    <!-- Tenda/atap -->
+    <!-- Restaurant building -->
+    <!-- Main building -->
+    <path
+        android:fillColor="#FF6B35"
+        android:pathData="M25,70h58v25H25z" />
+
+    <!-- Roof -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M12,3l-8,5v10h16V8L12,3z" />
+        android:pathData="M20,70l34,-20l34,20z" />
 
-    <!-- Meja -->
+    <!-- Door -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M4,14h16v2H4z" />
+        android:pathData="M48,80h12v15H48z" />
 
-    <!-- Kaki meja kiri -->
+    <!-- Windows -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M6,16v3h2v-3z" />
-
-    <!-- Kaki meja kanan -->
+        android:pathData="M30,75h8v8h-8z" />
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M16,16v3h2v-3z" />
+        android:pathData="M70,75h8v8h-8z" />
+
+    <!-- Restaurant sign -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,45h28v8H40z" />
+
+    <!-- Sign text (stylized R) -->
+    <path
+        android:fillColor="#FF6B35"
+        android:pathData="M48,47h2v4h-2z" />
+    <path
+        android:fillColor="#FF6B35"
+        android:pathData="M48,47h6v2h-6z" />
+    <path
+        android:fillColor="#FF6B35"
+        android:pathData="M52,49h2v2h-2z" />
+
+    <!-- Chimney -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,35h4v15h-4z" />
 </vector>
