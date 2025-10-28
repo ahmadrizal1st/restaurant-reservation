@@ -100,4 +100,15 @@
     <string name="person_singular">orang</string>
     <string name="person_plural">orang</string>
     <string name="status_completed">Selesai</string>
+
+    <!-- RecyclerView functionality -->
+    <string name="empty_reservation_list">Belum ada reservasi\n\nTekan tombol tambah untuk membuat reservasi baru</string>
+    <string name="search_hint">Cari nama, meja, atau status…</string>
+    <string name="filter_all">Semua Status</string>
+    <string name="sort_by">Urutkan Berdasarkan</string>
+    <string name="sort_name_asc">Nama (A-Z)</string>
+    <string name="sort_name_desc">Nama (Z-A)</string>
+    <string name="sort_date_newest">Tanggal (Terbaru)</string>
+    <string name="sort_date_oldest">Tanggal (Terlama)</string>
+    <string name="sort_people">Jumlah Orang</string>
 </resources>

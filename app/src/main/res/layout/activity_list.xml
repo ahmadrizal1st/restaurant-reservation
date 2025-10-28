@@ -1,58 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Daftar Reservasi"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <!-- Placeholder untuk daftar reservasi -->
-    <TextView
-        android:id="@+id/tvEmptyList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_list"
-        android:textSize="16sp"
-        android:textColor="#666"
-        android:gravity="center"
-        android:layout_marginBottom="32dp" />
-
-    <!-- Area untuk RecyclerView (akan diimplementasi nanti) -->
-    <LinearLayout
-        android:id="@+id/containerRecyclerView"
+    <!-- Swipe Refresh Layout -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone">
+        android:layout_weight="1">
 
-        <!-- RecyclerView akan ditambahkan di sini -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:visibility="gone" />
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewReservations"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
+
+            <!-- Empty State -->
+            <TextView
+                android:id="@+id/tvEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/empty_reservation_list"
+                android:textSize="16sp"
+                android:textColor="#666"
+                android:visibility="gone"
+                android:drawableTop="@drawable/ic_empty_state"
+                android:drawablePadding="16dp" />
+
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Bottom Action Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#f5f5f5"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnAddReservation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tambah Reservasi"
+            android:textSize="14sp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:layout_marginEnd="6dp" />
+
+        <Button
+            android:id="@+id/btnBackToMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Kembali"
+            android:textSize="14sp"
+            android:backgroundTint="#9E9E9E"
+            android:layout_marginStart="6dp" />
 
     </LinearLayout>
-
-    <!-- Tombol Tambah Reservasi -->
-    <Button
-        android:id="@+id/btnTambahReservasi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_tambah_reservasi"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Tombol Kembali ke Utama -->
-    <Button
-        android:id="@+id/btnKembaliKeUtama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_kembali_ke_utama"
-        android:textSize="16sp"
-        android:backgroundTint="#9E9E9E" />
 
 </LinearLayout>

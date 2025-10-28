@@ -74,5 +74,11 @@
             android:label="@string/title_list_activity"
             android:exported="false" />
 
+        <activity
+            android:name=".ListActivity"
+            android:label="@string/title_list_activity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
     </application>
 </manifest>
