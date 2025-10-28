@@ -10,6 +10,7 @@ import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataTransferHelper
 import com.example.restaurantreservation.utils.InputValidator
+import com.example.restaurantreservation.utils.ReservationStorage
 import com.example.restaurantreservation.utils.ValidationResult
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -66,6 +67,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Initialize storage
+        ReservationStorage.init(this)
 
         initializeViews()
         setupComponents()
@@ -255,6 +259,9 @@ class MainActivity : AppCompatActivity() {
             showError("Data reservasi tidak valid!")
             return
         }
+
+        // Save reservation to storage
+        ReservationStorage.addReservation(reservation)
 
         // Kirim data ke DetailActivity
         sendReservationData(reservation)
@@ -467,9 +474,16 @@ class MainActivity : AppCompatActivity() {
     private fun handleCreateReservationResult(resultCode: Int, data: Intent?) {
         when (resultCode) {
             Constants.RESULT_RESERVATION_CREATED -> {
-        val reservation = DataTransferHelper.getReservationFromIntent(data!!)
+                val reservation = DataTransferHelper.getReservationFromIntent(data!!)
                 reservation?.let {
                     showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
+
+                    // Navigate to ListActivity with new reservation data
+                    val listIntent = Intent(this, ListActivity::class.java).apply {
+                        putExtra(Constants.KEY_NEW_RESERVATION, reservation)
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    startActivity(listIntent)
                 }
             }
             RESULT_CANCELED -> {

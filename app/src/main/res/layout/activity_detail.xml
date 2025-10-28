@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
+    android:fitsSystemWindows="true"
     android:padding="16dp">
 
     <!-- App Bar -->
@@ -201,13 +202,13 @@
                             android:id="@+id/tvStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="8dp"
                             android:paddingHorizontal="16dp"
+                            android:paddingVertical="8dp"
                             android:text="CONFIRMED"
+                            android:textAllCaps="true"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textAllCaps="true" />
+                            android:textStyle="bold" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -218,9 +219,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="Dibuat: 14 Des 2024 10:30"
+                        android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                         android:textColor="@color/text_hint"
-                        android:textAlignment="center"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cardStatus" />

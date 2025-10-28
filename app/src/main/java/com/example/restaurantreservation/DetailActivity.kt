@@ -219,6 +219,7 @@ class DetailActivity : AppCompatActivity() {
     private fun kembaliDenganResult() {
         when (action) {
             Constants.ACTION_CREATE -> {
+                // Return result to MainActivity
                 val resultIntent = Intent().apply {
                     putExtra(Constants.KEY_RESERVATION_DATA, reservation)
                 }

@@ -67,6 +67,7 @@
             android:name=".ListActivity"
             android:label="@string/title_list_activity"
             android:exported="false"
-            android:theme="@style/Theme.RestaurantReservation" />
+            android:theme="@style/Theme.RestaurantReservation.NoActionBar"
+            android:launchMode="singleTop" />
     </application>
 </manifest>

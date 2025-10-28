@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreservation.adapter.ReservationAdapter
@@ -16,6 +17,7 @@ import com.example.restaurantreservation.interfaces.OnReservationClickListener
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.IntentUtils
+import com.example.restaurantreservation.utils.ReservationStorage
 import java.util.*
 
 class ListActivity : AppCompatActivity(), OnReservationClickListener {
@@ -28,7 +30,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
     // Filter and Search components
-    private lateinit var searchView: SearchView
+    private lateinit var searchView: androidx.appcompat.widget.SearchView
     private lateinit var spinnerFilter: Spinner
 
     // Data
@@ -39,12 +41,22 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        // Initialize storage
+        ReservationStorage.init(this)
+
         initViews()
         setupRecyclerView()
         setupSwipeRefresh()
         setupFilterAndSearch()
         loadReservationData()
         setupClickListeners()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        // Check for new reservation when activity is reused
+        checkForNewReservation()
     }
 
     private fun initViews() {
@@ -114,7 +126,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         swipeRefreshLayout.setOnRefreshListener {
             // Simulate data refresh
             loadReservationData()
-            swipeRefreshLayout.isRefreshing = false
+            // Don't set isRefreshing to false here - let loadReservationData handle it
         }
     }
 
@@ -126,108 +138,49 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     }
 
     /**
-     * METHOD 4: Load sample data untuk demonstrasi
+     * METHOD 4: Load reservation data
      */
     private fun loadReservationData() {
         showLoading()
 
         // Simulate network delay
         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-            generateSampleData()
+            // Load reservations from storage
+            reservationList.clear()
+            reservationList.addAll(ReservationStorage.loadReservations())
+
+            // Check for new reservation from intent
+            checkForNewReservation()
             hideLoading()
             updateEmptyState()
-        }, 1000)
+        }, 500)
     }
 
     /**
-     * METHOD 5: Generate sample data untuk testing
+     * METHOD 5: Check for new reservation from intent
      */
-    private fun generateSampleData() {
-        reservationList.clear()
+    private fun checkForNewReservation() {
+        val newReservation = intent.getParcelableExtra<Reservation>(Constants.KEY_NEW_RESERVATION)
+        if (newReservation != null) {
+            // Always add new reservation to the list (allow multiple entries)
+            reservationList.add(newReservation)
+            adapter.submitList(reservationList.toMutableList())
+            filteredList.clear()
+            filteredList.addAll(reservationList)
 
-        // Add sample reservations
-        reservationList.addAll(listOf(
-            Reservation.create(
-                nama = "Ahmad Wijaya",
-                jumlahOrang = 4,
-                tanggal = "15/12/2024",
-                waktu = "19:00",
-                meja = "Meja VIP 1",
-                catatan = "Acara ulang tahun",
-                status = "Confirmed"
-            ),
-            Reservation.create(
-                nama = "Siti Rahayu",
-                jumlahOrang = 2,
-                tanggal = "16/12/2024",
-                waktu = "20:30",
-                meja = "Meja 3",
-                catatan = "Malam romantis",
-                status = "Confirmed"
-            ),
-            Reservation.create(
-                nama = "Budi Santoso",
-                jumlahOrang = 6,
-                tanggal = "17/12/2024",
-                waktu = "18:00",
-                meja = "Meja Keluarga 1",
-                catatan = "Kumpul keluarga",
-                status = "Pending"
-            ),
-            Reservation.create(
-                nama = "Maria Magdalena",
-                jumlahOrang = 3,
-                tanggal = "15/12/2024",
-                waktu = "21:00",
-                meja = "Meja 2",
-                catatan = "Meeting bisnis",
-                status = "Confirmed"
-            ),
-            Reservation.create(
-                nama = "Rizki Pratama",
-                jumlahOrang = 5,
-                tanggal = "18/12/2024",
-                waktu = "19:30",
-                meja = "Meja VIP 2",
-                catatan = "Acara kantor",
-                status = "Pending"
-            ),
-            Reservation.create(
-                nama = "Dewi Lestari",
-                jumlahOrang = 2,
-                tanggal = "16/12/2024",
-                waktu = "20:00",
-                meja = "Meja 1",
-                catatan = "Date anniversary",
-                status = "Cancelled"
-            ),
-            Reservation.create(
-                nama = "Joko Widodo",
-                jumlahOrang = 8,
-                tanggal = "19/12/2024",
-                waktu = "18:30",
-                meja = "Meja Keluarga 2",
-                catatan = "Acara besar",
-                status = "Confirmed"
-            ),
-            Reservation.create(
-                nama = "Ani Susanti",
-                jumlahOrang = 4,
-                tanggal = "17/12/2024",
-                waktu = "19:00",
-                meja = "Meja 4",
-                catatan = "Makan malam teman",
-                status = "Pending"
-            )
-        ))
+            // Show success message
+            Toast.makeText(this, "Reservasi baru ditambahkan: ${newReservation.nama}", Toast.LENGTH_SHORT).show()
 
-        // Submit data ke adapter
-        adapter.submitList(reservationList)
-        filteredList.clear()
-        filteredList.addAll(reservationList)
+            // Show data statistics
+            showDataStatistics()
 
-        // Show data statistics
-        showDataStatistics()
+            // Clear the intent to avoid duplicate additions on refresh
+            intent.removeExtra(Constants.KEY_NEW_RESERVATION)
+        } else {
+            // If no new reservation, just update the display
+            adapter.submitList(reservationList.toMutableList())
+            updateEmptyState()
+        }
     }
 
     /**
@@ -259,6 +212,8 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private fun hideLoading() {
         progressBar.visibility = View.GONE
         updateEmptyState()
+        // Stop swipe refresh animation when loading is complete
+        swipeRefreshLayout.isRefreshing = false
     }
 
     /**
@@ -305,6 +260,9 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             .setTitle("Hapus Reservasi")
             .setMessage("Apakah Anda yakin ingin menghapus reservasi ${reservation.nama}?")
             .setPositiveButton("Hapus") { dialog, which ->
+                // Remove from storage
+                ReservationStorage.removeReservation(reservation.id)
+
                 // Remove from adapter
                 adapter.removeItem(position)
                 updateEmptyState()
@@ -479,6 +437,9 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                 if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
                     val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
                     updatedReservation?.let {
+                        // Update in storage
+                        ReservationStorage.updateReservation(it)
+
                         // Find and update the reservation in the list
                         val position = reservationList.indexOfFirst { reservation -> reservation.id == it.id }
                         if (position != -1) {
@@ -496,6 +457,10 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         // Setup any additional click listeners
         findViewById<Button>(R.id.btnAddReservation).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnBackToMain).setOnClickListener {
+            finish()
         }
     }
 

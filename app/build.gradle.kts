@@ -40,14 +40,16 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.recyclerview)
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")

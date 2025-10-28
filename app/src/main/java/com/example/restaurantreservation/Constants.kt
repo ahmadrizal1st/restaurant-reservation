@@ -52,6 +52,9 @@ object Constants {
 
     /** Key untuk action type */
     const val KEY_ACTION = "action"
+
+    /** Key untuk new reservation data */
+    const val KEY_NEW_RESERVATION = "new_reservation"
     // endregion
 
     // region - Action Types
