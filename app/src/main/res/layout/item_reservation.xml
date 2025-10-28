@@ -10,231 +10,201 @@
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header dengan nama dan action buttons -->
-        <LinearLayout
-            android:id="@+id/layoutHeader"
-            android:layout_width="match_parent"
+        <!-- Nama dan Action Buttons -->
+        <TextView
+            android:id="@+id/tvItemNama"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="12px">
+            android:text="Ahmad Wijaya"
+            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/layoutActions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvItemNama"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama Pemesan"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_text"
-                    tools:text="John Doe" />
-
-                <TextView
-                    android:id="@+id/tvItemReservationId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ID: RES_123456"
-                    android:textSize="10sp"
-                    android:textColor="@color/secondary_text"
-                    android:layout_marginTop="2dp"
-                    tools:text="ID: RES_123456" />
-
-            </LinearLayout>
-
-            <!-- Action Buttons -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/btnShare"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_share"
-                    android:contentDescription="@string/share"
-                    android:layout_marginEnd="4dp" />
-
-                <ImageButton
-                    android:id="@+id/btnEdit"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_edit"
-                    android:contentDescription="@string/edit"
-                    android:layout_marginEnd="4dp" />
-
-                <ImageButton
-                    android:id="@+id/btnDelete"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_delete"
-                    android:contentDescription="@string/delete"
-                    android:tint="@color/error_color" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Detail Information -->
+        <!-- Action Buttons -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="12dp">
-
-            <!-- Tanggal dan Waktu -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/date"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_text" />
-
-                <TextView
-                    android:id="@+id/tvItemTanggal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="01/01/2024"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary_text"
-                    android:textAlignment="textEnd"
-                    tools:text="Senin, 01 Januari 2024" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/time"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_text" />
-
-                <TextView
-                    android:id="@+id/tvItemWaktu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="12:00"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary_text"
-                    android:textAlignment="textEnd"
-                    tools:text="19:30" />
-
-            </LinearLayout>
-
-            <!-- Jumlah Orang dan Meja -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="6dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/people"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_text" />
-
-                <TextView
-                    android:id="@+id/tvItemJumlahOrang"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2 orang"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary_text"
-                    android:textAlignment="textEnd"
-                    tools:text="4 orang" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/table"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_text" />
-
-                <TextView
-                    android:id="@+id/tvItemMeja"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Meja 1"
-                    android:textSize="14sp"
-                    android:textColor="@color/primary_text"
-                    android:textAlignment="textEnd"
-                    tools:text="Meja VIP 2" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Status Badge -->
-        <LinearLayout
-            android:id="@+id/layoutStatus"
+            android:id="@+id/layoutActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/bg_status_badge"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="4dp"
-            android:gravity="center">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_share"
+                android:contentDescription="@string/share"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/text_secondary" />
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_edit"
+                android:contentDescription="@string/edit"
+                android:layout_marginEnd="4dp"
+                app:tint="@color/text_secondary" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/delete"
+                app:tint="@color/error_color" />
+
+        </LinearLayout>
+
+        <!-- Reservation ID -->
+        <TextView
+            android:id="@+id/tvItemReservationId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="ID: RES_123456"
+            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintEnd_toStartOf="@+id/layoutActions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemNama" />
+
+        <!-- Detail Grid -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemReservationId">
+
+            <!-- Tanggal -->
+            <TextView
+                android:id="@+id/tvLabelTanggal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tanggal"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvItemTanggal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Senin, 15 Des 2024"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelTanggal" />
+
+            <!-- Waktu -->
+            <TextView
+                android:id="@+id/tvLabelWaktu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Waktu"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvItemWaktu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="19:00"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelWaktu" />
+
+            <!-- Jumlah Orang -->
+            <TextView
+                android:id="@+id/tvLabelJumlah"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Jumlah Orang"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvItemTanggal" />
+
+            <TextView
+                android:id="@+id/tvItemJumlahOrang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="4 orang"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelJumlah" />
+
+            <!-- Meja -->
+            <TextView
+                android:id="@+id/tvLabelMeja"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Meja"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvItemWaktu" />
+
+            <TextView
+                android:id="@+id/tvItemMeja"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Meja VIP 1"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelMeja" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Status Badge -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutDetails">
 
             <TextView
                 android:id="@+id/tvItemStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Confirmed"
-                android:textSize="12sp"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="12dp"
+                android:text="CONFIRMED"
+                android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:textAllCaps="true"
-                tools:text="CONFIRMED" />
+                android:textAllCaps="true" />
 
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

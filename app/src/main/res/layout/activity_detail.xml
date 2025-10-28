@@ -1,365 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_light"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center">
+    <!-- App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Detail Reservasi"
+        app:titleTextColor="@color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Detail Reservasi"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+    <!-- Scroll View untuk konten -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewports="true"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <!-- Card untuk detail reservasi -->
-        <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:cardUseCompatPadding="true"
-            android:layout_marginBottom="24dp">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Reservation Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardReservation"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Reservation ID -->
-                <TextView
-                    android:id="@+id/tvReservationId"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ID: RES_123"
-                    android:textSize="12sp"
-                    android:textColor="#666"
-                    android:layout_marginBottom="16dp" />
+                    android:padding="24dp">
 
-                <!-- Nama Pemesan -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
+                    <!-- Header dengan ID -->
                     <TextView
+                        android:id="@+id/tvReservationId"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:text="ID: RES_123456"
+                        android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                        android:textColor="@color/text_secondary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Nama -->
+                    <TextView
+                        android:id="@+id/tvLabelNama"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="Nama Pemesan"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                        android:textColor="@color/text_secondary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvReservationId" />
 
                     <TextView
                         android:id="@+id/tvNama"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Nama"
-                        android:textSize="14sp"
-                        android:textAlignment="textEnd"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <!-- Jumlah Orang -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Jumlah Orang"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvJumlahOrang"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="0"
-                        android:textSize="14sp"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <!-- Tanggal -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Tanggal"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvTanggal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Tanggal"
-                        android:textSize="14sp"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <!-- Waktu -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Waktu"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvWaktu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Waktu"
-                        android:textSize="14sp"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <!-- Meja -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Meja"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvMeja"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Meja"
-                        android:textSize="14sp"
-                        android:textAlignment="textEnd" />
-
-                </LinearLayout>
-
-                <!-- Status -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Status"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvStatus"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Status"
-                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:text="John Doe"
+                        android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                        android:textColor="@color/text_primary"
                         android:textStyle="bold"
-                        android:textAlignment="textEnd" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLabelNama" />
 
-                </LinearLayout>
-
-                <!-- Catatan (Conditional) -->
-                <LinearLayout
-                    android:id="@+id/containerCatatan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/labelCatatan"
-                        android:layout_width="match_parent"
+                    <!-- Grid untuk detail -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layoutDetails"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Catatan"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNama">
 
-                    <TextView
-                        android:id="@+id/tvCatatan"
-                        android:layout_width="match_parent"
+                        <!-- Tanggal -->
+                        <TextView
+                            android:id="@+id/tvLabelTanggal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Tanggal"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                            android:textColor="@color/text_secondary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvTanggal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Senin, 15 Des 2024"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLabelTanggal" />
+
+                        <!-- Waktu -->
+                        <TextView
+                            android:id="@+id/tvLabelWaktu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Waktu"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                            android:textColor="@color/text_secondary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tvWaktu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="19:00"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLabelWaktu" />
+
+                        <!-- Jumlah Orang -->
+                        <TextView
+                            android:id="@+id/tvLabelJumlah"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Jumlah Orang"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                            android:textColor="@color/text_secondary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTanggal" />
+
+                        <TextView
+                            android:id="@+id/tvJumlahOrang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="4 orang"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLabelJumlah" />
+
+                        <!-- Meja -->
+                        <TextView
+                            android:id="@+id/tvLabelMeja"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Meja"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                            android:textColor="@color/text_secondary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvWaktu" />
+
+                        <TextView
+                            android:id="@+id/tvMeja"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Meja VIP 1"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLabelMeja" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Status Badge -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardStatus"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Catatan tambahan"
-                        android:textSize="14sp"
-                        android:background="#f5f5f5"
-                        android:padding="8dp"
-                        android:lineSpacingExtra="4dp" />
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutDetails">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="8dp"
+                            android:paddingHorizontal="16dp"
+                            android:text="CONFIRMED"
+                            android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textAllCaps="true" />
 
-                <!-- Created At -->
-                <TextView
-                    android:id="@+id/tvCreatedAt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dibuat: -"
-                    android:textSize="10sp"
-                    android:textColor="#999"
-                    android:layout_marginTop="8dp" />
+                    </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+                    <!-- Created At -->
+                    <TextView
+                        android:id="@+id/tvCreatedAt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Dibuat: 14 Des 2024 10:30"
+                        android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
+                        android:textColor="@color/text_hint"
+                        android:textAlignment="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardStatus" />
 
-        </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Grid untuk tombol-tombol action -->
-        <LinearLayout
-            android:layout_width="match_parent"
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Guideline untuk button placement -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <!-- Action Buttons Grid -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineButtons">
+
+        <!-- Row 1: Maps & Telepon -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBukaMaps"
+            style="@style/Widget.RestaurantReservation.Button.Outlined"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="16dp">
+            android:text="Maps"
+            app:icon="@drawable/ic_map"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Baris 1: Maps dan Telepon -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <Button
-                    android:id="@+id/btnBukaMaps"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Buka Maps"
-                    android:layout_marginEnd="4dp"
-                    android:backgroundTint="#4285F4" />
-
-                <Button
-                    android:id="@+id/btnTeleponRestoran"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Telepon"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="#34A853" />
-
-            </LinearLayout>
-
-            <!-- Baris 2: Website dan Email -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <Button
-                    android:id="@+id/btnBukaWebsite"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Website"
-                    android:layout_marginEnd="4dp"
-                    android:backgroundTint="#EA4335" />
-
-                <Button
-                    android:id="@+id/btnKirimEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Email"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="#FBBC05" />
-
-            </LinearLayout>
-
-            <!-- Baris 3: Kalender dan WhatsApp -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-
-                <Button
-                    android:id="@+id/btnBukaKalender"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Kalender"
-                    android:layout_marginEnd="4dp"
-                    android:backgroundTint="#8E44AD" />
-
-                <Button
-                    android:id="@+id/btnWhatsApp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="WhatsApp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="#25D366" />
-
-            </LinearLayout>
-
-            <!-- Baris 4: Bagikan Reservasi -->
-            <Button
-                android:id="@+id/btnBagikanReservasi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bagikan Reservasi"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="#9C27B0" />
-
-            <!-- Baris 5: Edit Reservasi -->
-            <Button
-                android:id="@+id/btnEditReservasi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Reservasi"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="#FF9800" />
-
-        </LinearLayout>
-
-        <!-- Tombol Kembali -->
-        <Button
-            android:id="@+id/btnKembali"
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTeleponRestoran"
+            style="@style/Widget.RestaurantReservation.Button.Outlined"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Kembali"
-            android:backgroundTint="#9E9E9E" />
+            android:text="Telepon"
+            app:icon="@drawable/ic_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
-</ScrollView>
+        <!-- Row 2: Website & Email -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBukaWebsite"
+            style="@style/Widget.RestaurantReservation.Button.Outlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Website"
+            app:icon="@drawable/ic_website"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnBukaMaps" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKirimEmail"
+            style="@style/Widget.RestaurantReservation.Button.Outlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Email"
+            app:icon="@drawable/ic_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintTop_toBottomOf="@+id/btnTeleponRestoran" />
+
+        <!-- Row 3: Share & Edit -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBagikanReservasi"
+            style="@style/Widget.RestaurantReservation.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Bagikan"
+            app:icon="@drawable/ic_share"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnBukaWebsite" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditReservasi"
+            style="@style/Widget.RestaurantReservation.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Edit"
+            app:icon="@drawable/ic_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintTop_toBottomOf="@+id/btnKirimEmail" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Vertical Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

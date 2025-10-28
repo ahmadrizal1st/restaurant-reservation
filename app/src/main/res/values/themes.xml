@@ -1,9 +1,92 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.RestaurantReservation" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.RestaurantReservation" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary_color</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Material Components -->
+        <item name="materialButtonStyle">@style/Widget.RestaurantReservation.Button</item>
+        <item name="textInputStyle">@style/Widget.RestaurantReservation.TextInputLayout</item>
+
+        <!-- Custom styles -->
+        <item name="cardViewStyle">@style/Widget.RestaurantReservation.CardView</item>
     </style>
 
-    <style name="Theme.RestaurantReservation" parent="Base.Theme.RestaurantReservation" />
+    <style name="Theme.RestaurantReservation" parent="Base.Theme.RestaurantReservation">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.RestaurantReservation.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="Widget.RestaurantReservation.Button" parent="Widget.Material3.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingVertical">12dp</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.RestaurantReservation.Button</item>
+    </style>
+
+    <style name="Widget.RestaurantReservation.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.RestaurantReservation.Button</item>
+    </style>
+
+    <!-- Text Input Styles -->
+    <style name="Widget.RestaurantReservation.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="hintTextAppearance">@style/TextAppearance.RestaurantReservation.Hint</item>
+    </style>
+
+    <!-- CardView Styles -->
+    <style name="Widget.RestaurantReservation.CardView" parent="CardView">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">8dp</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="TextAppearance.RestaurantReservation.Button" parent="TextAppearance.Material3.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Hint" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Title" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">600</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
 </resources>
