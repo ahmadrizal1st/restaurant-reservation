@@ -52,9 +52,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("org.mockito:mockito-core:4.11.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.11.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
