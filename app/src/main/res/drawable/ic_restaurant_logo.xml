@@ -13,10 +13,10 @@
   <!-- Tanggal highlight -->
   <rect
       android:fillColor="#FFFFFF"
-      android:x="7"
-      android:y="12"
-      android:width="10"
-      android:height="8"/>
+      android:x="7dp"
+      android:y="12dp"
+      android:width="10dp"
+      android:height="8dp"/>
 
   <!-- Garpu -->
   <path
