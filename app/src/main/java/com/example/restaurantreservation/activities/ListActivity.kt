@@ -25,7 +25,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     // RecyclerView components
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReservationAdapter
-    private lateinit var emptyState: TextView
+    private lateinit var emptyState: LinearLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -143,14 +143,20 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private fun loadReservationData() {
         showLoading()
 
-        // Simulate network delay
-        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-            // Load reservations from storage
-            reservationList.clear()
-            reservationList.addAll(ReservationStorage.loadReservations())
+        // Load reservations from storage immediately
+        reservationList.clear()
+        reservationList.addAll(ReservationStorage.loadReservations())
 
-            // Check for new reservation from intent
-            checkForNewReservation()
+        // Update adapter with loaded data
+        adapter.submitList(reservationList.toMutableList())
+        filteredList.clear()
+        filteredList.addAll(reservationList)
+
+        // Check for new reservation from intent
+        checkForNewReservation()
+
+        // Simulate network delay for UI feedback
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             hideLoading()
             updateEmptyState()
         }, 500)
@@ -176,11 +182,10 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
             // Clear the intent to avoid duplicate additions on refresh
             intent.removeExtra(Constants.KEY_NEW_RESERVATION)
-        } else {
-            // If no new reservation, just update the display
-            adapter.submitList(reservationList.toMutableList())
-            updateEmptyState()
         }
+        // Always update the display after loading
+        adapter.submitList(reservationList.toMutableList())
+        updateEmptyState()
     }
 
     /**
@@ -190,7 +195,6 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         if (adapter.itemCount == 0) {
             recyclerView.visibility = View.GONE
             emptyState.visibility = View.VISIBLE
-            emptyState.text = getString(R.string.empty_reservation_list)
         } else {
             recyclerView.visibility = View.VISIBLE
             emptyState.visibility = View.GONE
@@ -263,10 +267,8 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                 // Remove from storage
                 ReservationStorage.removeReservation(reservation.id)
 
-                // Remove from adapter
-                adapter.removeItem(position)
-                updateEmptyState()
-                showDataStatistics()
+                // Reload data from storage to ensure consistency
+                loadReservationData()
 
                 // Show confirmation
                 Toast.makeText(this, "Reservasi berhasil dihapus", Toast.LENGTH_SHORT).show()

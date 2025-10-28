@@ -11,7 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_light"
-        android:padding="24dp">
+        android:padding="4dp">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Reservasi Restoran"
+            app:titleCentered="true"
+            tools:ignore="MissingConstraints" />
 
         <!-- Header Section -->
         <ImageView
@@ -22,7 +34,7 @@
             android:src="@drawable/ic_restaurant_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -277,20 +289,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnBuatReservasi" />
-
-        <!-- Footer -->
-        <TextView
-            android:id="@+id/tvFooter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:text="© 2024 Restaurant Lezat Selalu"
-            android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
-            android:textColor="@color/text_hint"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

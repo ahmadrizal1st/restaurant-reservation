@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataReceiverHelper
@@ -34,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
     // private lateinit var btnWhatsApp: Button
     private lateinit var btnEditReservasi: Button
     // private lateinit var btnKembali: Button
+    private lateinit var toolbar: Toolbar
 
     private lateinit var reservation: Reservation
     private var action: String = Constants.ACTION_VIEW
@@ -75,6 +77,12 @@ class DetailActivity : AppCompatActivity() {
         // btnWhatsApp = findViewById(R.id.btnWhatsApp)
         btnEditReservasi = findViewById(R.id.btnEditReservasi)
         // btnKembali = findViewById(R.id.btnKembali)
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     /**
@@ -193,24 +201,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     /**
-     * METHOD 4: Edit reservasi dan kirim data kembali
+     * METHOD 4: Edit reservasi - navigate to MainActivity with edit data
      */
     private fun editReservasi() {
-        val resultIntent = Intent().apply {
-            // Kirim data reservasi yang sudah di-update (dalam kasus real, mungkin ada form edit)
-            val updatedReservation = reservation.copy(
-                status = "Updated",
-                updatedAt = System.currentTimeMillis()
-            )
-            putExtra(Constants.KEY_RESERVATION_DATA, updatedReservation)
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+            putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
         }
-
-        setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
-        showSuccess("Reservasi berhasil diupdate!")
-
-        // Refresh tampilan
-        reservation = reservation.copy(status = "Updated", updatedAt = System.currentTimeMillis())
-        tampilkanDataReservasi()
+        startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
     }
 
     /**
@@ -290,5 +288,34 @@ class DetailActivity : AppCompatActivity() {
      */
     override fun onBackPressed() {
         kembaliDenganResult()
+    }
+
+    /**
+     * Handle toolbar navigation click
+     */
+    override fun onSupportNavigateUp(): Boolean {
+        kembaliDenganResult()
+        return true
+    }
+
+    /**
+     * Handle edit result from MainActivity
+     */
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            Constants.REQUEST_CODE_EDIT_RESERVATION -> {
+                if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
+                    val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
+                    updatedReservation?.let {
+                        reservation = it
+                        tampilkanDataReservasi()
+                        showSuccess("Reservasi berhasil diupdate!")
+                    }
+                }
+            }
+        }
     }
 }

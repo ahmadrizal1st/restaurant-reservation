@@ -24,18 +24,9 @@
         android:layout_weight="1">
 
         <!-- Content Container -->
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!-- Progress Bar -->
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:visibility="gone" />
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
@@ -46,20 +37,41 @@
                 android:padding="4dp"
                 android:scrollbars="vertical" />
 
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:visibility="gone" />
+
             <!-- Empty State -->
-            <TextView
+            <LinearLayout
                 android:id="@+id/tvEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:text="@string/empty_reservation_list"
-                android:textSize="16sp"
-                android:textColor="#666"
-                android:visibility="gone"
-                android:drawableTop="@drawable/ic_empty_state"
-                android:drawablePadding="16dp" />
+                android:visibility="gone">
 
-        </FrameLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_empty_state"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_reservation_list"
+                    android:textSize="16sp"
+                    android:textColor="#666"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -69,7 +81,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#f5f5f5"
-        android:padding="12dp">
+        android:padding="4dp">
 
         <Button
             android:id="@+id/btnAddReservation"
