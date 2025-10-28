@@ -1,122 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Detail Reservasi"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
-
-    <!-- Card untuk detail reservasi -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@android:color/white"
-        android:padding="24dp"
-        android:elevation="4dp"
-        android:layout_marginBottom="32dp">
+        android:padding="16dp"
+        android:gravity="center">
 
-        <!-- Nama Pemesan -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detail Reservasi"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Card untuk detail reservasi -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="24dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="32dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <!-- Nama Pemesan -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_detail_nama"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
 
-            <TextView
-                android:id="@+id/tvNama"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nama Pemesan"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNama"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nama"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <!-- Jumlah Orang -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Nama"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Jumlah Orang"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvJumlahOrang"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <!-- Tanggal -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tanggal"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTanggal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tanggal"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <!-- Waktu -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Waktu"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvWaktu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Waktu"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <!-- Meja -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Meja"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvMeja"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Meja"
+                    android:textSize="16sp"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
+
+            <!-- Status -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Status"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Status"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textAlignment="textEnd" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Jumlah Orang -->
+        <!-- Grid untuk tombol-tombol Implicit Intent -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginBottom="16dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <!-- Baris 1: Maps dan Telepon -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_detail_jumlah"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
-            <TextView
-                android:id="@+id/tvJumlahOrang"
-                android:layout_width="0dp"
+                <Button
+                    android:id="@+id/btnBukaMaps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_buka_maps"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="#4285F4" />
+
+                <Button
+                    android:id="@+id/btnTeleponRestoran"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_telepon_restoran"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="#34A853" />
+
+            </LinearLayout>
+
+            <!-- Baris 2: Website dan Email -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="0"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:id="@+id/btnBukaWebsite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_buka_website"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="#EA4335" />
+
+                <Button
+                    android:id="@+id/btnKirimEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_kirim_email"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="#FBBC05" />
+
+            </LinearLayout>
+
+            <!-- Baris 3: Kalender dan WhatsApp -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8px">
+
+                <Button
+                    android:id="@+id/btnBukaKalender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_buka_kalender"
+                    android:layout_marginEnd="4dp"
+                    android:backgroundTint="#8E44AD" />
+
+                <Button
+                    android:id="@+id/btnWhatsApp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="WhatsApp"
+                    android:layout_marginStart="4dp"
+                    android:backgroundTint="#25D366" />
+
+            </LinearLayout>
+
+            <!-- Baris 4: Bagikan Reservasi (Full Width) -->
+            <Button
+                android:id="@+id/btnBagikanReservasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_bagikan_reservasi"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#9C27B0" />
 
         </LinearLayout>
 
-        <!-- Tanggal -->
-        <LinearLayout
+        <!-- Tombol Kembali -->
+        <Button
+            android:id="@+id/btnKembali"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/label_detail_tanggal"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvTanggal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tanggal"
-                android:textSize="16sp" />
-
-        </LinearLayout>
+            android:text="@string/btn_kembali"
+            android:backgroundTint="#9E9E9E" />
 
     </LinearLayout>
-
-    <!-- Tombol Buka Maps -->
-    <Button
-        android:id="@+id/btnBukaMaps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_buka_maps"
-        android:textSize="16sp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Tombol Kembali -->
-    <Button
-        android:id="@+id/btnKembali"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_kembali"
-        android:textSize="16sp"
-        android:backgroundTint="#9E9E9E" />
-
-</LinearLayout>
+</ScrollView>

@@ -15,7 +15,6 @@
     <string name="label_detail_nama">Nama Pemesan</string>
     <string name="label_detail_jumlah">Jumlah Orang</string>
     <string name="label_detail_tanggal">Tanggal</string>
-    <string name="btn_buka_maps">Buka di Google Maps</string>
     <string name="btn_kembali">Kembali</string>
 
     <!-- List Activity -->
@@ -48,6 +47,27 @@
     <string name="label_meja">Nomor Meja</string>
     <string name="hint_pilih_waktu">Pilih Waktu</string>
     <string name="hint_pilih_meja">Pilih Meja</string>
+    <string name="btn_buka_maps">Buka di Google Maps</string>
+    <string name="btn_telepon_restoran">Telepon Restoran</string>
+    <string name="btn_bagikan_reservasi">Bagikan Reservasi</string>
+    <string name="btn_buka_website">Buka Website</string>
+    <string name="btn_kirim_email">Kirim Email Konfirmasi</string>
+    <string name="btn_buka_kalender">Tambahkan ke Kalender</string>
+
+    <string name="share_subject">Konfirmasi Reservasi Restoran</string>
+    <string name="share_text">Saya telah membuat reservasi di Restoran Lezat Selalu:\n\nNama: %1$s\nJumlah Orang: %2$d\nTanggal: %3$s\nWaktu: %4$s\nMeja: %5$s</string>
+    <string name="email_body">Dear Restoran Lezat Selalu,\n\nSaya ingin mengkonfirmasi reservasi dengan detail berikut:\n\nNama: %1$s\nJumlah Orang: %2$d\nTanggal: %3$s\nWaktu: %4$s\nMeja: %5$s\n\nTerima kasih.</string>
+
+    <string name="restaurant_phone">+62123456789</string>
+    <string name="restaurant_website">https://www.restaurantlezatselalu.com</string>
+    <string name="restaurant_email">info@restaurantlezatselalu.com</string>
+    <string name="restaurant_address">Jl. Restoran Lezat No. 123, Jakarta</string>
+
+    <string name="msg_no_maps_app">Tidak ada aplikasi maps yang terinstall!</string>
+    <string name="msg_no_email_app">Tidak ada aplikasi email yang terinstall!</string>
+    <string name="msg_no_browser">Tidak ada aplikasi browser yang terinstall!</string>
+    <string name="msg_no_phone_app">Tidak ada aplikasi telepon yang terinstall!</string>
+    <string name="msg_no_calendar_app">Tidak ada aplikasi kalender yang terinstall!</string>
 
     <!-- Time Picker -->
     <string name="timepicker_title">Pilih Waktu Reservasi</string>
