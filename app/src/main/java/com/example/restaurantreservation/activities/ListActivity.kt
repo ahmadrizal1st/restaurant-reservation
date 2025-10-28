@@ -143,14 +143,20 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private fun loadReservationData() {
         showLoading()
 
-        // Simulate network delay
-        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
-            // Load reservations from storage
-            reservationList.clear()
-            reservationList.addAll(ReservationStorage.loadReservations())
+        // Load reservations from storage immediately
+        reservationList.clear()
+        reservationList.addAll(ReservationStorage.loadReservations())
 
-            // Check for new reservation from intent
-            checkForNewReservation()
+        // Update adapter with loaded data
+        adapter.submitList(reservationList.toMutableList())
+        filteredList.clear()
+        filteredList.addAll(reservationList)
+
+        // Check for new reservation from intent
+        checkForNewReservation()
+
+        // Simulate network delay for UI feedback
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             hideLoading()
             updateEmptyState()
         }, 500)
@@ -176,11 +182,10 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
             // Clear the intent to avoid duplicate additions on refresh
             intent.removeExtra(Constants.KEY_NEW_RESERVATION)
-        } else {
-            // If no new reservation, just update the display
-            adapter.submitList(reservationList.toMutableList())
-            updateEmptyState()
         }
+        // Always update the display after loading
+        adapter.submitList(reservationList.toMutableList())
+        updateEmptyState()
     }
 
     /**

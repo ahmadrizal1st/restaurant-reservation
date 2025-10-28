@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataReceiverHelper
@@ -34,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
     // private lateinit var btnWhatsApp: Button
     private lateinit var btnEditReservasi: Button
     // private lateinit var btnKembali: Button
+    private lateinit var toolbar: Toolbar
 
     private lateinit var reservation: Reservation
     private var action: String = Constants.ACTION_VIEW
@@ -75,6 +77,12 @@ class DetailActivity : AppCompatActivity() {
         // btnWhatsApp = findViewById(R.id.btnWhatsApp)
         btnEditReservasi = findViewById(R.id.btnEditReservasi)
         // btnKembali = findViewById(R.id.btnKembali)
+
+        // Toolbar
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     /**
@@ -290,5 +298,13 @@ class DetailActivity : AppCompatActivity() {
      */
     override fun onBackPressed() {
         kembaliDenganResult()
+    }
+
+    /**
+     * Handle toolbar navigation click
+     */
+    override fun onSupportNavigateUp(): Boolean {
+        kembaliDenganResult()
+        return true
     }
 }
