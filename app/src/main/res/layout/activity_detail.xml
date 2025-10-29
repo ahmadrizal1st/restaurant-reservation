@@ -14,6 +14,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Detail Reservasi" />
@@ -234,6 +237,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Vertical Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <!-- Action Buttons Grid -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutActions"
@@ -245,6 +256,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <!-- Guideline for centering -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
         <!-- Row 1: Maps & Telepon -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBukaMaps"
@@ -253,7 +272,7 @@
             android:layout_height="wrap_content"
             android:text="Maps"
             app:icon="@drawable/ic_map"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -265,7 +284,7 @@
             android:text="Telepon"
             app:icon="@drawable/ic_phone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Row 2: Website & Email -->
@@ -277,7 +296,7 @@
             android:layout_marginTop="8dp"
             android:text="Website"
             app:icon="@drawable/ic_website"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnBukaMaps" />
 
@@ -290,7 +309,7 @@
             android:text="Email"
             app:icon="@drawable/ic_email"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
             app:layout_constraintTop_toBottomOf="@+id/btnTeleponRestoran" />
 
         <!-- Row 3: Share & Edit -->
@@ -302,7 +321,7 @@
             android:layout_marginTop="16dp"
             android:text="Bagikan"
             app:icon="@drawable/ic_share"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnBukaWebsite" />
 
@@ -315,17 +334,9 @@
             android:text="Edit"
             app:icon="@drawable/ic_edit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
+            app:layout_constraintStart_toStartOf="@+id/guidelineCenter"
             app:layout_constraintTop_toBottomOf="@+id/btnKirimEmail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Vertical Guideline -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineVertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

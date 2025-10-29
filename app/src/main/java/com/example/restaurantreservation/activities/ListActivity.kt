@@ -1,4 +1,4 @@
-package com.example.restaurantreservation
+package com.example.restaurantreservation.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,10 +6,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.restaurantreservation.activities.DetailActivity
+import com.example.restaurantreservation.activities.MainActivity
 import com.example.restaurantreservation.adapter.ReservationAdapter
 import com.example.restaurantreservation.adapter.SortField
 import com.example.restaurantreservation.adapter.SortOrder
@@ -18,6 +22,7 @@ import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.IntentUtils
 import com.example.restaurantreservation.utils.ReservationStorage
+import com.example.restaurantreservation.R
 import java.util.*
 
 class ListActivity : AppCompatActivity(), OnReservationClickListener {
@@ -27,11 +32,10 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private lateinit var adapter: ReservationAdapter
     private lateinit var emptyState: LinearLayout
     private lateinit var progressBar: ProgressBar
-    private lateinit var swipeRefreshLayout: androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     // Filter and Search components
     private lateinit var searchView: androidx.appcompat.widget.SearchView
-    private lateinit var spinnerFilter: Spinner
 
     // Data
     private val reservationList = mutableListOf<Reservation>()
@@ -166,6 +170,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
      * METHOD 5: Check for new reservation from intent
      */
     private fun checkForNewReservation() {
+        @Suppress("DEPRECATION")
         val newReservation = intent.getParcelableExtra<Reservation>(Constants.KEY_NEW_RESERVATION)
         if (newReservation != null) {
             // Always add new reservation to the list (allow multiple entries)
@@ -243,6 +248,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         startActivity(intent)
 
         // Add animation
+        @Suppress("DEPRECATION")
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
@@ -252,6 +258,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             putExtra(Constants.KEY_RESERVATION_DATA, reservation)
             putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
         }
+        @Suppress("DEPRECATION")
         startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
 
         // Show edit message
@@ -263,7 +270,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         android.app.AlertDialog.Builder(this)
             .setTitle("Hapus Reservasi")
             .setMessage("Apakah Anda yakin ingin menghapus reservasi ${reservation.nama}?")
-            .setPositiveButton("Hapus") { dialog, which ->
+            .setPositiveButton("Hapus") { _, _ ->
                 // Remove from storage
                 ReservationStorage.removeReservation(reservation.id)
 
@@ -296,7 +303,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
         android.app.AlertDialog.Builder(this)
             .setTitle("Pilih Aksi")
-            .setItems(options) { dialog, which ->
+            .setItems(options) { _, which ->
                 when (which) {
                     0 -> onReservationClick(reservation, position)
                     1 -> onEditClick(reservation, position)
@@ -326,6 +333,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                @Suppress("DEPRECATION")
                 onBackPressed()
                 true
             }
@@ -415,7 +423,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
         android.app.AlertDialog.Builder(this)
             .setTitle("Urutkan Berdasarkan")
-            .setItems(sortOptions) { dialog, which ->
+            .setItems(sortOptions) { _, which ->
                 when (which) {
                     0 -> adapter.sort(SortField.NAME, SortOrder.ASCENDING)
                     1 -> adapter.sort(SortField.NAME, SortOrder.DESCENDING)
@@ -430,13 +438,14 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
     // === ACTIVITY RESULT HANDLING ===
 
-    @Deprecated("Deprecated in Java")
+    @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
             Constants.REQUEST_CODE_EDIT_RESERVATION -> {
                 if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
+                    @Suppress("DEPRECATION")
                     val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
                     updatedReservation?.let {
                         // Update in storage
@@ -472,10 +481,5 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save important state if needed
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        // Restore state if needed
     }
 }

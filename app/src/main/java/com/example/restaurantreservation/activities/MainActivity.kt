@@ -1,11 +1,14 @@
-package com.example.restaurantreservation
+package com.example.restaurantreservation.activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.restaurantreservation.R
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataTransferHelper
@@ -50,6 +53,10 @@ class MainActivity : AppCompatActivity() {
     private var selectedMeja: String = ""
     private val calendar = Calendar.getInstance()
 
+    // Activity result launchers
+    private lateinit var createReservationLauncher: ActivityResultLauncher<Intent>
+    private lateinit var editReservationLauncher: ActivityResultLauncher<Intent>
+
     // Data untuk spinner meja
     private val listMeja = arrayOf(
         "Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5",
@@ -73,6 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         initializeViews()
         setupComponents()
+        setupActivityResultLaunchers()
         setDefaultDateTime()
         handleIncomingIntent()
 
@@ -117,6 +125,19 @@ class MainActivity : AppCompatActivity() {
         setupTimePicker()
         setupClickListeners()
         setupTextWatchers()
+    }
+
+    /**
+     * Setup activity result launchers untuk menggantikan deprecated onActivityResult
+     */
+    private fun setupActivityResultLaunchers() {
+        createReservationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            handleCreateReservationResult(result.resultCode, result.data)
+        }
+
+        editReservationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            handleEditReservationResult(result.resultCode, result.data)
+        }
     }
     // endregion
 
@@ -310,6 +331,7 @@ class MainActivity : AppCompatActivity() {
                 showError("Harap isi form dengan benar!")
                 false
             }
+            else -> false
         }
     }
 
@@ -324,7 +346,7 @@ class MainActivity : AppCompatActivity() {
             putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
         }
 
-        startActivityForResult(intent, Constants.REQUEST_CODE_CREATE_RESERVATION)
+        createReservationLauncher.launch(intent)
         showSuccessMessage("Reservasi berhasil dibuat untuk ${reservation.nama}!")
     }
 
@@ -432,6 +454,8 @@ class MainActivity : AppCompatActivity() {
             is ValidationResult.Error -> {
                 textInputLayoutNama.error = result.message
             }
+
+            else -> {}
         }
     }
     // endregion
@@ -446,6 +470,7 @@ class MainActivity : AppCompatActivity() {
         reservation?.let {
             when (intent.action) {
                 Constants.ACTION_EDIT -> prefillFormForEdit(it)
+                else -> {}
             }
         }
     }
@@ -490,7 +515,7 @@ class MainActivity : AppCompatActivity() {
             spMeja.setSelection(mejaPosition)
         }
 
-        btnBuatReservasi.text = "Update Reservasi"
+        btnBuatReservasi.text = getString(R.string.update_reservation)
 
         printDebugInfo("Form prefilled for editing: ${reservation.nama}")
     }
@@ -505,6 +530,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             Constants.REQUEST_CODE_CREATE_RESERVATION -> handleCreateReservationResult(resultCode, data)
             Constants.REQUEST_CODE_EDIT_RESERVATION -> handleEditReservationResult(resultCode, data)
+            else -> {}
         }
     }
 
@@ -528,6 +554,9 @@ class MainActivity : AppCompatActivity() {
             }
             RESULT_CANCELED -> {
                 showInfo("Reservasi dibatalkan")
+            }
+            else -> {
+                // Handle any other result codes if needed
             }
         }
     }
@@ -556,6 +585,9 @@ class MainActivity : AppCompatActivity() {
             RESULT_CANCELED -> {
                 showInfo("Edit reservasi dibatalkan")
                 finish()
+            }
+            else -> {
+                // Handle any other result codes if needed
             }
         }
     }
@@ -602,9 +634,7 @@ class MainActivity : AppCompatActivity() {
      * @param message Pesan debug
      */
     private fun printDebugInfo(message: String) {
-        if (BuildConfig.DEBUG) {
-            println("DEBUG - MainActivity: $message")
-        }
+        println("DEBUG - MainActivity: $message")
     }
 
     /**

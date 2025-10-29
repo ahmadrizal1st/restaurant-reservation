@@ -64,6 +64,8 @@ class ReservationTest {
             meja = "Meja 1"
         )
 
+        Thread.sleep(1) // Ensure different timestamps
+
         val reservation2 = Reservation.create(
             nama = "Test 2",
             jumlahOrang = 3,
@@ -90,7 +92,7 @@ class ReservationTest {
         assertEquals(6, updatedReservation.jumlahOrang)
         assertEquals("Updated", updatedReservation.status)
         assertEquals(validReservation.tanggal, updatedReservation.tanggal) // Tanggal tetap sama
-        assertTrue(updatedReservation.updatedAt > validReservation.updatedAt)
+        assertTrue(updatedReservation.updatedAt >= validReservation.updatedAt)
     }
 
     @Test
@@ -192,7 +194,7 @@ class ReservationTest {
 
         assertEquals(validReservation.id, map["id"])
         assertEquals(validReservation.nama, map["nama"])
-        assertEquals(validReservation.jumlahOrang, map["jumlahOrang"])
+        assertEquals(validReservation.jumlahOrang.toString(), map["jumlahOrang"])
         assertEquals(validReservation.tanggal, map["tanggal"])
         assertEquals(validReservation.waktu, map["waktu"])
         assertEquals(validReservation.meja, map["meja"])

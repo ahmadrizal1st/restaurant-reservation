@@ -10,6 +10,7 @@
     <string name="label_tanggal">Tanggal Reservasi</string>
     <string name="btn_buat_reservasi">Buat Reservasi</string>
     <string name="btn_lihat_daftar">Lihat Daftar Reservasi</string>
+    <string name="update_reservation">Update Reservasi</string>
 
     <!-- Detail Activity -->
     <string name="label_detail_nama">Nama Pemesan</string>
@@ -111,4 +112,15 @@
     <string name="sort_date_newest">Tanggal (Terbaru)</string>
     <string name="sort_date_oldest">Tanggal (Terlama)</string>
     <string name="sort_people">Jumlah Orang</string>
+
+    <!-- Detail Activity additional strings -->
+    <string name="jumlah_orang_format">%d orang</string>
+    <string name="reservation_id_format">ID: %s</string>
+    <string name="created_at_format">Dibuat: %s</string>
+    <string name="activity_title_create">Reservasi Baru - %s</string>
+    <string name="activity_title_edit">Edit Reservasi - %s</string>
+    <string name="activity_title_view">Detail Reservasi - %s</string>
+    <string name="title_reservasi_baru">Reservasi Baru</string>
+    <string name="title_edit_reservasi">Edit Reservasi</string>
+    <string name="title_detail_reservasi">Detail Reservasi</string>
 </resources>

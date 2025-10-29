@@ -1,6 +1,7 @@
-package com.example.restaurantreservation
+package com.example.restaurantreservation.activities
 
 import android.content.Intent
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -10,6 +11,7 @@ import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataReceiverHelper
 import com.example.restaurantreservation.utils.IntentUtils
 import com.example.restaurantreservation.utils.ValidationResult
+import com.example.restaurantreservation.R
 
 class DetailActivity : AppCompatActivity() {
 
@@ -118,6 +120,9 @@ class DetailActivity : AppCompatActivity() {
                 showError(validationResult.message)
                 // Tetap lanjutkan, tapi dengan data yang mungkin tidak lengkap
             }
+            else -> {
+                // Handle any other validation results if added in the future
+            }
         }
 
         // Log additional parameters
@@ -132,13 +137,13 @@ class DetailActivity : AppCompatActivity() {
         try {
             // Data utama
             tvNama.text = reservation.nama
-            tvJumlahOrang.text = "${reservation.jumlahOrang} orang"
+            tvJumlahOrang.text = getString(R.string.jumlah_orang_format, reservation.jumlahOrang)
             tvTanggal.text = reservation.getFormattedDate()
             tvWaktu.text = reservation.getFormattedTime()
             tvMeja.text = reservation.meja
             tvStatus.text = reservation.status
-            tvReservationId.text = "ID: ${reservation.id}"
-            tvCreatedAt.text = "Dibuat: ${reservation.getCreatedAtFormatted()}"
+            tvReservationId.text = getString(R.string.reservation_id_format, reservation.id)
+            tvCreatedAt.text = getString(R.string.created_at_format, reservation.getCreatedAtFormatted())
 
             // Handle catatan (bisa kosong)
             // if (reservation.catatan.isNotBlank()) {
@@ -165,16 +170,19 @@ class DetailActivity : AppCompatActivity() {
     private fun setupUIberdasarkanAction() {
         when (action) {
             Constants.ACTION_CREATE -> {
-                setTitle("Reservasi Baru")
+                setTitle(R.string.title_reservasi_baru)
                 btnEditReservasi.visibility = android.view.View.GONE
             }
             Constants.ACTION_EDIT -> {
-                setTitle("Edit Reservasi")
-                btnEditReservasi.text = "Update Reservasi"
+                setTitle(R.string.title_edit_reservasi)
+                btnEditReservasi.text = getString(R.string.update_reservation)
             }
             Constants.ACTION_VIEW -> {
-                setTitle("Detail Reservasi")
+                setTitle(R.string.title_detail_reservasi)
                 // Default view
+            }
+            else -> {
+                setTitle(R.string.title_detail_reservasi)
             }
         }
     }
@@ -208,6 +216,7 @@ class DetailActivity : AppCompatActivity() {
             putExtra(Constants.KEY_RESERVATION_DATA, reservation)
             putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
         }
+        @Suppress("DEPRECATION")
         startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
     }
 
@@ -246,6 +255,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         // Pulihkan data saat configuration change
+        @Suppress("DEPRECATION")
         savedInstanceState.getParcelable<Reservation>(Constants.KEY_RESERVATION_DATA)?.let {
             reservation = it
         }
@@ -256,8 +266,8 @@ class DetailActivity : AppCompatActivity() {
     // === HELPER METHODS ===
 
     private fun setStatusColor(status: String) {
-        val color = when (status.toLowerCase()) {
-            "confirmed", "confirmed" -> android.R.color.holo_green_dark
+        val color = when (status.lowercase()) {
+            "confirmed" -> android.R.color.holo_green_dark
             "pending" -> android.R.color.holo_orange_dark
             "cancelled" -> android.R.color.holo_red_dark
             "updated" -> android.R.color.holo_blue_dark
@@ -268,9 +278,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setActivityTitle() {
         val title = when (action) {
-            Constants.ACTION_CREATE -> "Reservasi Baru - ${reservation.nama}"
-            Constants.ACTION_EDIT -> "Edit Reservasi - ${reservation.nama}"
-            else -> "Detail Reservasi - ${reservation.nama}"
+            Constants.ACTION_CREATE -> getString(R.string.activity_title_create, reservation.nama)
+            Constants.ACTION_EDIT -> getString(R.string.activity_title_edit, reservation.nama)
+            else -> getString(R.string.activity_title_view, reservation.nama)
         }
         setTitle(title)
     }
@@ -286,7 +296,9 @@ class DetailActivity : AppCompatActivity() {
     /**
      * METHOD 7: Handle back button press
      */
+    @Deprecated("Deprecated in Java", ReplaceWith("onBackPressedDispatcher.onBackPressed()"))
     override fun onBackPressed() {
+        super.onBackPressed()
         kembaliDenganResult()
     }
 
@@ -301,18 +313,19 @@ class DetailActivity : AppCompatActivity() {
     /**
      * Handle edit result from MainActivity
      */
-    @Deprecated("Deprecated in Java")
+    @Deprecated("Deprecated in Java", ReplaceWith("Activity Result APIs"))
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
             Constants.REQUEST_CODE_EDIT_RESERVATION -> {
                 if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
+                    @Suppress("DEPRECATION")
                     val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
                     updatedReservation?.let {
                         reservation = it
                         tampilkanDataReservasi()
-                        showSuccess("Reservasi berhasil diupdate!")
+                        showSuccess(getString(R.string.success_edit_reservasi))
                     }
                 }
             }
