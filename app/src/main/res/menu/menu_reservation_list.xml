@@ -5,33 +5,33 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        android:title="@string/search_hint"
+        android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_sort"
-        android:title="@string/filter_all"
+        android:title="@string/filter"
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_sort"
-        android:title="@string/sort_by"
+        android:title="@string/sort"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_refresh"
-        android:title="@string/menu_refresh"
+        android:title="@string/refresh"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_add"
         android:icon="@drawable/ic_add"
-        android:title="@string/menu_add"
+        android:title="@string/add"
         app:showAsAction="ifRoom" />
 
 </menu>

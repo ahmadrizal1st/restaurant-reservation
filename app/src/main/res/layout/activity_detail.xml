@@ -247,7 +247,7 @@
     <!-- Action Buttons Grid -->
     <LinearLayout
         android:id="@+id/layoutActions"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
@@ -261,25 +261,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBukaMaps"
                 style="@style/Widget.RestaurantReservation.Button.Outlined"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/btn_maps"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_map" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnTeleponRestoran"
                 style="@style/Widget.RestaurantReservation.Button.Outlined"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_telepon"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_phone" />
 
         </LinearLayout>
@@ -289,25 +292,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBukaWebsite"
                 style="@style/Widget.RestaurantReservation.Button.Outlined"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/btn_website"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_website" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnKirimEmail"
                 style="@style/Widget.RestaurantReservation.Button.Outlined"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_email"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_email" />
 
         </LinearLayout>
@@ -316,25 +322,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBagikanReservasi"
                 style="@style/Widget.RestaurantReservation.Button"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/btn_bagikan"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_share" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditReservasi"
                 style="@style/Widget.RestaurantReservation.Button"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/btn_edit_short"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:icon="@drawable/ic_edit" />
 
         </LinearLayout>

@@ -6,23 +6,74 @@
         <item name="cardUseCompatPadding">true</item>
     </style>
 
+    <style name="Widget.RestaurantReservation.CardView" parent="CardView">
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="contentPadding">8dp</item>
+    </style>
+
     <style name="Widget.RestaurantReservation.Button.Primary" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/primary_color</item>
+        <item name="backgroundTint">@color/primary_dark</item>
         <item name="cornerRadius">8dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:maxWidth">140dp</item>
     </style>
 
     <style name="Widget.RestaurantReservation.Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/primary_color</item>
+        <item name="strokeColor">@color/primary_dark</item>
         <item name="strokeWidth">1dp</item>
         <item name="cornerRadius">8dp</item>
-        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:maxWidth">140dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- Alias styles for layout compatibility -->
+    <style name="Widget.RestaurantReservation.Button" parent="Widget.RestaurantReservation.Button.Primary">
+        <item name="android:textColor">@color/text_on_primary</item>
+    </style>
+    <style name="Widget.RestaurantReservation.Button.Outlined" parent="Widget.RestaurantReservation.Button.Secondary" />
+
+    <!-- TextInputLayout Styles -->
+    <style name="Widget.RestaurantReservation.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="hintTextAppearance">@style/TextAppearance.RestaurantReservation.Hint</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="TextAppearance.RestaurantReservation.Hint" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">14sp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Title" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.RestaurantReservation.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 </resources>

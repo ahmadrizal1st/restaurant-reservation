@@ -79,6 +79,11 @@
     <string name="menu_share">Bagikan</string>
     <string name="menu_refresh">Refresh</string>
     <string name="menu_add">Tambah</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="refresh">Refresh</string>
+    <string name="add">Add</string>
 
     <!-- Receiving Data -->
     <string name="error_no_data">Tidak ada data reservasi yang diterima</string>

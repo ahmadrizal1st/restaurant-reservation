@@ -35,7 +35,8 @@
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
                 android:padding="4dp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:contentDescription="@string/title_list_activity" />
 
             <!-- Progress Bar -->
             <ProgressBar
@@ -47,30 +48,17 @@
                 android:visibility="gone" />
 
             <!-- Empty State -->
-            <LinearLayout
+            <TextView
                 android:id="@+id/tvEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:drawableTop="@drawable/ic_empty_state"
+                android:text="@string/empty_reservation_list"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_empty_state"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="@string/empty_list" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/empty_reservation_list"
-                    android:textSize="16sp"
-                    android:textColor="#666"
-                    android:gravity="center" />
-
-            </LinearLayout>
+                android:visibility="gone"
+                android:drawablePadding="16dp" />
 
         </RelativeLayout>
 
@@ -81,30 +69,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#f5f5f5"
-        android:padding="4dp">
+        android:background="@color/background_light"
+        android:padding="4dp"
+        android:gravity="center">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddReservation"
-            android:layout_width="0dp"
+            style="@style/Widget.RestaurantReservation.Button"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="10dp"
             android:text="@string/btn_tambah_reservasi"
-            android:textSize="14sp"
-            android:backgroundTint="?attr/colorPrimary"
-            android:layout_marginEnd="6dp" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginEnd="16dp"
+            app:icon="@drawable/ic_add" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBackToMain"
-            android:layout_width="0dp"
+            style="@style/Widget.RestaurantReservation.Button.Secondary"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="10dp"
             android:text="@string/btn_kembali"
-            android:textSize="14sp"
-            android:backgroundTint="#9E9E9E"
-            android:layout_marginStart="6dp" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:icon="@drawable/ic_list" />
 
     </LinearLayout>
 

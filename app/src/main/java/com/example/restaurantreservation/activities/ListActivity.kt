@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +36,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     // RecyclerView components
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReservationAdapter
-    private lateinit var emptyState: LinearLayout
+    private lateinit var emptyState: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
