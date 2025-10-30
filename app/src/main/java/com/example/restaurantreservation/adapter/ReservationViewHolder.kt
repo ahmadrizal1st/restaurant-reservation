@@ -1,7 +1,9 @@
 package com.example.restaurantreservation.adapter
 
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreservation.R
@@ -13,9 +15,8 @@ import com.example.restaurantreservation.model.Reservation
  */
 class ReservationViewHolder(
     itemView: View,
-    private val listener: com.example.restaurantreservation.interfaces.OnReservationClickListener
+    private val listener: com.example.restaurantreservation.interfaces.OnReservationClickListener,
 ) : RecyclerView.ViewHolder(itemView) {
-
     // Deklarasi semua view components
     private val tvNama: TextView = itemView.findViewById(R.id.tvItemNama)
     private val tvJumlahOrang: TextView = itemView.findViewById(R.id.tvItemJumlahOrang)
@@ -37,7 +38,10 @@ class ReservationViewHolder(
      * @param reservation Data reservasi yang akan ditampilkan
      * @param position Posisi item dalam list
      */
-    fun bind(reservation: Reservation, position: Int) {
+    fun bind(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Set data ke view components
         setDataToViews(reservation)
 
@@ -70,7 +74,10 @@ class ReservationViewHolder(
     /**
      * Method untuk setup click listeners
      */
-    private fun setupClickListeners(reservation: Reservation, position: Int) {
+    private fun setupClickListeners(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Click pada entire item
         itemView.setOnClickListener {
             listener.onReservationClick(reservation, position)
@@ -95,7 +102,10 @@ class ReservationViewHolder(
     /**
      * Method untuk setup long click listener
      */
-    private fun setupLongClickListener(reservation: Reservation, position: Int) {
+    private fun setupLongClickListener(
+        reservation: Reservation,
+        position: Int,
+    ) {
         itemView.setOnLongClickListener {
             listener.onReservationLongClick(reservation, position)
         }
@@ -108,34 +118,38 @@ class ReservationViewHolder(
         val (backgroundColor, textColor) = getStatusColors(status)
 
         layoutStatus.setBackgroundColor(
-            ContextCompat.getColor(itemView.context, backgroundColor)
+            ContextCompat.getColor(itemView.context, backgroundColor),
         )
         tvStatus.setTextColor(
-            ContextCompat.getColor(itemView.context, textColor)
+            ContextCompat.getColor(itemView.context, textColor),
         )
     }
 
     /**
      * Method untuk apply conditional styling
      */
-    private fun applyConditionalStyling(reservation: Reservation, position: Int) {
+    private fun applyConditionalStyling(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Highlight item berdasarkan posisi (ganjil/genap)
         if (position % 2 == 0) {
             cardView.setCardBackgroundColor(
-                ContextCompat.getColor(itemView.context, R.color.item_background_even)
+                ContextCompat.getColor(itemView.context, R.color.item_background_even),
             )
         } else {
             cardView.setCardBackgroundColor(
-                ContextCompat.getColor(itemView.context, R.color.item_background_odd)
+                ContextCompat.getColor(itemView.context, R.color.item_background_odd),
             )
         }
 
         // Tampilkan reservation ID hanya untuk debug
-        tvReservationId.visibility = if (isInDebugMode()) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        tvReservationId.visibility =
+            if (isInDebugMode()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     /**
@@ -155,9 +169,10 @@ class ReservationViewHolder(
      * Method untuk format jumlah orang
      */
     private fun formatJumlahOrang(jumlah: Int): String {
-        return "$jumlah " + itemView.context.getString(
-            if (jumlah == 1) R.string.person_singular else R.string.person_plural
-        )
+        return "$jumlah " +
+            itemView.context.getString(
+                if (jumlah == 1) R.string.person_singular else R.string.person_plural,
+            )
     }
 
     /**

@@ -89,16 +89,21 @@ fun View.fadeOut(duration: Long = 300) {
 /**
  * Extension function untuk set click dengan debounce
  */
-fun View.setDebouncedClickListener(debounceTime: Long = 600, onClick: (View) -> Unit) {
-    this.setOnClickListener(object : View.OnClickListener {
-        private var lastClickTime: Long = 0
+fun View.setDebouncedClickListener(
+    debounceTime: Long = 600,
+    onClick: (View) -> Unit,
+) {
+    this.setOnClickListener(
+        object : View.OnClickListener {
+            private var lastClickTime: Long = 0
 
-        override fun onClick(v: View) {
-            if (System.currentTimeMillis() - lastClickTime < debounceTime) return
-            lastClickTime = System.currentTimeMillis()
-            onClick(v)
-        }
-    })
+            override fun onClick(v: View) {
+                if (System.currentTimeMillis() - lastClickTime < debounceTime) return
+                lastClickTime = System.currentTimeMillis()
+                onClick(v)
+            }
+        },
+    )
 }
 
 /**

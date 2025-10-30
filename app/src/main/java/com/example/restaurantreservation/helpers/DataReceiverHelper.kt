@@ -9,7 +9,6 @@ import com.example.restaurantreservation.model.Reservation
  * Utility class untuk membantu menerima data dari Activity lain
  */
 object DataReceiverHelper {
-
     /**
      * Method 1: Extract Reservation dari Intent dengan multiple fallbacks
      */
@@ -38,7 +37,6 @@ object DataReceiverHelper {
 
             // Data tidak valid
             null
-
         } catch (e: Exception) {
             null
         }
@@ -68,7 +66,7 @@ object DataReceiverHelper {
                 catatan = intent.getStringExtra(Constants.KEY_CATATAN) ?: "",
                 status = intent.getStringExtra(Constants.KEY_STATUS) ?: "Confirmed",
                 createdAt = intent.getLongExtra(Constants.KEY_CREATED_AT, System.currentTimeMillis()),
-                updatedAt = intent.getLongExtra(Constants.KEY_UPDATED_AT, System.currentTimeMillis())
+                updatedAt = intent.getLongExtra(Constants.KEY_UPDATED_AT, System.currentTimeMillis()),
             )
         } catch (e: Exception) {
             null
@@ -105,7 +103,7 @@ object DataReceiverHelper {
                 catatan = bundle.getString(Constants.KEY_CATATAN) ?: "",
                 status = bundle.getString(Constants.KEY_STATUS) ?: "Confirmed",
                 createdAt = bundle.getLong(Constants.KEY_CREATED_AT, System.currentTimeMillis()),
-                updatedAt = bundle.getLong(Constants.KEY_UPDATED_AT, System.currentTimeMillis())
+                updatedAt = bundle.getLong(Constants.KEY_UPDATED_AT, System.currentTimeMillis()),
             )
         } catch (e: Exception) {
             null
@@ -140,14 +138,17 @@ object DataReceiverHelper {
         return mapOf(
             "source" to (intent.getStringExtra("source") ?: "unknown"),
             "timestamp" to intent.getLongExtra("timestamp", System.currentTimeMillis()).toString(),
-            "version" to intent.getIntExtra("data_version", 1).toString()
+            "version" to intent.getIntExtra("data_version", 1).toString(),
         )
     }
 
     /**
      * Method 7: Log data receipt untuk debugging
      */
-    private fun logDataReceipt(method: String, reservation: Reservation) {
+    private fun logDataReceipt(
+        method: String,
+        reservation: Reservation,
+    ) {
         println("DATA RECEIVED - Method: $method")
         println("Reservation ID: ${reservation.id}")
         println("Nama: ${reservation.nama}")
@@ -160,7 +161,10 @@ object DataReceiverHelper {
     /**
      * Method 8: Show error message
      */
-    private fun showDataError(context: android.content.Context, message: String) {
+    private fun showDataError(
+        context: android.content.Context,
+        message: String,
+    ) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         println("DATA RECEIVE ERROR: $message")
     }
@@ -170,23 +174,25 @@ object DataReceiverHelper {
      */
     fun hasReservationData(intent: Intent): Boolean {
         return intent.hasExtra(Constants.KEY_RESERVATION_DATA) ||
-                (intent.hasExtra(Constants.KEY_NAMA) &&
-                        intent.hasExtra(Constants.KEY_JUMLAH_ORANG) &&
-                        intent.hasExtra(Constants.KEY_TANGGAL))
+            (
+                intent.hasExtra(Constants.KEY_NAMA) &&
+                    intent.hasExtra(Constants.KEY_JUMLAH_ORANG) &&
+                    intent.hasExtra(Constants.KEY_TANGGAL)
+            )
     }
 
     /**
      * Method 10: Get reservation with default values
      */
     fun getReservationWithDefaults(intent: Intent): Reservation {
-        return getReservationFromIntent(intent) ?:
-        Reservation.create(
-            nama = "Guest",
-            jumlahOrang = 2,
-            tanggal = "01/01/2024",
-            waktu = "12:00",
-            meja = "Meja 1",
-            status = "Unknown"
-        )
+        return getReservationFromIntent(intent)
+            ?: Reservation.create(
+                nama = "Guest",
+                jumlahOrang = 2,
+                tanggal = "01/01/2024",
+                waktu = "12:00",
+                meja = "Meja 1",
+                status = "Unknown",
+            )
     }
 }

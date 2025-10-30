@@ -1,25 +1,27 @@
 package com.example.restaurantreservation.activities
 
 import android.content.Intent
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.restaurantreservation.R
 import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.DataReceiverHelper
 import com.example.restaurantreservation.utils.IntentUtils
 import com.example.restaurantreservation.utils.ValidationResult
-import com.example.restaurantreservation.R
 
 class DetailActivity : AppCompatActivity() {
-
     private lateinit var tvNama: TextView
     private lateinit var tvJumlahOrang: TextView
     private lateinit var tvTanggal: TextView
     private lateinit var tvWaktu: TextView
     private lateinit var tvMeja: TextView
+
     // private lateinit var tvCatatan: TextView
     private lateinit var tvStatus: TextView
     private lateinit var tvCreatedAt: TextView
@@ -33,9 +35,11 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var btnBagikanReservasi: Button
     private lateinit var btnBukaWebsite: Button
     private lateinit var btnKirimEmail: Button
+
     // private lateinit var btnBukaKalender: Button
     // private lateinit var btnWhatsApp: Button
     private lateinit var btnEditReservasi: Button
+
     // private lateinit var btnKembali: Button
     private lateinit var toolbar: Toolbar
 
@@ -158,7 +162,6 @@ class DetailActivity : AppCompatActivity() {
 
             // Set judul activity berdasarkan action
             setActivityTitle()
-
         } catch (e: Exception) {
             showError("Error menampilkan data: ${e.message}")
         }
@@ -212,10 +215,11 @@ class DetailActivity : AppCompatActivity() {
      * METHOD 4: Edit reservasi - navigate to MainActivity with edit data
      */
     private fun editReservasi() {
-        val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
-        }
+        val intent =
+            Intent(this, MainActivity::class.java).apply {
+                putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
+            }
         @Suppress("DEPRECATION")
         startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
     }
@@ -227,9 +231,10 @@ class DetailActivity : AppCompatActivity() {
         when (action) {
             Constants.ACTION_CREATE -> {
                 // Return result to MainActivity
-                val resultIntent = Intent().apply {
-                    putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-                }
+                val resultIntent =
+                    Intent().apply {
+                        putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                    }
                 setResult(Constants.RESULT_RESERVATION_CREATED, resultIntent)
             }
             Constants.ACTION_EDIT -> {
@@ -266,22 +271,24 @@ class DetailActivity : AppCompatActivity() {
     // === HELPER METHODS ===
 
     private fun setStatusColor(status: String) {
-        val color = when (status.lowercase()) {
-            "confirmed" -> android.R.color.holo_green_dark
-            "pending" -> android.R.color.holo_orange_dark
-            "cancelled" -> android.R.color.holo_red_dark
-            "updated" -> android.R.color.holo_blue_dark
-            else -> android.R.color.black
-        }
+        val color =
+            when (status.lowercase()) {
+                "confirmed" -> android.R.color.holo_green_dark
+                "pending" -> android.R.color.holo_orange_dark
+                "cancelled" -> android.R.color.holo_red_dark
+                "updated" -> android.R.color.holo_blue_dark
+                else -> android.R.color.black
+            }
         tvStatus.setTextColor(getColor(color))
     }
 
     private fun setActivityTitle() {
-        val title = when (action) {
-            Constants.ACTION_CREATE -> getString(R.string.activity_title_create, reservation.nama)
-            Constants.ACTION_EDIT -> getString(R.string.activity_title_edit, reservation.nama)
-            else -> getString(R.string.activity_title_view, reservation.nama)
-        }
+        val title =
+            when (action) {
+                Constants.ACTION_CREATE -> getString(R.string.activity_title_create, reservation.nama)
+                Constants.ACTION_EDIT -> getString(R.string.activity_title_edit, reservation.nama)
+                else -> getString(R.string.activity_title_view, reservation.nama)
+            }
         setTitle(title)
     }
 
@@ -314,7 +321,11 @@ class DetailActivity : AppCompatActivity() {
      * Handle edit result from MainActivity
      */
     @Deprecated("Deprecated in Java", ReplaceWith("Activity Result APIs"))
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {

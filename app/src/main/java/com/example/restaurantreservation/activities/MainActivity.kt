@@ -4,7 +4,15 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.NumberPicker
+import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +41,6 @@ import java.util.*
  * @version 1.0
  */
 class MainActivity : AppCompatActivity() {
-
     // UI Components
     private lateinit var etNama: EditText
     private lateinit var etCatatan: EditText
@@ -58,10 +65,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editReservationLauncher: ActivityResultLauncher<Intent>
 
     // Data untuk spinner meja
-    private val listMeja = arrayOf(
-        "Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5",
-        "Meja VIP 1", "Meja VIP 2", "Meja Keluarga 1", "Meja Keluarga 2"
-    )
+    private val listMeja =
+        arrayOf(
+            "Pilih Meja", "Meja 1", "Meja 2", "Meja 3", "Meja 4", "Meja 5",
+            "Meja VIP 1", "Meja VIP 2", "Meja Keluarga 1", "Meja Keluarga 2",
+        )
     // endregion
 
     // region - Lifecycle Methods
@@ -131,13 +139,15 @@ class MainActivity : AppCompatActivity() {
      * Setup activity result launchers untuk menggantikan deprecated onActivityResult
      */
     private fun setupActivityResultLaunchers() {
-        createReservationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            handleCreateReservationResult(result.resultCode, result.data)
-        }
+        createReservationLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                handleCreateReservationResult(result.resultCode, result.data)
+            }
 
-        editReservationLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            handleEditReservationResult(result.resultCode, result.data)
-        }
+        editReservationLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                handleEditReservationResult(result.resultCode, result.data)
+            }
     }
     // endregion
 
@@ -163,28 +173,35 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spMeja.adapter = adapter
 
-        spMeja.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
-                selectedMeja = if (position > 0) listMeja[position] else ""
-                printDebugInfo("Meja selected: $selectedMeja")
-            }
+        spMeja.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: android.view.View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    selectedMeja = if (position > 0) listMeja[position] else ""
+                    printDebugInfo("Meja selected: $selectedMeja")
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                selectedMeja = ""
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    selectedMeja = ""
+                }
             }
-        }
     }
 
     /**
      * Setup DatePicker dialog untuk pemilihan tanggal
      */
     private fun setupDatePicker() {
-        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, month)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateDisplay()
-        }
+        val dateSetListener =
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateDisplay()
+            }
 
         btnPilihTanggal.setOnClickListener {
             DatePickerDialog(
@@ -192,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                 dateSetListener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.DAY_OF_MONTH),
             ).apply {
                 datePicker.minDate = System.currentTimeMillis() - 1000
                 val maxDate = Calendar.getInstance().apply { add(Calendar.YEAR, 1) }
@@ -206,11 +223,12 @@ class MainActivity : AppCompatActivity() {
      * Setup TimePicker dialog untuk pemilihan waktu
      */
     private fun setupTimePicker() {
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-            calendar.set(Calendar.MINUTE, minute)
-            updateTimeDisplay()
-        }
+        val timeSetListener =
+            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                updateTimeDisplay()
+            }
 
         btnPilihWaktu.setOnClickListener {
             TimePickerDialog(
@@ -218,7 +236,7 @@ class MainActivity : AppCompatActivity() {
                 timeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
-                true
+                true,
             ).apply {
                 setTitle("Pilih Waktu Reservasi")
             }.show()
@@ -242,13 +260,27 @@ class MainActivity : AppCompatActivity() {
      * Setup text watchers untuk real-time validation
      */
     private fun setupTextWatchers() {
-        etNama.addTextChangedListener(object : android.text.TextWatcher {
-            override fun afterTextChanged(s: android.text.Editable?) {
-                validateNama(s.toString())
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+        etNama.addTextChangedListener(
+            object : android.text.TextWatcher {
+                override fun afterTextChanged(s: android.text.Editable?) {
+                    validateNama(s.toString())
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int,
+                ) {}
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int,
+                ) {}
+            },
+        )
     }
     // endregion
 
@@ -270,15 +302,16 @@ class MainActivity : AppCompatActivity() {
 
         if (existingReservation != null && intent.action == Constants.ACTION_EDIT) {
             // Update existing reservation
-            val updatedReservation = existingReservation.copy(
-                nama = nama,
-                jumlahOrang = jumlahOrang,
-                tanggal = selectedDate,
-                waktu = selectedTime,
-                meja = selectedMeja,
-                catatan = catatan,
-                updatedAt = System.currentTimeMillis()
-            )
+            val updatedReservation =
+                existingReservation.copy(
+                    nama = nama,
+                    jumlahOrang = jumlahOrang,
+                    tanggal = selectedDate,
+                    waktu = selectedTime,
+                    meja = selectedMeja,
+                    catatan = catatan,
+                    updatedAt = System.currentTimeMillis(),
+                )
 
             // Validasi data sebelum dikirim
             if (!DataTransferHelper.validateReservationData(updatedReservation)) {
@@ -290,14 +323,15 @@ class MainActivity : AppCompatActivity() {
             sendUpdatedReservationData(updatedReservation)
         } else {
             // Create new reservation
-            val reservation = Reservation.create(
-                nama = nama,
-                jumlahOrang = jumlahOrang,
-                tanggal = selectedDate,
-                waktu = selectedTime,
-                meja = selectedMeja,
-                catatan = catatan
-            )
+            val reservation =
+                Reservation.create(
+                    nama = nama,
+                    jumlahOrang = jumlahOrang,
+                    tanggal = selectedDate,
+                    waktu = selectedTime,
+                    meja = selectedMeja,
+                    catatan = catatan,
+                )
 
             // Validasi data sebelum dikirim
             if (!DataTransferHelper.validateReservationData(reservation)) {
@@ -341,10 +375,11 @@ class MainActivity : AppCompatActivity() {
      * @param reservation Data reservasi yang akan dikirim
      */
     private fun sendReservationData(reservation: Reservation) {
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
-        }
+        val intent =
+            Intent(this, DetailActivity::class.java).apply {
+                putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                putExtra(Constants.KEY_ACTION, Constants.ACTION_CREATE)
+            }
 
         createReservationLauncher.launch(intent)
         showSuccessMessage("Reservasi berhasil dibuat untuk ${reservation.nama}!")
@@ -356,9 +391,10 @@ class MainActivity : AppCompatActivity() {
      * @param reservation Data reservasi yang sudah diupdate
      */
     private fun sendUpdatedReservationData(reservation: Reservation) {
-        val resultIntent = Intent().apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-        }
+        val resultIntent =
+            Intent().apply {
+                putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+            }
         setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
         showSuccessMessage("Reservasi berhasil diupdate untuk ${reservation.nama}!")
         finish()
@@ -449,7 +485,7 @@ class MainActivity : AppCompatActivity() {
         when (val result = InputValidator.validateNama(nama)) {
             is ValidationResult.Success -> {
                 textInputLayoutNama.error = null
-        textInputLayoutNama.isErrorEnabled = false
+                textInputLayoutNama.isErrorEnabled = false
             }
             is ValidationResult.Error -> {
                 textInputLayoutNama.error = result.message
@@ -524,7 +560,11 @@ class MainActivity : AppCompatActivity() {
      * Handle result dari activity lain
      */
     @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+    ) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
@@ -537,7 +577,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Handle result dari pembuatan reservasi
      */
-    private fun handleCreateReservationResult(resultCode: Int, data: Intent?) {
+    private fun handleCreateReservationResult(
+        resultCode: Int,
+        data: Intent?,
+    ) {
         when (resultCode) {
             Constants.RESULT_RESERVATION_CREATED -> {
                 val reservation = DataTransferHelper.getReservationFromIntent(data!!)
@@ -545,10 +588,11 @@ class MainActivity : AppCompatActivity() {
                     showSuccessMessage("Reservasi berhasil dibuat untuk ${it.nama}!")
 
                     // Navigate to ListActivity with new reservation data
-                    val listIntent = Intent(this, ListActivity::class.java).apply {
-                        putExtra(Constants.KEY_NEW_RESERVATION, reservation)
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
+                    val listIntent =
+                        Intent(this, ListActivity::class.java).apply {
+                            putExtra(Constants.KEY_NEW_RESERVATION, reservation)
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        }
                     startActivity(listIntent)
                 }
             }
@@ -564,7 +608,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Handle result dari edit reservasi
      */
-    private fun handleEditReservationResult(resultCode: Int, data: Intent?) {
+    private fun handleEditReservationResult(
+        resultCode: Int,
+        data: Intent?,
+    ) {
         when (resultCode) {
             Constants.RESULT_RESERVATION_UPDATED -> {
                 val updatedReservation = DataTransferHelper.getReservationFromIntent(data!!)
@@ -575,9 +622,10 @@ class MainActivity : AppCompatActivity() {
                     showSuccessMessage("Reservasi berhasil diupdate untuk ${it.nama}!")
 
                     // Navigate back to DetailActivity with updated data
-                    val resultIntent = Intent().apply {
-                        putExtra(Constants.KEY_RESERVATION_DATA, it)
-                    }
+                    val resultIntent =
+                        Intent().apply {
+                            putExtra(Constants.KEY_RESERVATION_DATA, it)
+                        }
                     setResult(Constants.RESULT_RESERVATION_UPDATED, resultIntent)
                     finish()
                 }

@@ -5,15 +5,23 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
-import androidx.activity.OnBackPressedCallback
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.restaurantreservation.activities.DetailActivity
-import com.example.restaurantreservation.activities.MainActivity
+import com.example.restaurantreservation.R
 import com.example.restaurantreservation.adapter.ReservationAdapter
 import com.example.restaurantreservation.adapter.SortField
 import com.example.restaurantreservation.adapter.SortOrder
@@ -22,11 +30,8 @@ import com.example.restaurantreservation.model.Reservation
 import com.example.restaurantreservation.utils.Constants
 import com.example.restaurantreservation.utils.IntentUtils
 import com.example.restaurantreservation.utils.ReservationStorage
-import com.example.restaurantreservation.R
-import java.util.*
 
 class ListActivity : AppCompatActivity(), OnReservationClickListener {
-
     // RecyclerView components
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ReservationAdapter
@@ -35,11 +40,14 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     // Filter and Search components
-    private lateinit var searchView: androidx.appcompat.widget.SearchView
+    private lateinit var searchView: SearchView
 
     // Data
     private val reservationList = mutableListOf<Reservation>()
     private var filteredList = mutableListOf<Reservation>()
+
+    // Activity result launcher for edit
+    private lateinit var editLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,15 +60,9 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         setupRecyclerView()
         setupSwipeRefresh()
         setupFilterAndSearch()
+        setupActivityResultLauncher()
         loadReservationData()
         setupClickListeners()
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        // Check for new reservation when activity is reused
-        checkForNewReservation()
     }
 
     private fun initViews() {
@@ -92,24 +94,19 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             adapter = this@ListActivity.adapter
 
             // Add item decoration untuk spacing
-            addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(
-                this@ListActivity,
-                LinearLayoutManager.VERTICAL
-            ))
-
-            // Add scroll listener untuk load more (jika diperlukan)
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    // Bisa implement infinite scrolling di sini
-                }
-            })
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@ListActivity,
+                    LinearLayoutManager.VERTICAL,
+                ),
+            )
 
             // Enable predictive animations untuk smooth scrolling
-            itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator().apply {
-                // Optimize animations
-                supportsChangeAnimations = true
-            }
+            itemAnimator =
+                DefaultItemAnimator().apply {
+                    // Optimize animations
+                    supportsChangeAnimations = true
+                }
         }
 
         // Show empty state jika tidak ada data
@@ -124,7 +121,7 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
-            android.R.color.holo_red_light
+            android.R.color.holo_red_light,
         )
 
         swipeRefreshLayout.setOnRefreshListener {
@@ -239,12 +236,16 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
     // === ON RESERVATION CLICK LISTENER METHODS ===
 
-    override fun onReservationClick(reservation: Reservation, position: Int) {
+    override fun onReservationClick(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Navigate ke DetailActivity
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_VIEW)
-        }
+        val intent =
+            Intent(this, DetailActivity::class.java).apply {
+                putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                putExtra(Constants.KEY_ACTION, Constants.ACTION_VIEW)
+            }
         startActivity(intent)
 
         // Add animation
@@ -252,20 +253,26 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
-    override fun onEditClick(reservation: Reservation, position: Int) {
+    override fun onEditClick(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Navigate ke DetailActivity untuk edit
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(Constants.KEY_RESERVATION_DATA, reservation)
-            putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
-        }
-        @Suppress("DEPRECATION")
-        startActivityForResult(intent, Constants.REQUEST_CODE_EDIT_RESERVATION)
+        val intent =
+            Intent(this, DetailActivity::class.java).apply {
+                putExtra(Constants.KEY_RESERVATION_DATA, reservation)
+                putExtra(Constants.KEY_ACTION, Constants.ACTION_EDIT)
+            }
+        editLauncher.launch(intent)
 
         // Show edit message
         Toast.makeText(this, "Edit reservasi ${reservation.nama}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onDeleteClick(reservation: Reservation, position: Int) {
+    override fun onDeleteClick(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Show confirmation dialog
         android.app.AlertDialog.Builder(this)
             .setTitle("Hapus Reservasi")
@@ -284,12 +291,18 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
             .show()
     }
 
-    override fun onShareClick(reservation: Reservation, position: Int) {
+    override fun onShareClick(
+        reservation: Reservation,
+        position: Int,
+    ) {
         // Share reservation details
         IntentUtils.shareReservation(this, reservation)
     }
 
-    override fun onReservationLongClick(reservation: Reservation, position: Int): Boolean {
+    override fun onReservationLongClick(
+        reservation: Reservation,
+        position: Int,
+    ): Boolean {
         // Show quick actions menu
         showQuickActionsMenu(reservation, position)
         return true
@@ -298,7 +311,10 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
     /**
      * METHOD 10: Show quick actions menu pada long press
      */
-    private fun showQuickActionsMenu(reservation: Reservation, position: Int) {
+    private fun showQuickActionsMenu(
+        reservation: Reservation,
+        position: Int,
+    ) {
         val options = arrayOf("Lihat Detail", "Edit", "Share", "Hapus")
 
         android.app.AlertDialog.Builder(this)
@@ -332,11 +348,6 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                @Suppress("DEPRECATION")
-                onBackPressed()
-                true
-            }
             R.id.action_sort -> {
                 showSortDialog()
                 true
@@ -360,17 +371,19 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         searchView.apply {
             queryHint = "Cari nama, meja, atau status..."
 
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    filterReservations(query)
-                    return true
-                }
+            setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        filterReservations(query)
+                        return true
+                    }
 
-                override fun onQueryTextChange(newText: String): Boolean {
-                    filterReservations(newText)
-                    return true
-                }
-            })
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        filterReservations(newText)
+                        return true
+                    }
+                },
+            )
 
             // Clear search when close
             setOnCloseListener {
@@ -392,19 +405,25 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         filterSpinner.adapter = spinnerAdapter
 
-        filterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                when (position) {
-                0 -> this@ListActivity.adapter.submitList(reservationList.toMutableList()) // All
-                1 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("confirmed", true) }.toMutableList())
-                2 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("pending", true) }.toMutableList())
-                3 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("cancelled", true) }.toMutableList())
+        filterSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long,
+                ) {
+                    when (position) {
+                        0 -> this@ListActivity.adapter.submitList(reservationList.toMutableList()) // All
+                        1 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("confirmed", true) }.toMutableList())
+                        2 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("pending", true) }.toMutableList())
+                        3 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("cancelled", true) }.toMutableList())
+                    }
+                    updateEmptyState()
                 }
-                updateEmptyState()
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
+                override fun onNothingSelected(parent: AdapterView<*>) {}
+            }
     }
 
     /**
@@ -438,15 +457,12 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
 
     // === ACTIVITY RESULT HANDLING ===
 
-    @Suppress("OVERRIDE_DEPRECATION")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            Constants.REQUEST_CODE_EDIT_RESERVATION -> {
-                if (resultCode == Constants.RESULT_RESERVATION_UPDATED) {
+    private fun setupActivityResultLauncher() {
+        editLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Constants.RESULT_RESERVATION_UPDATED) {
                     @Suppress("DEPRECATION")
-                    val updatedReservation = data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
+                    val updatedReservation = result.data?.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
                     updatedReservation?.let {
                         // Update in storage
                         ReservationStorage.updateReservation(it)
@@ -461,7 +477,6 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                     }
                 }
             }
-        }
     }
 
     private fun setupClickListeners() {
@@ -473,13 +488,5 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
         findViewById<Button>(R.id.btnBackToMain).setOnClickListener {
             finish()
         }
-    }
-
-    /**
-     * METHOD 15: Handle configuration changes
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Save important state if needed
     }
 }

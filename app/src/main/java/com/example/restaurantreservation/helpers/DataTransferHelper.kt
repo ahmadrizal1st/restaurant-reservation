@@ -8,11 +8,13 @@ import com.example.restaurantreservation.model.Reservation
  * Utility class untuk membantu transfer data antar Activity
  */
 object DataTransferHelper {
-
     /**
      * Method 1: Mengirim data individual melalui Intent
      */
-    fun putReservationData(intent: Intent, reservation: Reservation): Intent {
+    fun putReservationData(
+        intent: Intent,
+        reservation: Reservation,
+    ): Intent {
         return intent.apply {
             // Individual data fields
             putExtra(Constants.KEY_RESERVATION_ID, reservation.id)
@@ -82,7 +84,7 @@ object DataTransferHelper {
             catatan = intent.getStringExtra(Constants.KEY_CATATAN) ?: "",
             status = intent.getStringExtra(Constants.KEY_STATUS) ?: "Confirmed",
             createdAt = intent.getLongExtra(Constants.KEY_CREATED_AT, System.currentTimeMillis()),
-            updatedAt = intent.getLongExtra(Constants.KEY_UPDATED_AT, System.currentTimeMillis())
+            updatedAt = intent.getLongExtra(Constants.KEY_UPDATED_AT, System.currentTimeMillis()),
         )
     }
 
@@ -120,7 +122,7 @@ object DataTransferHelper {
             catatan = bundle.getString(Constants.KEY_CATATAN) ?: "",
             status = bundle.getString(Constants.KEY_STATUS) ?: "Confirmed",
             createdAt = bundle.getLong(Constants.KEY_CREATED_AT, System.currentTimeMillis()),
-            updatedAt = bundle.getLong(Constants.KEY_UPDATED_AT, System.currentTimeMillis())
+            updatedAt = bundle.getLong(Constants.KEY_UPDATED_AT, System.currentTimeMillis()),
         )
     }
 
@@ -129,16 +131,20 @@ object DataTransferHelper {
      */
     fun validateReservationData(reservation: Reservation): Boolean {
         return reservation.nama.isNotBlank() &&
-                reservation.jumlahOrang > 0 &&
-                reservation.tanggal.isNotBlank() &&
-                reservation.waktu.isNotBlank() &&
-                reservation.meja.isNotBlank()
+            reservation.jumlahOrang > 0 &&
+            reservation.tanggal.isNotBlank() &&
+            reservation.waktu.isNotBlank() &&
+            reservation.meja.isNotBlank()
     }
 
     /**
      * Method 8: Log data transfer untuk debugging
      */
-    fun logDataTransfer(source: String, destination: String, reservation: Reservation) {
+    fun logDataTransfer(
+        source: String,
+        destination: String,
+        reservation: Reservation,
+    ) {
         println("DATA TRANSFER: $source -> $destination")
         println("Reservation Data: $reservation")
         println("Data Size: ${reservation.toString().length} characters")

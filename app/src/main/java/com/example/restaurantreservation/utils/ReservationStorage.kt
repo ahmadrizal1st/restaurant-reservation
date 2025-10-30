@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken
  * Utility class for persisting reservations using SharedPreferences
  */
 object ReservationStorage {
-
     private const val PREFS_NAME = "restaurant_reservation_prefs"
     private const val KEY_RESERVATIONS = "reservations"
 

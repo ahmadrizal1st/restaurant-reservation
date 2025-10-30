@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object InputValidator {
-
     /**
      * Validasi nama pemesan
      * @param nama Nama yang akan divalidasi
@@ -71,7 +70,11 @@ object InputValidator {
     /**
      * Validasi semua input sekaligus
      */
-    fun validateAll(nama: String, jumlah: Int, tanggal: String): ValidationResult {
+    fun validateAll(
+        nama: String,
+        jumlah: Int,
+        tanggal: String,
+    ): ValidationResult {
         return when {
             validateNama(nama) is ValidationResult.Error -> validateNama(nama)
             validateJumlahOrang(jumlah) is ValidationResult.Error -> validateJumlahOrang(jumlah)
@@ -86,5 +89,6 @@ object InputValidator {
  */
 sealed class ValidationResult {
     object Success : ValidationResult()
+
     data class Error(val message: String) : ValidationResult()
 }

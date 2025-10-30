@@ -20,9 +20,8 @@ data class Reservation(
     val catatan: String = "",
     val status: String = "Pending",
     val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
+    val updatedAt: Long = System.currentTimeMillis(),
 ) : Parcelable {
-
     companion object {
         /**
          * Membuat ID unik untuk reservasi berdasarkan timestamp
@@ -41,7 +40,7 @@ data class Reservation(
             waktu: String,
             meja: String,
             catatan: String = "",
-            status: String = "Confirmed"
+            status: String = "Confirmed",
         ): Reservation {
             return Reservation(
                 id = generateId(),
@@ -51,7 +50,7 @@ data class Reservation(
                 waktu = waktu,
                 meja = meja,
                 catatan = catatan,
-                status = status
+                status = status,
             )
         }
     }
@@ -106,7 +105,7 @@ data class Reservation(
             "catatan" to catatan,
             "status" to status,
             "createdAt" to createdAt.toString(),
-            "updatedAt" to updatedAt.toString()
+            "updatedAt" to updatedAt.toString(),
         )
     }
 
@@ -120,7 +119,7 @@ data class Reservation(
         waktu: String? = null,
         meja: String? = null,
         catatan: String? = null,
-        status: String? = null
+        status: String? = null,
     ): Reservation {
         return this.copy(
             nama = nama ?: this.nama,
@@ -130,7 +129,7 @@ data class Reservation(
             meja = meja ?: this.meja,
             catatan = catatan ?: this.catatan,
             status = status ?: this.status,
-            updatedAt = System.currentTimeMillis()
+            updatedAt = System.currentTimeMillis(),
         )
     }
 

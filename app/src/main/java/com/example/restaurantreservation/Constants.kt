@@ -15,7 +15,6 @@ package com.example.restaurantreservation.utils
  * @since 1.0
  */
 object Constants {
-
     // region - Intent Keys
     /** Key untuk data reservasi dalam bentuk Parcelable */
     const val KEY_RESERVATION_DATA = "reservation_data"
