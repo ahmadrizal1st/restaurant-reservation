@@ -1,13 +1,11 @@
-package com.example.restaurantreservation.utils
+package com.example.restaurantreservation.helpers
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.CalendarContract
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.example.restaurantreservation.model.Reservation
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Utility class untuk menangani berbagai jenis Implicit Intent
@@ -17,8 +15,6 @@ object IntentUtils {
     private const val RESTAURANT_PHONE = "+62123456789"
     private const val RESTAURANT_WEBSITE = "https://www.restaurantlezatselalu.com"
     private const val RESTAURANT_EMAIL = "info@restaurantlezatselalu.com"
-    private const val RESTAURANT_LATITUDE = -6.2088
-    private const val RESTAURANT_LONGITUDE = 106.8456
     private const val RESTAURANT_NAME = "Restoran Lezat Selalu"
 
     /**
@@ -33,7 +29,7 @@ object IntentUtils {
             val encodedAddress = Uri.encode(address)
 
             // Coba buka dengan Google Maps app
-            val gmmIntentUri = Uri.parse("geo:0,0?q=$encodedAddress")
+            val gmmIntentUri = "geo:0,0?q=$encodedAddress".toUri()
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
 
@@ -44,7 +40,7 @@ object IntentUtils {
                 val webIntent =
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://www.google.com/maps/search/?api=1&query=$encodedAddress"),
+                        "https://www.google.com/maps/search/?api=1&query=$encodedAddress".toUri(),
                     )
                 if (webIntent.resolveActivity(context.packageManager) != null) {
                     context.startActivity(webIntent)
@@ -68,7 +64,7 @@ object IntentUtils {
         try {
             val intent =
                 Intent(Intent.ACTION_DIAL).apply {
-                    data = Uri.parse("tel:$phoneNumber")
+                    data = "tel:$phoneNumber".toUri()
                 }
 
             if (intent.resolveActivity(context.packageManager) != null) {
@@ -92,7 +88,7 @@ object IntentUtils {
         try {
             val intent =
                 Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse(url)
+                    data = url.toUri()
                 }
 
             if (intent.resolveActivity(context.packageManager) != null) {
@@ -137,7 +133,7 @@ object IntentUtils {
 
             val intent =
                 Intent(Intent.ACTION_SENDTO).apply {
-                    data = Uri.parse("mailto:")
+                    data = "mailto:".toUri()
                     putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
                     putExtra(Intent.EXTRA_SUBJECT, subject)
                     putExtra(Intent.EXTRA_TEXT, body)
@@ -202,97 +198,6 @@ object IntentUtils {
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, "Error membagikan reservasi: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * 6. Implicit Intent untuk menambahkan ke kalender
-     */
-    fun addToCalendar(
-        context: Context,
-        reservation: Reservation,
-    ) {
-        try {
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            val eventDate = dateFormat.parse("${reservation.tanggal} ${reservation.waktu}")
-
-            eventDate?.let { date ->
-                val beginTime = date.time
-                val endTime = beginTime + (2 * 60 * 60 * 1000) // 2 jam kemudian
-
-                val intent =
-                    Intent(Intent.ACTION_INSERT).apply {
-                        data = CalendarContract.Events.CONTENT_URI
-                        putExtra(CalendarContract.Events.TITLE, "Reservasi Restoran - ${reservation.nama}")
-                        putExtra(
-                            CalendarContract.Events.DESCRIPTION,
-                            "Reservasi untuk ${reservation.jumlahOrang} orang di meja ${reservation.meja}",
-                        )
-                        putExtra(CalendarContract.Events.EVENT_LOCATION, RESTAURANT_NAME)
-                        putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime)
-                        putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
-                        putExtra(CalendarContract.Events.ALL_DAY, false)
-                    }
-
-                if (intent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(intent)
-                } else {
-                    Toast.makeText(context, "Tidak ada aplikasi kalender yang terinstall!", Toast.LENGTH_LONG).show()
-                }
-            } ?: run {
-                Toast.makeText(context, "Format tanggal tidak valid!", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(context, "Error menambahkan ke kalender: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * 7. Implicit Intent untuk membuka WhatsApp
-     */
-    fun openWhatsApp(
-        context: Context,
-        reservation: Reservation,
-    ) {
-        try {
-            val message =
-                """
-                Halo $RESTAURANT_NAME,
-                
-                Saya ingin konfirmasi reservasi:
-                Nama: ${reservation.nama}
-                Orang: ${reservation.jumlahOrang}
-                Tanggal: ${reservation.tanggal}
-                Waktu: ${reservation.waktu}
-                Meja: ${reservation.meja}
-                
-                Terima kasih.
-                """.trimIndent()
-
-            val intent =
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("https://wa.me/$RESTAURANT_PHONE?text=${Uri.encode(message)}")
-                    setPackage("com.whatsapp")
-                }
-
-            if (intent.resolveActivity(context.packageManager) != null) {
-                context.startActivity(intent)
-            } else {
-                // WhatsApp tidak terinstall, buka browser
-                val webIntent =
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("https://web.whatsapp.com/send?phone=$RESTAURANT_PHONE&text=${Uri.encode(message)}")
-                    }
-                if (webIntent.resolveActivity(context.packageManager) != null) {
-                    context.startActivity(webIntent)
-                } else {
-                    Toast.makeText(context, "WhatsApp tidak terinstall!", Toast.LENGTH_LONG).show()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(context, "Error membuka WhatsApp: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 }

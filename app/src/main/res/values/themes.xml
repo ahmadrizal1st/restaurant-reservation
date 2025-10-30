@@ -43,10 +43,12 @@
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
         <item name="cornerRadius">8dp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Widget.RestaurantReservation.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
         <item name="cornerRadius">8dp</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <!-- Text Input Styles -->

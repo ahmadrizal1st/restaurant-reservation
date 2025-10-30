@@ -3,7 +3,8 @@ package com.example.restaurantreservation.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * Data class untuk merepresentasikan data reservasi

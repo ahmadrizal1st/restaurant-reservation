@@ -1,9 +1,9 @@
-package com.example.restaurantreservation.utils
+package com.example.restaurantreservation.helpers
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import com.example.restaurantreservation.model.Reservation
+import com.example.restaurantreservation.Constants
 
 /**
  * Utility class untuk membantu menerima data dari Activity lain
@@ -15,6 +15,7 @@ object DataReceiverHelper {
     fun getReservationFromIntent(intent: Intent): Reservation? {
         return try {
             // Priority 1: Parcelable object (most efficient)
+            @Suppress("DEPRECATION")
             val parcelableReservation = intent.getParcelableExtra<Reservation>(Constants.KEY_RESERVATION_DATA)
             if (parcelableReservation != null) {
                 logDataReceipt("Parcelable Object", parcelableReservation)
@@ -76,11 +77,12 @@ object DataReceiverHelper {
     /**
      * Method 3: Extract Reservation dari Bundle
      */
-    fun getReservationFromBundle(bundle: Bundle?): Reservation? {
+    private fun getReservationFromBundle(bundle: Bundle?): Reservation? {
         bundle ?: return null
 
         return try {
             // Coba sebagai Parcelable
+            @Suppress("DEPRECATION")
             val parcelableReservation = bundle.getParcelable<Reservation>(Constants.KEY_RESERVATION_DATA)
             if (parcelableReservation != null) return parcelableReservation
 
@@ -158,16 +160,7 @@ object DataReceiverHelper {
         println("---")
     }
 
-    /**
-     * Method 8: Show error message
-     */
-    private fun showDataError(
-        context: android.content.Context,
-        message: String,
-    ) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        println("DATA RECEIVE ERROR: $message")
-    }
+
 
     /**
      * Method 9: Check if intent contains reservation data
@@ -181,18 +174,5 @@ object DataReceiverHelper {
             )
     }
 
-    /**
-     * Method 10: Get reservation with default values
-     */
-    fun getReservationWithDefaults(intent: Intent): Reservation {
-        return getReservationFromIntent(intent)
-            ?: Reservation.create(
-                nama = "Guest",
-                jumlahOrang = 2,
-                tanggal = "01/01/2024",
-                waktu = "12:00",
-                meja = "Meja 1",
-                status = "Unknown",
-            )
-    }
+
 }

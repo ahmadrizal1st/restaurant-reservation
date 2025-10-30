@@ -59,7 +59,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_empty_state"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="@string/empty_list" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
-            android:text="Tambah Reservasi"
+            android:text="@string/btn_tambah_reservasi"
             android:textSize="14sp"
             android:backgroundTint="?attr/colorPrimary"
             android:layout_marginEnd="6dp" />
@@ -100,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
-            android:text="Kembali"
+            android:text="@string/btn_kembali"
             android:textSize="14sp"
             android:backgroundTint="#9E9E9E"
             android:layout_marginStart="6dp" />

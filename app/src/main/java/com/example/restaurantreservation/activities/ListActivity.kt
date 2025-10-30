@@ -25,10 +25,10 @@ import com.example.restaurantreservation.R
 import com.example.restaurantreservation.adapter.ReservationAdapter
 import com.example.restaurantreservation.adapter.SortField
 import com.example.restaurantreservation.adapter.SortOrder
+import com.example.restaurantreservation.helpers.IntentUtils
 import com.example.restaurantreservation.interfaces.OnReservationClickListener
 import com.example.restaurantreservation.model.Reservation
-import com.example.restaurantreservation.utils.Constants
-import com.example.restaurantreservation.utils.IntentUtils
+import com.example.restaurantreservation.Constants
 import com.example.restaurantreservation.utils.ReservationStorage
 
 class ListActivity : AppCompatActivity(), OnReservationClickListener {
@@ -415,9 +415,18 @@ class ListActivity : AppCompatActivity(), OnReservationClickListener {
                 ) {
                     when (position) {
                         0 -> this@ListActivity.adapter.submitList(reservationList.toMutableList()) // All
-                        1 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("confirmed", true) }.toMutableList())
-                        2 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("pending", true) }.toMutableList())
-                        3 -> this@ListActivity.adapter.submitList(reservationList.filter { it.status.equals("cancelled", true) }.toMutableList())
+                        1 ->
+                            this@ListActivity.adapter.submitList(
+                                reservationList.filter { it.status.equals("confirmed", true) }.toMutableList(),
+                            )
+                        2 ->
+                            this@ListActivity.adapter.submitList(
+                                reservationList.filter { it.status.equals("pending", true) }.toMutableList(),
+                            )
+                        3 ->
+                            this@ListActivity.adapter.submitList(
+                                reservationList.filter { it.status.equals("cancelled", true) }.toMutableList(),
+                            )
                     }
                     updateEmptyState()
                 }

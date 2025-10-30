@@ -2,6 +2,7 @@ package com.example.restaurantreservation.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.example.restaurantreservation.model.Reservation
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -26,9 +27,9 @@ object ReservationStorage {
     /**
      * Save list of reservations to SharedPreferences
      */
-    fun saveReservations(reservations: List<Reservation>) {
+    private fun saveReservations(reservations: List<Reservation>) {
         val json = gson.toJson(reservations)
-        sharedPreferences.edit().putString(KEY_RESERVATIONS, json).apply()
+        sharedPreferences.edit { putString(KEY_RESERVATIONS, json) }
     }
 
     /**
@@ -74,10 +75,5 @@ object ReservationStorage {
         saveReservations(reservations)
     }
 
-    /**
-     * Clear all reservations
-     */
-    fun clearAllReservations() {
-        sharedPreferences.edit().remove(KEY_RESERVATIONS).apply()
-    }
+
 }

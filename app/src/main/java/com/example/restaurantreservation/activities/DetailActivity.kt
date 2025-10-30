@@ -6,14 +6,15 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.restaurantreservation.R
+import com.example.restaurantreservation.helpers.DataReceiverHelper
+import com.example.restaurantreservation.helpers.IntentUtils
+import com.example.restaurantreservation.helpers.ValidationResult
 import com.example.restaurantreservation.model.Reservation
-import com.example.restaurantreservation.utils.Constants
-import com.example.restaurantreservation.utils.DataReceiverHelper
-import com.example.restaurantreservation.utils.IntentUtils
-import com.example.restaurantreservation.utils.ValidationResult
+import com.example.restaurantreservation.Constants
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var tvNama: TextView
@@ -55,6 +56,7 @@ class DetailActivity : AppCompatActivity() {
         tampilkanDataReservasi()
         setupUIberdasarkanAction()
         setupClickListeners()
+        setupBackPressedCallback()
     }
 
     private fun initViews() {
@@ -124,9 +126,6 @@ class DetailActivity : AppCompatActivity() {
                 showError(validationResult.message)
                 // Tetap lanjutkan, tapi dengan data yang mungkin tidak lengkap
             }
-            else -> {
-                // Handle any other validation results if added in the future
-            }
         }
 
         // Log additional parameters
@@ -174,7 +173,7 @@ class DetailActivity : AppCompatActivity() {
         when (action) {
             Constants.ACTION_CREATE -> {
                 setTitle(R.string.title_reservasi_baru)
-                btnEditReservasi.visibility = android.view.View.GONE
+                btnEditReservasi.visibility = View.GONE
             }
             Constants.ACTION_EDIT -> {
                 setTitle(R.string.title_edit_reservasi)
@@ -301,12 +300,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     /**
-     * METHOD 7: Handle back button press
+     * METHOD 7: Setup back pressed callback
      */
-    @Deprecated("Deprecated in Java", ReplaceWith("onBackPressedDispatcher.onBackPressed()"))
-    override fun onBackPressed() {
-        super.onBackPressed()
-        kembaliDenganResult()
+    private fun setupBackPressedCallback() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                kembaliDenganResult()
+            }
+        })
     }
 
     /**

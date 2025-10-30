@@ -1,8 +1,8 @@
 package com.example.restaurantreservation
 
+import com.example.restaurantreservation.helpers.InputValidator
+import com.example.restaurantreservation.helpers.ValidationResult
 import com.example.restaurantreservation.model.Reservation
-import com.example.restaurantreservation.utils.InputValidator
-import com.example.restaurantreservation.utils.ValidationResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 /**

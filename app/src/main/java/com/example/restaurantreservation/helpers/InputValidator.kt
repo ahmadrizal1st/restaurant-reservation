@@ -1,7 +1,8 @@
-package com.example.restaurantreservation.utils
+package com.example.restaurantreservation.helpers
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 object InputValidator {
     /**
@@ -66,29 +67,13 @@ object InputValidator {
         val regex = "^[a-zA-Z\\s]+$".toRegex()
         return regex.matches(nama)
     }
-
-    /**
-     * Validasi semua input sekaligus
-     */
-    fun validateAll(
-        nama: String,
-        jumlah: Int,
-        tanggal: String,
-    ): ValidationResult {
-        return when {
-            validateNama(nama) is ValidationResult.Error -> validateNama(nama)
-            validateJumlahOrang(jumlah) is ValidationResult.Error -> validateJumlahOrang(jumlah)
-            validateTanggal(tanggal) is ValidationResult.Error -> validateTanggal(tanggal)
-            else -> ValidationResult.Success
-        }
-    }
 }
 
 /**
  * Sealed class untuk menangani result validasi
  */
 sealed class ValidationResult {
-    object Success : ValidationResult()
+    data object Success : ValidationResult()
 
     data class Error(val message: String) : ValidationResult()
 }

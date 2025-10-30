@@ -17,12 +17,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.restaurantreservation.R
+import com.example.restaurantreservation.helpers.DataTransferHelper
+import com.example.restaurantreservation.helpers.InputValidator
+import com.example.restaurantreservation.helpers.ValidationResult
 import com.example.restaurantreservation.model.Reservation
-import com.example.restaurantreservation.utils.Constants
-import com.example.restaurantreservation.utils.DataTransferHelper
-import com.example.restaurantreservation.utils.InputValidator
+import com.example.restaurantreservation.Constants
 import com.example.restaurantreservation.utils.ReservationStorage
-import com.example.restaurantreservation.utils.ValidationResult
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
@@ -365,7 +365,6 @@ class MainActivity : AppCompatActivity() {
                 showError("Harap isi form dengan benar!")
                 false
             }
-            else -> false
         }
     }
 
@@ -491,7 +490,6 @@ class MainActivity : AppCompatActivity() {
                 textInputLayoutNama.error = result.message
             }
 
-            else -> {}
         }
     }
     // endregion

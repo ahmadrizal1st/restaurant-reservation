@@ -72,47 +72,6 @@ class ReservationAdapter(
     }
 
     /**
-     * Method untuk mendapatkan reservasi berdasarkan position
-     */
-    fun getReservationAt(position: Int): Reservation {
-        return getItem(position)
-    }
-
-    /**
-     * Method untuk update single item
-     */
-    fun updateItem(
-        position: Int,
-        updatedReservation: Reservation,
-    ) {
-        val currentList = currentList.toMutableList()
-        if (position in 0 until currentList.size) {
-            currentList[position] = updatedReservation
-            submitList(currentList)
-        }
-    }
-
-    /**
-     * Method untuk remove single item
-     */
-    fun removeItem(position: Int) {
-        val currentList = currentList.toMutableList()
-        if (position in 0 until currentList.size) {
-            currentList.removeAt(position)
-            submitList(currentList)
-        }
-    }
-
-    /**
-     * Method untuk add new item
-     */
-    fun addItem(reservation: Reservation) {
-        val currentList = currentList.toMutableList()
-        currentList.add(0, reservation) // Add di awal list
-        submitList(currentList)
-    }
-
-    /**
      * Method untuk filter list berdasarkan query
      */
     fun filter(
@@ -167,13 +126,6 @@ class ReservationAdapter(
      */
     fun getReservationsByStatus(status: String): List<Reservation> {
         return currentList.filter { it.status.equals(status, true) }
-    }
-
-    /**
-     * Method untuk clear semua selection (jika ada feature selection)
-     */
-    fun clearSelections() {
-        // Implementasi jika ada feature selection
     }
 }
 

@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantreservation.R
 import com.example.restaurantreservation.model.Reservation
+import java.util.Locale
 
 /**
  * ViewHolder class untuk item reservasi di RecyclerView
@@ -55,7 +56,7 @@ class ReservationViewHolder(
         applyStatusStyling(reservation.status)
 
         // Apply conditional styling
-        applyConditionalStyling(reservation, position)
+        applyConditionalStyling(position)
     }
 
     /**
@@ -128,10 +129,7 @@ class ReservationViewHolder(
     /**
      * Method untuk apply conditional styling
      */
-    private fun applyConditionalStyling(
-        reservation: Reservation,
-        position: Int,
-    ) {
+    private fun applyConditionalStyling(position: Int) {
         // Highlight item berdasarkan posisi (ganjil/genap)
         if (position % 2 == 0) {
             cardView.setCardBackgroundColor(
@@ -156,8 +154,8 @@ class ReservationViewHolder(
      * Method untuk mendapatkan warna berdasarkan status
      */
     private fun getStatusColors(status: String): Pair<Int, Int> {
-        return when (status.toLowerCase()) {
-            "confirmed", "confirmed" -> Pair(R.color.status_confirmed_bg, R.color.status_confirmed_text)
+        return when (status.lowercase(Locale.ROOT)) {
+            "confirmed" -> Pair(R.color.status_confirmed_bg, R.color.status_confirmed_text)
             "pending" -> Pair(R.color.status_pending_bg, R.color.status_pending_text)
             "cancelled" -> Pair(R.color.status_cancelled_bg, R.color.status_cancelled_text)
             "completed" -> Pair(R.color.status_completed_bg, R.color.status_completed_text)
@@ -179,7 +177,7 @@ class ReservationViewHolder(
      * Method untuk format status
      */
     private fun formatStatus(status: String): String {
-        return when (status.toLowerCase()) {
+        return when (status.lowercase(Locale.ROOT)) {
             "confirmed" -> itemView.context.getString(R.string.status_confirmed)
             "pending" -> itemView.context.getString(R.string.status_pending)
             "cancelled" -> itemView.context.getString(R.string.status_cancelled)
@@ -213,23 +211,4 @@ class ReservationViewHolder(
             .setListener(null)
     }
 
-    /**
-     * Method untuk animate item removal
-     */
-    fun animateRemoval() {
-        itemView.animate()
-            .alpha(0f)
-            .setDuration(200)
-            .withEndAction {
-                itemView.visibility = View.GONE
-            }
-    }
-
-    /**
-     * Method untuk reset animation
-     */
-    fun resetAnimation() {
-        itemView.alpha = 1f
-        itemView.visibility = View.VISIBLE
-    }
 }
