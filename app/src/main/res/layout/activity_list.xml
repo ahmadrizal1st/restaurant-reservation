@@ -48,17 +48,29 @@
                 android:visibility="gone" />
 
             <!-- Empty State -->
-            <TextView
+            <LinearLayout
                 android:id="@+id/tvEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableTop="@drawable/ic_empty_state"
-                android:text="@string/empty_reservation_list"
-                android:textSize="16sp"
-                android:textColor="@color/text_secondary"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:visibility="gone"
-                android:drawablePadding="16dp" />
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_empty_state"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_reservation_list"
+                    android:textSize="16sp"
+                    android:textColor="#666"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
         </RelativeLayout>
 
