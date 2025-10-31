@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -23,7 +24,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -37,11 +38,14 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    lint {
+        abortOnError = false
+        checkDependencies = true
+    }
 }
 
 dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

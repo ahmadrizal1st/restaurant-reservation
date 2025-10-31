@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_light"
@@ -14,6 +13,9 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Detail Reservasi" />
@@ -57,7 +59,7 @@
                         android:id="@+id/tvReservationId"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="ID: RES_123456"
+                        android:text="@string/placeholder_reservation_id"
                         android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                         android:textColor="@color/text_secondary"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +72,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Nama Pemesan"
+                        android:text="@string/label_detail_nama"
                         android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                         android:textColor="@color/text_secondary"
                         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +83,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="John Doe"
+                        android:text="@string/placeholder_customer_name"
                         android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold"
@@ -103,7 +105,7 @@
                             android:id="@+id/tvLabelTanggal"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Tanggal"
+                            android:text="@string/label_detail_tanggal"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                             android:textColor="@color/text_secondary"
                             app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +116,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Senin, 15 Des 2024"
+                            android:text="@string/placeholder_date"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvLabelTanggal" />
@@ -124,7 +126,7 @@
                             android:id="@+id/tvLabelWaktu"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Waktu"
+                            android:text="@string/label_waktu"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                             android:textColor="@color/text_secondary"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -135,7 +137,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="19:00"
+                            android:text="@string/placeholder_time"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvLabelWaktu" />
@@ -146,7 +148,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="Jumlah Orang"
+                            android:text="@string/label_detail_jumlah"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                             android:textColor="@color/text_secondary"
                             app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +159,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="4 orang"
+                            android:text="@string/placeholder_people_count"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvLabelJumlah" />
@@ -168,7 +170,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:text="Meja"
+                            android:text="@string/label_meja_short"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
                             android:textColor="@color/text_secondary"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +181,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Meja VIP 1"
+                            android:text="@string/placeholder_table"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvLabelMeja" />
@@ -204,7 +206,7 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="16dp"
                             android:paddingVertical="8dp"
-                            android:text="CONFIRMED"
+                            android:text="@string/status_confirmed_display"
                             android:textAllCaps="true"
                             android:textAppearance="@style/TextAppearance.RestaurantReservation.Body"
                             android:textColor="@color/white"
@@ -218,10 +220,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Dibuat: 14 Des 2024 10:30"
+                        android:text="@string/placeholder_created_at"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.RestaurantReservation.Caption"
-                        android:textColor="@color/text_hint"
+                        android:textColor="@color/text_secondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cardStatus" />
@@ -234,92 +236,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Action Buttons Grid -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutActions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <!-- Row 1: Maps & Telepon -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBukaMaps"
-            style="@style/Widget.RestaurantReservation.Button.Outlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Maps"
-            app:icon="@drawable/ic_map"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTeleponRestoran"
-            style="@style/Widget.RestaurantReservation.Button.Outlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Telepon"
-            app:icon="@drawable/ic_phone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Row 2: Website & Email -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBukaWebsite"
-            style="@style/Widget.RestaurantReservation.Button.Outlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Website"
-            app:icon="@drawable/ic_website"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnBukaMaps" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnKirimEmail"
-            style="@style/Widget.RestaurantReservation.Button.Outlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Email"
-            app:icon="@drawable/ic_email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintTop_toBottomOf="@+id/btnTeleponRestoran" />
-
-        <!-- Row 3: Share & Edit -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBagikanReservasi"
-            style="@style/Widget.RestaurantReservation.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Bagikan"
-            app:icon="@drawable/ic_share"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnBukaWebsite" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnEditReservasi"
-            style="@style/Widget.RestaurantReservation.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Edit"
-            app:icon="@drawable/ic_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-            app:layout_constraintTop_toBottomOf="@+id/btnKirimEmail" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <!-- Vertical Guideline -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical"
@@ -327,5 +243,111 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
+
+    <!-- Action Buttons Grid -->
+    <LinearLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Row 1: Maps & Telepon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBukaMaps"
+                style="@style/Widget.RestaurantReservation.Button.Outlined"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/btn_maps"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_map" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTeleponRestoran"
+                style="@style/Widget.RestaurantReservation.Button.Outlined"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_telepon"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_phone" />
+
+        </LinearLayout>
+
+        <!-- Row 2: Website & Email -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBukaWebsite"
+                style="@style/Widget.RestaurantReservation.Button.Outlined"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/btn_website"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_website" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnKirimEmail"
+                style="@style/Widget.RestaurantReservation.Button.Outlined"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_email"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_email" />
+
+        </LinearLayout>
+
+        <!-- Row 3: Share & Edit -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBagikanReservasi"
+                style="@style/Widget.RestaurantReservation.Button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/btn_bagikan"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_share" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditReservasi"
+                style="@style/Widget.RestaurantReservation.Button"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_edit_short"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:icon="@drawable/ic_edit" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

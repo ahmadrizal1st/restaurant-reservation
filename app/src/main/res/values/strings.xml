@@ -10,6 +10,7 @@
     <string name="label_tanggal">Tanggal Reservasi</string>
     <string name="btn_buat_reservasi">Buat Reservasi</string>
     <string name="btn_lihat_daftar">Lihat Daftar Reservasi</string>
+    <string name="update_reservation">Update Reservasi</string>
 
     <!-- Detail Activity -->
     <string name="label_detail_nama">Nama Pemesan</string>
@@ -76,6 +77,13 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Hapus</string>
     <string name="menu_share">Bagikan</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_add">Tambah</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="refresh">Refresh</string>
+    <string name="add">Add</string>
 
     <!-- Receiving Data -->
     <string name="error_no_data">Tidak ada data reservasi yang diterima</string>
@@ -111,4 +119,33 @@
     <string name="sort_date_newest">Tanggal (Terbaru)</string>
     <string name="sort_date_oldest">Tanggal (Terlama)</string>
     <string name="sort_people">Jumlah Orang</string>
+
+    <!-- Detail Activity additional strings -->
+    <string name="jumlah_orang_format">%d orang</string>
+    <string name="reservation_id_format">ID: %s</string>
+    <string name="created_at_format">Dibuat: %s</string>
+    <string name="activity_title_create">Reservasi Baru - %s</string>
+    <string name="activity_title_edit">Edit Reservasi - %s</string>
+    <string name="activity_title_view">Detail Reservasi - %s</string>
+    <string name="title_reservasi_baru">Reservasi Baru</string>
+    <string name="title_edit_reservasi">Edit Reservasi</string>
+    <string name="title_detail_reservasi">Detail Reservasi</string>
+
+    <!-- Placeholders for Detail Activity -->
+    <string name="label_waktu">Waktu</string>
+    <string name="label_meja_short">Meja</string>
+    <string name="status_confirmed_display">CONFIRMED</string>
+    <string name="btn_maps">Maps</string>
+    <string name="btn_telepon">Telepon</string>
+    <string name="btn_website">Website</string>
+    <string name="btn_email">Email</string>
+    <string name="btn_bagikan">Bagikan</string>
+    <string name="btn_edit_short">Edit</string>
+    <string name="placeholder_reservation_id">ID: RES_123456</string>
+    <string name="placeholder_customer_name">John Doe</string>
+    <string name="placeholder_date">Senin, 15 Des 2024</string>
+    <string name="placeholder_time">19:00</string>
+    <string name="placeholder_people_count">4 orang</string>
+    <string name="placeholder_table">Meja VIP 1</string>
+    <string name="placeholder_created_at">Dibuat: 14 Des 2024 10:30</string>
 </resources>
