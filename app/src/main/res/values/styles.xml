@@ -53,11 +53,13 @@
         <item name="boxCornerRadiusBottomStart">8dp</item>
         <item name="boxCornerRadiusBottomEnd">8dp</item>
         <item name="hintTextAppearance">@style/TextAppearance.RestaurantReservation.Hint</item>
+        <item name="hintTextColor">@color/text_hint</item>
     </style>
 
     <!-- Text Appearances -->
     <style name="TextAppearance.RestaurantReservation.Hint" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_hint</item>
     </style>
 
     <style name="TextAppearance.RestaurantReservation.Title" parent="TextAppearance.Material3.HeadlineSmall">

@@ -2,7 +2,7 @@
     <!-- Base application theme -->
     <style name="Base.Theme.RestaurantReservation" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorPrimaryVariant">@color/primary_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/secondary_color</item>
         <item name="colorSecondaryVariant">@color/secondary_dark</item>
@@ -23,6 +23,9 @@
         <!-- Custom styles -->
         <item name="cardViewStyle">@style/Widget.RestaurantReservation.CardView</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.RestaurantReservation.Button.Outlined</item>
+
+        <!-- Override hint text color for better contrast -->
+        <item name="android:textColorHint">@color/text_hint</item>
     </style>
 
     <!-- Main Theme -->

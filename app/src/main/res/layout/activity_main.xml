@@ -85,6 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
+                    android:maxWidth="488dp"
                     android:hint="@string/label_detail_nama"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +97,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textCapWords"
                         android:maxLines="1"
+                        android:textColorHint="@color/text_hint"
                         tools:text="John Doe" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -246,6 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginHorizontal="16dp"
+                    android:maxWidth="488dp"
                     android:hint="@string/label_notes"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -258,7 +261,8 @@
                         android:gravity="top"
                         android:inputType="textMultiLine"
                         android:maxLines="4"
-                        android:scrollbars="vertical" />
+                        android:scrollbars="vertical"
+                        android:textColorHint="@color/text_hint" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -274,6 +278,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginHorizontal="32dp"
+            android:maxWidth="320dp"
             android:text="@string/btn_buat_reservasi"
             android:maxLines="1"
             android:ellipsize="end"
@@ -290,6 +295,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="32dp"
+            android:maxWidth="320dp"
             android:text="@string/btn_lihat_daftar"
             android:maxLines="1"
             android:ellipsize="end"
